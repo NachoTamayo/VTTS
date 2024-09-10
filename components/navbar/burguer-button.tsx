@@ -9,8 +9,7 @@ export const BurguerButton = () => {
     <div
       className={StyledBurgerButton()}
       // open={collapsed}
-      onClick={setCollapsed}
-    >
+      onClick={setCollapsed}>
       <div />
       <div />
     </div>

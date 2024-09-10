@@ -1,20 +1,16 @@
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownSection,
-  DropdownTrigger,
-  NavbarItem,
-} from "@nextui-org/react";
+import { Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger, NavbarItem } from "@nextui-org/react";
 import React from "react";
-import { NotificationIcon } from "../icons/navbar/notificationicon";
+import { NotificationIcon } from "../icons/icons";
+import { Badge } from "@nextui-org/react";
 
 export const NotificationsDropdown = () => {
   return (
     <Dropdown placement="bottom-end">
       <DropdownTrigger>
         <NavbarItem>
-          <NotificationIcon />
+          <Badge content="5" color="danger" placement="top-right">
+            <NotificationIcon />
+          </Badge>
         </NavbarItem>
       </DropdownTrigger>
       <DropdownMenu className="w-80" aria-label="Avatar Actions">
@@ -25,8 +21,7 @@ export const NotificationsDropdown = () => {
               title: "text-base font-semibold",
             }}
             key="1"
-            description="Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim."
-          >
+            description="Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.">
             📣 Edit your information
           </DropdownItem>
           <DropdownItem
@@ -35,8 +30,7 @@ export const NotificationsDropdown = () => {
               base: "py-2",
               title: "text-base font-semibold",
             }}
-            description="Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim."
-          >
+            description="Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.">
             🚀 Say goodbye to paper receipts!
           </DropdownItem>
           <DropdownItem
@@ -45,8 +39,7 @@ export const NotificationsDropdown = () => {
               base: "py-2",
               title: "text-base font-semibold",
             }}
-            description="Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim."
-          >
+            description="Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.">
             📣 Edit your information
           </DropdownItem>
         </DropdownSection>

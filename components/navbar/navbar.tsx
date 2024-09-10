@@ -1,12 +1,13 @@
 import { Input, Link, Navbar, NavbarContent } from "@nextui-org/react";
 import React from "react";
-import { FeedbackIcon } from "../icons/navbar/feedback-icon";
 import { GithubIcon } from "../icons/navbar/github-icon";
 import { SupportIcon } from "../icons/navbar/support-icon";
-import { SearchIcon } from "../icons/searchicon";
+import { SearchIcon } from "../icons/icons";
 import { BurguerButton } from "./burguer-button";
 import { NotificationsDropdown } from "./notifications-dropdown";
 import { UserDropdown } from "./user-dropdown";
+import { DarkModeSwitch } from "./darkmodeswitch";
+import { useTheme as useNextTheme } from "next-themes";
 
 interface Props {
   children: React.ReactNode;
@@ -20,8 +21,7 @@ export const NavbarWrapper = ({ children }: Props) => {
         className="w-full"
         classNames={{
           wrapper: "w-full max-w-full",
-        }}
-      >
+        }}>
         <NavbarContent className="md:hidden">
           <BurguerButton />
         </NavbarContent>
@@ -37,13 +37,9 @@ export const NavbarWrapper = ({ children }: Props) => {
             placeholder="Search..."
           />
         </NavbarContent>
-        <NavbarContent
-          justify="end"
-          className="w-fit data-[justify=end]:flex-grow-0"
-        >
+        <NavbarContent justify="end" className="w-fit data-[justify=end]:flex-grow-0">
           <div className="flex items-center gap-2 max-md:hidden">
-            <FeedbackIcon />
-            <span>Feedback?</span>
+            <DarkModeSwitch />
           </div>
 
           <NotificationsDropdown />
@@ -52,10 +48,7 @@ export const NavbarWrapper = ({ children }: Props) => {
             <SupportIcon />
           </div>
 
-          <Link
-            href="https://github.com/Siumauricio/nextui-dashboard-template"
-            target={"_blank"}
-          >
+          <Link href="https://github.com/Siumauricio/nextui-dashboard-template" target={"_blank"}>
             <GithubIcon />
           </Link>
           <NavbarContent>

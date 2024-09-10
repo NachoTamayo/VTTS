@@ -1,56 +1,69 @@
 "use client";
 
-import { createAuthCookie } from "@/actions/auth.action";
 import { LoginSchema } from "@/helpers/schemas";
 import { LoginFormType } from "@/helpers/types";
 import { Button, Input } from "@nextui-org/react";
 import { Formik } from "formik";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import Cookies from "universal-cookie";
 
 export const Login = () => {
+  const [error, setError] = useState("");
   const router = useRouter();
-
   const initialValues: LoginFormType = {
-    email: "admin@acme.com",
-    password: "admin",
+    user_name: "u5003006",
+    password: "Nacho369852",
   };
 
   const handleLogin = useCallback(
     async (values: LoginFormType) => {
-      // `values` contains email & password. You can use provider to connect user
+      // `values` contiene email & password. Puedes usar estos valores directamente
 
-      await createAuthCookie();
-      router.replace("/");
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_name: values.user_name, password: values.password }),
+      });
+
+      if (res.ok) {
+        await res.json().then((data) => {
+          localStorage.setItem("assigned", data.user);
+          router.push("/");
+        });
+
+        // Redirigir al usuario a la página principal o a otra página protegida
+      } else {
+        const data = await res.json();
+        setError(data.message);
+      }
     },
     [router]
   );
 
   return (
     <>
-      <div className='text-center text-[25px] font-bold mb-6'>Login</div>
+      <div className="text-center text-[25px] font-bold mb-6">Login</div>
 
-      <Formik
-        initialValues={initialValues}
-        validationSchema={LoginSchema}
-        onSubmit={handleLogin}>
+      <Formik initialValues={initialValues} validationSchema={LoginSchema} onSubmit={handleLogin}>
         {({ values, errors, touched, handleChange, handleSubmit }) => (
           <>
-            <div className='flex flex-col w-1/2 gap-4 mb-4'>
+            <div className="flex flex-col w-1/4 gap-4 mb-4">
               <Input
-                variant='bordered'
-                label='Email'
-                type='email'
-                value={values.email}
-                isInvalid={!!errors.email && !!touched.email}
-                errorMessage={errors.email}
-                onChange={handleChange("email")}
+                variant="bordered"
+                label="Username"
+                type="text"
+                value={values.user_name}
+                isInvalid={!!errors.user_name && !!touched.user_name}
+                errorMessage={errors.user_name}
+                onChange={handleChange("user_name")}
               />
               <Input
-                variant='bordered'
-                label='Password'
-                type='password'
+                variant="bordered"
+                label="Password"
+                type="password"
                 value={values.password}
                 isInvalid={!!errors.password && !!touched.password}
                 errorMessage={errors.password}
@@ -58,22 +71,12 @@ export const Login = () => {
               />
             </div>
 
-            <Button
-              onPress={() => handleSubmit()}
-              variant='flat'
-              color='primary'>
+            <Button onPress={() => handleSubmit()} variant="flat" color="primary">
               Login
             </Button>
           </>
         )}
       </Formik>
-
-      <div className='font-light text-slate-400 mt-4 text-sm'>
-        Don&apos;t have an account ?{" "}
-        <Link href='/register' className='font-bold'>
-          Register here
-        </Link>
-      </div>
     </>
   );
 };
