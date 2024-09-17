@@ -93,70 +93,54 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
 
             <div className="text-small text-default-500">{srNumber[0].DESCRIPTION}</div>
           </div>
-          <div className="flex flex-col">
+          <div className="flex justify-end w-full">
             <div className="flex items-center space-x-2">
               <SourceCodeSquareIcon />
               <Tooltip content="Version" color="primary">
                 <p>{RELEASE_VERSION}</p>
               </Tooltip>
             </div>
-          </div>
-          <Spacer x={0.5} />
-          <div className="flex flex-col ">
+            <Spacer x={4} />
             <div className="flex items-center space-x-2">
               <PinCode />
               <Tooltip content="Stage" color="primary">
                 <p>{STAGE}</p>
               </Tooltip>
             </div>
-          </div>
-          <Spacer x={0.5} />
-          <div className="flex flex-col ">
+            <Spacer x={4} />
             <div className="flex items-center space-x-2">
               <CloudServerIcon />
               <p>{APP}</p>
             </div>
-          </div>
-          <Spacer x={0.5} />
-          <div className="flex flex-col">
+            <Spacer x={4} />
             <div className="flex items-center space-x-2">
               <Note05Icon />
               <Tooltip content="Release Note" color="primary">
                 <p>{RELEASE_NOTE.toLocaleUpperCase()}</p>
               </Tooltip>
             </div>
-          </div>
-          <Spacer x={1} />
-          <div className="flex flex-col">
+            <Spacer x={4} />
             <div className="flex items-center space-x-2">
               <Calendar03Icon />
               <p>{formatDate(DATE_TEST)}</p>
             </div>
-          </div>
-          <Spacer x={1} />
-          <div className="flex flex-col">
+            <Spacer x={4} />
             <div className="flex items-center space-x-2">
               <Chip variant="flat" color={status[0] && status[0].IS_FAILED ? "danger" : "success"}>
                 {status[0] && status[0].DESC_STATUS}{" "}
               </Chip>
             </div>
-          </div>
-          <Spacer x={0} />
-          <div className="flex flex-col">
+            <Spacer x={4} />
             <div className="flex items-center space-x-2">
               <Avatar name={ASSIGNED} size="sm" />
             </div>
-          </div>
-          <Spacer x={"px"} />
-          <div className="flex flex-col">
+            <Spacer x={4} />
             <div className="flex items-center space-x-2">
               <Badge color="default" variant="faded" content={attachedInfo.length}>
                 <Clip />
               </Badge>
             </div>
-          </div>
-          <Spacer x={"px"} />
-          <div className="flex flex-col">
+            <Spacer x={4} />
             <div className="flex items-center space-x-2">
               <TrelloIcon />
             </div>

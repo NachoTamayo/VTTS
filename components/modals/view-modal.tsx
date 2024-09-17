@@ -95,8 +95,6 @@ export const ViewModal: React.FC<ViewModalProps> = (props) => {
                     className="max-w-28"
                   />
                 </div>
-              </div>
-              <div className="flex w-full flex-wrap md:flex-nowrap items-end mb-6 md:mb-0 gap-4">
                 <div className="flex flex-nowrap">
                   <Input
                     isReadOnly
@@ -107,6 +105,8 @@ export const ViewModal: React.FC<ViewModalProps> = (props) => {
                     className="max-w-48"
                   />
                 </div>
+              </div>
+              <div className="flex w-full flex-wrap md:flex-nowrap items-end mb-6 md:mb-0 gap-4">
                 <div className="flex flex-col max-w-92">
                   {content != null && content.attachedInfo[0] ? (
                     <>
@@ -125,7 +125,7 @@ export const ViewModal: React.FC<ViewModalProps> = (props) => {
 
               <div className="flex w-full flex-wrap md:flex-nowrap items-end mb-6 md:mb-0 gap-4">
                 <div className="flex flex-col w-full">
-                  <h5 className="w-full mb-2 text-default-500">Resolution</h5>
+                  <h5 className="w-full mb-2 text-default-500">Comments</h5>
                   <ScrollShadow className="w-full h-fit max-h-92">
                     {content != null ? <Comments comment={content.COMMENTS} /> : ""}
                   </ScrollShadow>

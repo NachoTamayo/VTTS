@@ -1,14 +1,28 @@
-import { DocIcon, XLSIcon, ImgIcon, PDFIcon } from "../icons/icons";
-import { Tooltip } from "@nextui-org/react";
+import { DocIcon, XLSIcon, ImgIcon, PDFIcon, ViewIcon } from "../icons/icons";
 import { useEffect, useState } from "react";
+import { Spacer } from "@nextui-org/react";
 
 interface AttachedDocumentProps {
   file: string;
 }
 
+const handleDownload = async (file: string) => {
+  const response = await fetch(`/documents/${file}`);
+  if (response.status === 200) {
+    const blob = await response.blob();
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.setAttribute("download", file);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  } else {
+    console.error("Error downloading file");
+  }
+};
+
 export const AttachedDocument: React.FC<AttachedDocumentProps> = ({ file }) => {
   const [document, setDocument] = useState<JSX.Element | null>(null);
-
   useEffect(() => {
     if (file.includes(".doc")) {
       setDocument(<DocIcon className="cursor-pointer" />);
@@ -19,16 +33,25 @@ export const AttachedDocument: React.FC<AttachedDocumentProps> = ({ file }) => {
     } else {
       setDocument(<ImgIcon className="cursor-pointer" />);
     }
-  }, [file]); // Añadir `file` como dependencia
+  }, [file]);
 
-  // Asegúrate de que el documento esté listo antes de renderizar
   if (!document) {
     return null;
   }
 
   return (
-    <Tooltip content={file} color="primary">
-      <div>{document}</div>
-    </Tooltip>
+    <div className="flex">
+      {document}
+      <Spacer />
+      {file} <Spacer x={2} />
+      {
+        <ViewIcon
+          className="cursor-pointer"
+          onClick={() => {
+            handleDownload(file);
+          }}
+        />
+      }
+    </div>
   );
 };

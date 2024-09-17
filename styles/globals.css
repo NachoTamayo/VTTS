@@ -11,3 +11,14 @@ body {
 * {
   box-sizing: border-box;
 }
+
+.text-color-green {
+  color: green;
+}
+
+.wysiwyg-color-red {
+  color: red;
+}
+.wysiwyg-color-blue {
+  color: blue;
+}
