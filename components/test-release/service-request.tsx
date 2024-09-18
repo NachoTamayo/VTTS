@@ -60,11 +60,13 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
     }
   };
 
-  const handleView = (id: string) => {
-    onView(id);
+  const handleView = () => {
+    onView(_id);
   };
 
-  const handleUnlink = () => {};
+  const handleUnlink = () => {
+    console.log(_id);
+  };
 
   const handleEdit = () => {};
 
@@ -77,7 +79,7 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
             <div className="flex text-md">
               {srNumber[0].SR_NUMBER}
               <Spacer className="flex" x={4} />
-              <ViewIcon onClick={() => handleView(_id)} className="cursor-pointer mt-0.5" width={18} height={18} />
+              <ViewIcon onClick={handleView} className="cursor-pointer mt-0.5" width={18} height={18} />
               {ASSIGNED === "" ? (
                 <BookmarkIcon onClick={handleBookmark} className="cursor-pointer mt-0.5" width={18} height={18} />
               ) : null}
