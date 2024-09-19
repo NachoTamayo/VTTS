@@ -1,0 +1,174 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model FORECAST_STATUS {
+  STATUS      String  @id @unique(map: "PK_FORECAST_STATUS") @db.VarChar(10)
+  DESCRIPTION String? @db.VarChar(64)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model FORECAST_STATUS_RULES {
+  STATUS_FROM String @db.VarChar(10)
+  STATUS_TO   String @db.VarChar(10)
+
+  @@id([STATUS_FROM, STATUS_TO])
+  @@unique([STATUS_FROM, STATUS_TO], map: "FORECAST_STATUS_PK")
+  @@ignore
+}
+
+model RELATED_SR {
+  SR_NUMBER_1 String  @db.VarChar(30)
+  SR_NUMBER_2 String  @db.VarChar(30)
+  LINKED_BY   String? @db.VarChar(3)
+
+  @@id([SR_NUMBER_1, SR_NUMBER_2])
+  @@unique([SR_NUMBER_1, SR_NUMBER_2], map: "Key2")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model RELEASE_VERSION {
+  APP             String   @db.VarChar(8)
+  RELEASE_VERSION String   @db.VarChar(32)
+  TEST_DEADLINE   DateTime @db.Date
+  STAGE           String   @db.VarChar(30)
+
+  @@id([APP, RELEASE_VERSION, STAGE])
+  @@unique([APP, RELEASE_VERSION, STAGE], map: "PK_RELEASE_VERSION")
+  @@index([RELEASE_VERSION, APP], map: "IX_Relationship16")
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model RESOLUTION {
+  SR_NUMBER       String    @db.VarChar(30)
+  ASSIGNED        String    @db.VarChar(3)
+  RESOLUTION_DATE DateTime? @db.Date
+  COMMENTS        String?   @db.LongText
+
+  @@id([SR_NUMBER, ASSIGNED])
+  @@index([SR_NUMBER], map: "IX_Relationship21")
+  @@index([ASSIGNED], map: "IX_Relationship22")
+  @@ignore
+}
+
+model SERVICE_REQUEST {
+  SR_TYPE        String? @db.VarChar(8)
+  SR_NUMBER      String  @id @unique(map: "PK_SERVICE_REQUEST_BCK") @db.VarChar(30)
+  DESCRIPTION    String? @db.VarChar(1024)
+  EXTERNAL_LINK  String? @db.VarChar(1024)
+  DATA_TEST_PATH String? @db.VarChar(1024)
+  LAST_TESTER    String? @db.VarChar(3)
+  STATUS_SR      String? @db.VarChar(15)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model SR_TYPE {
+  SR_TYPE     String  @id @unique(map: "SR_TYPE_PK") @db.VarChar(8)
+  DESCRIPTION String? @db.VarChar(256)
+
+  @@ignore
+}
+
+model SYSTEM_VERSION {
+  APP           String    @db.VarChar(8)
+  VERSION       String    @db.VarChar(32)
+  DELIVERY_DATE DateTime? @db.Date
+
+  @@id([APP, VERSION])
+  @@unique([APP, VERSION], map: "Key3")
+  @@index([APP], map: "IX_Relationship13")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model TEST_ATTACHED_INFO {
+  APP             String  @db.VarChar(8)
+  RELEASE_VERSION String  @db.VarChar(32)
+  SR_NUMBER       String  @db.VarChar(30)
+  FILE_NAME       String? @db.VarChar(128)
+  STAGE           String  @db.VarChar(30)
+
+  @@id([APP, RELEASE_VERSION, SR_NUMBER, STAGE])
+  @@unique([APP, RELEASE_VERSION, SR_NUMBER, STAGE], map: "PK_TEST_ATTACHED_INFO")
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model TEST_PSS_SYSTEM {
+  SR_TYPE           String?   @db.VarChar(8)
+  SR_NUMBER         String    @db.VarChar(30)
+  ASSIGNED          String    @db.VarChar(3)
+  STATUS            String    @db.VarChar(15)
+  DATE_TEST         DateTime? @db.Date
+  COMMENTS          String?   @db.LongText
+  DATE_MODIFICATION DateTime? @db.Date
+  RELEASE_NOTE      String?   @db.VarChar(1024)
+  WINDCHILL_COMMENT String?   @db.VarChar(3)
+  APP               String    @db.VarChar(8)
+  RELEASE_VERSION   String    @db.VarChar(32)
+  STAGE             String    @db.VarChar(30)
+
+  @@id([SR_NUMBER, ASSIGNED, STATUS, APP, RELEASE_VERSION, STAGE])
+  @@unique([APP, RELEASE_VERSION, SR_NUMBER, STAGE], map: "PK_TEST_PSS_SYSTEM")
+  @@index([STATUS], map: "IX_Relationship11")
+  @@index([ASSIGNED], map: "IX_Relationship12")
+  @@index([SR_NUMBER], map: "SR_NUMBER_IDX")
+  @@ignore
+}
+
+model TEST_STATUS {
+  ID_STATUS     String  @unique(map: "TEST_STATUS_PK") @db.VarChar(15)
+  DESC_STATUS   String  @db.VarChar(30)
+  IS_FAILED     String? @db.VarChar(1)
+  DISPLAY_ORDER Decimal @unique(map: "UK_STATUS_DISPLAY_ORDER") @db.Decimal(2, 0)
+
+  @@id([ID_STATUS, DISPLAY_ORDER])
+}
+
+model VERSION_FORECAST {
+  APP               String    @db.VarChar(8)
+  VERSION           String    @db.VarChar(32)
+  SR_NUMBER         String    @db.VarChar(30)
+  DATE_MODIFICATION DateTime? @db.Date
+  ASSIGNED          String    @db.VarChar(3)
+  STATUS            String?   @db.VarChar(10)
+
+  @@id([APP, VERSION, SR_NUMBER, ASSIGNED])
+  @@unique([APP, VERSION, SR_NUMBER], map: "Key4")
+  @@index([ASSIGNED], map: "IX_Relationship20")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model VTTS_SYSTEM {
+  APP         String  @id @unique(map: "SYSTEM_PK") @db.VarChar(8)
+  DESCRIPTION String? @db.VarChar(256)
+  IE_VERSION  String? @db.VarChar(2)
+  JRE_VERSION String? @db.VarChar(8)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model VTTS_USER {
+  ASSIGNED          String    @id @unique(map: "VTTS_USER_PK") @db.VarChar(3)
+  USER_NAME         String    @db.VarChar(8)
+  PASSWORD          String    @db.VarChar(256)
+  EMAIL             String    @db.VarChar(256)
+  MAIL_SIGN         String?   @db.VarChar(256)
+  DATE_MODIFICATION DateTime? @db.Date
+  USER_MODIFICATION String?   @db.VarChar(8)
+  USER_MESSAGE      String?   @db.VarChar(512)
+  PROFILE           String?   @db.VarChar(7)
+  SR_FILTER1        String?   @db.VarChar(256)
+  SR_FILTER2        String?   @db.VarChar(256)
+
+  @@ignore
+}
