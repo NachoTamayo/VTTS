@@ -30,7 +30,6 @@ export async function middleware(request: NextRequest) {
 
     try {
       const decoded = await verifyJWT(token, JWT_SECRET_KEY);
-      console.log("Token decodificado:", decoded);
     } catch (err) {
       console.error("JWT verification error:", err);
       return NextResponse.json({ success: false, error: "Invalid token" }, { status: 401 });

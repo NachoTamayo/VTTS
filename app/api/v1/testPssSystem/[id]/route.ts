@@ -92,3 +92,26 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     return NextResponse.json({ success: false, error: "Failed to fetch data" }, { status: 500 });
   }
 }
+
+// Method for unlink the tester
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+  const { id } = params;
+  await dbConnect();
+
+  const objectId = new mongoose.Types.ObjectId(id);
+
+  try {
+    const doc = await TestPssSystem.updateOne({ _id: objectId }, { $set: { ASSIGNED: "" } }, { new: true });
+
+    console.log(doc);
+
+    // if (!resultado.acknowledged || resultado.modifiedCount === 0) {
+    //   return NextResponse.json({ message: "Couldn't update" }, { status: 400 });
+    // }
+
+    return NextResponse.json({ message: "SR unlinked successfully" });
+  } catch (error) {
+    console.error("Error to update field:", error);
+    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
+  }
+}
