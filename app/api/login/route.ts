@@ -1,40 +1,47 @@
 import { NextResponse, NextRequest } from "next/server";
 import type { NextApiRequest, NextApiResponse } from "next";
-import dbConnect from "@/lib/mongodb";
-import Usuario from "@/models/vtts-user-model";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { useAuthStore } from "@/helpers/auth-store";
+import { PrismaClient } from "@prisma/client";
+import { user } from "@nextui-org/react";
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET || "ultrasecret";
+const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest, res: NextApiResponse) {
   const { user_name, password } = await req.json();
-  await dbConnect();
 
   // Buscar el usuario en la base de datos
-  const user = await Usuario.findOne({ user_name });
+  const user = await prisma.vTTS_USER.findUnique({
+    where: {
+      ASSIGNED: user_name,
+    },
+  });
 
+  console.log(user);
   if (!user) {
     return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
   }
 
   // Comparar la contraseña proporcionada con la almacenada en la base de datos
-  const isMatch = await bcrypt.compare(password, user.password);
+  const isMatch = await bcrypt.compare(password, user.PASSWORD);
+  console.log(user.PASSWORD);
 
   if (!isMatch) {
     return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
   }
 
   // Si las credenciales son correctas, crear el token JWT
-  const payload = { username: user.user_name, id: user._id };
+  const payload = { username: user.USER_NAME, ASSIGNED: user.ASSIGNED };
 
   const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: "96h" });
 
   // Configurar la cookie con el token
-  const response = NextResponse.json({ message: "Login successful", token: token, user: user.assigned });
+  const response = NextResponse.json({ message: "Login successful", token: token, user: user.ASSIGNED });
   response.headers.set("Set-Cookie", `userAuth=${token}; HttpOnly; Path=/; Max-Age=3600; Secure; SameSite=Strict`);
 
+  //return response;
   return response;
 }
 

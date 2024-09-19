@@ -12,7 +12,8 @@
 /.next/
 /out/
 
-
+# sql
+/sql
 
 # production
 /build
