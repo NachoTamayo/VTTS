@@ -68,7 +68,6 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
       );
 
       await response.json().then((data) => {
-        console.log(data);
         handleRefresh();
       });
     } catch (error) {
@@ -78,7 +77,26 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
 
   const handleEdit = () => {};
 
-  const handleBookmark = () => {};
+  const handleBookmark = async () => {
+    try {
+      const response = await fetch(
+        `/api/v1/testPssSystem/${APP}/${RELEASE_VERSION}/${STAGE}/${serviceRequest.SR_NUMBER}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ASSIGNED: window.localStorage.getItem("assigned") }),
+        }
+      );
+
+      await response.json().then((data) => {
+        handleRefresh();
+      });
+    } catch (error) {
+      console.error("Error to bookmark service request:", error);
+    }
+  };
   return (
     <div>
       <Card className="mx-4 my-2">
