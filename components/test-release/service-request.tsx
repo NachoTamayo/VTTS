@@ -13,6 +13,7 @@ import {
 import { ServiceRequestProps } from "@/helpers/interfaces";
 import { formatDate } from "@/helpers/js-utils";
 import { ViewModal } from "@/components/modals/view-modal";
+import { useState, useEffect } from "react";
 import {
   Calendar03Icon,
   SourceCodeSquareIcon,
@@ -45,7 +46,12 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
   const username = localStorage.getItem("assigned");
 
   const handleView = () => {
-    onView(_id);
+    onView({
+      SR_NUMBER: serviceRequest.SR_NUMBER,
+      APP: APP,
+      RELEASE_VERSION: RELEASE_VERSION,
+      STAGE: STAGE,
+    });
   };
 
   const handleUnlink = async () => {

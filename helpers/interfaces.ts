@@ -12,7 +12,7 @@ export interface ServiceRequestProps {
   APP: string;
   DATE_MODIFICATION: string;
   attachedInfo: AttachedInfo[];
-  onView: (id: string) => void;
+  onView: (primKey: ServiceRequestPrimaryKey) => void;
   onOpen: () => void;
 }
 
@@ -45,13 +45,20 @@ export interface AttachedInfo {
   _id: string;
 }
 
+export interface ServiceRequestPrimaryKey {
+  APP: string;
+  RELEASE_VERSION: string;
+  SR_NUMBER: string;
+  STAGE: string;
+}
+
 export interface ViewModalProps {
   isOpen: boolean;
   onOpen?: () => void;
   onClose?: () => void;
   onOpenChange?: (isOpen: boolean) => void;
-  onView?: (id: string) => void;
-  id?: string;
+  onView?: (primKey: ServiceRequestPrimaryKey) => void;
+  primKey: ServiceRequestPrimaryKey;
 }
 
 export interface ViewModal {
@@ -76,16 +83,16 @@ export interface AttachedFile {
 
 export interface ModalViewContentProps {
   _id: string;
-  srNumber: SRNumber[];
+  serviceRequest: SRNumber;
   RELEASE_VERSION: string;
   SR_TYPE: string;
   RELEASE_NOTE: string;
   DATE_TEST: string;
-  status: Status[];
+  testStatus: Status;
   ASSIGNED: string;
   STAGE: string;
   COMMENTS: string;
   APP: string;
   DATE_MODIFICATION: string;
-  attachedInfo: AttachedInfo[];
+  attachedInfo: AttachedInfo;
 }

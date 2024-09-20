@@ -2,7 +2,7 @@
 
 import { ServiceRequest } from "@/components/test-release/service-request";
 import { useEffect, useState } from "react";
-import { ServiceRequestProps } from "@/helpers/interfaces";
+import { ServiceRequestProps, ServiceRequestPrimaryKey } from "@/helpers/interfaces";
 import { ServiceRequestSkeleton } from "./service-request-skeleton";
 import { ViewModal } from "@/components/modals/view-modal";
 import { useDisclosure } from "@nextui-org/react";
@@ -11,6 +11,7 @@ export const TestRelease = () => {
   const [serviceRequests, setServiceRequests] = useState([]);
   const { isOpen, onOpenChange, onOpen, onClose } = useDisclosure();
   const [id, setId] = useState("");
+  const [primaryKey, setPrimaryKey] = useState({ SR_NUMBER: "", APP: "", RELEASE_VERSION: "", STAGE: "" });
 
   useEffect(() => {
     fetchServiceRequests();
@@ -31,9 +32,9 @@ export const TestRelease = () => {
       console.error("Error fetching service requests:", error);
     }
   };
-  const onView = async (id: string) => {
+  const onView = async (primKey: ServiceRequestPrimaryKey) => {
     onOpen();
-    setId(id);
+    setPrimaryKey(primKey);
   };
 
   return (
@@ -47,7 +48,7 @@ export const TestRelease = () => {
         onOpen={onOpen}
         onOpenChange={onOpenChange}
         onView={onView}
-        id={id}
+        primKey={primaryKey}
       />
     </div>
   );

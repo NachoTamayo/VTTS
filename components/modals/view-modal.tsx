@@ -21,20 +21,25 @@ import ViewModalSkeleton from "./view-modal-skeleton";
 
 export const ViewModal: React.FC<ViewModalProps> = (props) => {
   const [content, setContent] = useState<ModalViewContentProps>();
+
   useEffect(() => {
-    if (props.isOpen && props.id) fetchInfo();
+    if (props.isOpen && props.primKey) fetchInfo();
   }, [props.isOpen]);
 
   const fetchInfo = async () => {
     try {
-      const response = await fetch(`/api/v1/testPssSystem/${props.id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `/api/v1/testPssSystem/${props.primKey.APP}/${props.primKey.RELEASE_VERSION}/${props.primKey.STAGE}/${props.primKey.SR_NUMBER}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       await response.json().then((data) => {
-        setContent(data[0]);
+        console.log(data);
+        setContent(data);
       });
     } catch (error) {
       console.error("Error fetching service requests:", error);
@@ -54,8 +59,8 @@ export const ViewModal: React.FC<ViewModalProps> = (props) => {
             <>
               <ModalHeader className="flex flex-col gap-1">
                 <div>
-                  {content?.srNumber[0].SR_NUMBER}
-                  <div className="text-small text-default-500">{content?.srNumber[0].DESCRIPTION}</div>
+                  {content?.serviceRequest.SR_NUMBER}
+                  <div className="text-small text-default-500">{content?.serviceRequest.DESCRIPTION}</div>
                 </div>
                 <Divider />
               </ModalHeader>
@@ -108,20 +113,24 @@ export const ViewModal: React.FC<ViewModalProps> = (props) => {
                       isReadOnly
                       type="text"
                       label="Test Status"
-                      color={content != null && content.status[0].IS_FAILED ? "danger" : "success"}
-                      value={content != null ? content.status[0].DESC_STATUS : ""}
+                      color={
+                        content != null && content.testStatus && content.testStatus.IS_FAILED != "N"
+                          ? "danger"
+                          : "success"
+                      }
+                      value={content != null && content.testStatus ? content.testStatus.DESC_STATUS : ""}
                       className="max-w-48"
                     />
                   </div>
                 </div>
                 <div className="flex w-full flex-wrap md:flex-nowrap items-end mb-6 md:mb-0 gap-4">
                   <div className="flex flex-col max-w-92">
-                    {content != null && content.attachedInfo[0] ? (
+                    {content != null && content.attachedInfo ? (
                       <>
                         <div className="bg-gray-100 border border-gray-100 rounded-lg p-4 text-gray-800">
                           <p className="w-full mb-2 text-default-500 text-sm">Attached</p>
                           <Tooltip content="Download" color="primary">
-                            <AttachedDocument file={content.attachedInfo[0].FILE_NAME} />
+                            <AttachedDocument file={content.attachedInfo.FILE_NAME} />
                           </Tooltip>
                         </div>
                       </>
