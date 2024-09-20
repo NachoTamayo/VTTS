@@ -7,22 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model FORECAST_STATUS {
   STATUS      String  @id @unique(map: "PK_FORECAST_STATUS") @db.VarChar(10)
   DESCRIPTION String? @db.VarChar(64)
-
-  @@ignore
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model FORECAST_STATUS_RULES {
   STATUS_FROM String @db.VarChar(10)
   STATUS_TO   String @db.VarChar(10)
 
   @@id([STATUS_FROM, STATUS_TO])
   @@unique([STATUS_FROM, STATUS_TO], map: "FORECAST_STATUS_PK")
-  @@ignore
 }
 
 model RELATED_SR {
@@ -34,7 +29,6 @@ model RELATED_SR {
   @@unique([SR_NUMBER_1, SR_NUMBER_2], map: "Key2")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model RELEASE_VERSION {
   APP             String   @db.VarChar(8)
   RELEASE_VERSION String   @db.VarChar(32)
@@ -44,10 +38,8 @@ model RELEASE_VERSION {
   @@id([APP, RELEASE_VERSION, STAGE])
   @@unique([APP, RELEASE_VERSION, STAGE], map: "PK_RELEASE_VERSION")
   @@index([RELEASE_VERSION, APP], map: "IX_Relationship16")
-  @@ignore
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model RESOLUTION {
   SR_NUMBER       String    @db.VarChar(30)
   ASSIGNED        String    @db.VarChar(3)
@@ -57,25 +49,22 @@ model RESOLUTION {
   @@id([SR_NUMBER, ASSIGNED])
   @@index([SR_NUMBER], map: "IX_Relationship21")
   @@index([ASSIGNED], map: "IX_Relationship22")
-  @@ignore
 }
 
 model SERVICE_REQUEST {
-  SR_TYPE        String? @db.VarChar(8)
-  SR_NUMBER      String  @id @unique(map: "PK_SERVICE_REQUEST_BCK") @db.VarChar(30)
-  DESCRIPTION    String? @db.VarChar(1024)
-  EXTERNAL_LINK  String? @db.VarChar(1024)
-  DATA_TEST_PATH String? @db.VarChar(1024)
-  LAST_TESTER    String? @db.VarChar(3)
-  STATUS_SR      String? @db.VarChar(15)
+  SR_TYPE        String?           @db.VarChar(8)
+  SR_NUMBER      String            @id @unique(map: "PK_SERVICE_REQUEST_BCK") @db.VarChar(30)
+  DESCRIPTION    String?           @db.VarChar(1024)
+  EXTERNAL_LINK  String?           @db.VarChar(1024)
+  DATA_TEST_PATH String?           @db.VarChar(1024)
+  LAST_TESTER    String?           @db.VarChar(3)
+  STATUS_SR      String?           @db.VarChar(15)
+  testPssSystem  TEST_PSS_SYSTEM[]
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model SR_TYPE {
   SR_TYPE     String  @id @unique(map: "SR_TYPE_PK") @db.VarChar(8)
   DESCRIPTION String? @db.VarChar(256)
-
-  @@ignore
 }
 
 model SYSTEM_VERSION {
@@ -88,7 +77,6 @@ model SYSTEM_VERSION {
   @@index([APP], map: "IX_Relationship13")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model TEST_ATTACHED_INFO {
   APP             String  @db.VarChar(8)
   RELEASE_VERSION String  @db.VarChar(32)
@@ -96,17 +84,18 @@ model TEST_ATTACHED_INFO {
   FILE_NAME       String? @db.VarChar(128)
   STAGE           String  @db.VarChar(30)
 
+  // Relación inversa hacia TEST_PSS_SYSTEM
+  testPssSystem TEST_PSS_SYSTEM[]
+
   @@id([APP, RELEASE_VERSION, SR_NUMBER, STAGE])
   @@unique([APP, RELEASE_VERSION, SR_NUMBER, STAGE], map: "PK_TEST_ATTACHED_INFO")
-  @@ignore
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model TEST_PSS_SYSTEM {
   SR_TYPE           String?   @db.VarChar(8)
   SR_NUMBER         String    @db.VarChar(30)
-  ASSIGNED          String    @db.VarChar(3)
-  STATUS            String    @db.VarChar(15)
+  ASSIGNED          String?   @db.VarChar(3)
+  STATUS            String?   @db.VarChar(15)
   DATE_TEST         DateTime? @db.Date
   COMMENTS          String?   @db.LongText
   DATE_MODIFICATION DateTime? @db.Date
@@ -116,19 +105,25 @@ model TEST_PSS_SYSTEM {
   RELEASE_VERSION   String    @db.VarChar(32)
   STAGE             String    @db.VarChar(30)
 
-  @@id([SR_NUMBER, ASSIGNED, STATUS, APP, RELEASE_VERSION, STAGE])
+  serviceRequest SERVICE_REQUEST @relation(fields: [SR_NUMBER], references: [SR_NUMBER])
+  testStatus     TEST_STATUS?    @relation(fields: [STATUS], references: [ID_STATUS])
+
+  // Relación con TEST_ATTACHED_INFO
+  attached TEST_ATTACHED_INFO? @relation(fields: [APP, RELEASE_VERSION, SR_NUMBER, STAGE], references: [APP, RELEASE_VERSION, SR_NUMBER, STAGE])
+
+  @@id([SR_NUMBER, APP, RELEASE_VERSION, STAGE])
   @@unique([APP, RELEASE_VERSION, SR_NUMBER, STAGE], map: "PK_TEST_PSS_SYSTEM")
   @@index([STATUS], map: "IX_Relationship11")
   @@index([ASSIGNED], map: "IX_Relationship12")
   @@index([SR_NUMBER], map: "SR_NUMBER_IDX")
-  @@ignore
 }
 
 model TEST_STATUS {
-  ID_STATUS     String  @unique(map: "TEST_STATUS_PK") @db.VarChar(15)
-  DESC_STATUS   String  @db.VarChar(30)
-  IS_FAILED     String? @db.VarChar(1)
-  DISPLAY_ORDER Decimal @unique(map: "UK_STATUS_DISPLAY_ORDER") @db.Decimal(2, 0)
+  ID_STATUS     String            @unique(map: "TEST_STATUS_PK") @db.VarChar(15)
+  DESC_STATUS   String            @db.VarChar(30)
+  IS_FAILED     String?           @db.VarChar(1)
+  DISPLAY_ORDER Decimal           @unique(map: "UK_STATUS_DISPLAY_ORDER") @db.Decimal(2, 0)
+  testPssSystem TEST_PSS_SYSTEM[]
 
   @@id([ID_STATUS, DISPLAY_ORDER])
 }
@@ -146,17 +141,13 @@ model VERSION_FORECAST {
   @@index([ASSIGNED], map: "IX_Relationship20")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model VTTS_SYSTEM {
   APP         String  @id @unique(map: "SYSTEM_PK") @db.VarChar(8)
   DESCRIPTION String? @db.VarChar(256)
   IE_VERSION  String? @db.VarChar(2)
   JRE_VERSION String? @db.VarChar(8)
-
-  @@ignore
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model VTTS_USER {
   ASSIGNED          String    @id @unique(map: "VTTS_USER_PK") @db.VarChar(3)
   USER_NAME         String    @db.VarChar(8)
@@ -169,6 +160,4 @@ model VTTS_USER {
   PROFILE           String?   @db.VarChar(7)
   SR_FILTER1        String?   @db.VarChar(256)
   SR_FILTER2        String?   @db.VarChar(256)
-
-  @@ignore
 }

@@ -1,11 +1,11 @@
 export interface ServiceRequestProps {
   _id: string;
-  srNumber: SRNumber[];
+  serviceRequest: SRNumber;
   RELEASE_VERSION: string;
   SR_TYPE: string;
   RELEASE_NOTE: string;
   DATE_TEST: string;
-  status: Status[];
+  testStatus: Status;
   ASSIGNED: string;
   STAGE: string;
   COMMENTS: string;
@@ -20,7 +20,7 @@ export interface Status {
   _id: string;
   ID_STATUS: string;
   DESC_STATUS: string;
-  IS_FAILED: boolean;
+  IS_FAILED: string;
   DISPLAY_ORDER: number;
 }
 

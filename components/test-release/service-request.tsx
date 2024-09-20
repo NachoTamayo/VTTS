@@ -29,12 +29,12 @@ import {
 export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, ...props }) => {
   const {
     _id,
-    srNumber,
+    serviceRequest,
     RELEASE_VERSION,
     SR_TYPE,
     RELEASE_NOTE,
     DATE_TEST,
-    status,
+    testStatus,
     ASSIGNED,
     STAGE,
     COMMENTS,
@@ -44,28 +44,25 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
   } = props;
   const username = localStorage.getItem("assigned");
 
-  const fetchInfo = async () => {
-    try {
-      const response = await fetch(`/api/v1/testPssSystem/${_id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      await response.json().then((data) => {
-        console.log(data[0]);
-      });
-    } catch (error) {
-      console.error("Error fetching service requests:", error);
-    }
-  };
-
   const handleView = () => {
     onView(_id);
   };
 
-  const handleUnlink = () => {
-    console.log(_id);
+  const handleUnlink = async () => {
+    try {
+      const response = await fetch(`/api/v1/testPssSystem/${_id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      await response.json().then((data) => {
+        console.log(data);
+      });
+    } catch (error) {
+      console.error("Error to unlink tester:", error);
+    }
   };
 
   const handleEdit = () => {};
@@ -77,11 +74,14 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
         <CardHeader className="flex gap-3">
           <div className="flex flex-col min-w-[40%]">
             <div className="flex text-md">
-              {srNumber[0].SR_NUMBER}
+              {serviceRequest.SR_NUMBER}
               <Spacer className="flex" x={4} />
               <ViewIcon onClick={handleView} className="cursor-pointer mt-0.5" width={18} height={18} />
-              {ASSIGNED === "" ? (
-                <BookmarkIcon onClick={handleBookmark} className="cursor-pointer mt-0.5" width={18} height={18} />
+              {ASSIGNED === null ? (
+                <>
+                  <Spacer x={2} />
+                  <BookmarkIcon onClick={handleBookmark} className="cursor-pointer mt-0.5" width={18} height={18} />
+                </>
               ) : null}
               {ASSIGNED === username ? (
                 <>
@@ -93,7 +93,7 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
               ) : null}
             </div>
 
-            <div className="text-small text-default-500">{srNumber[0].DESCRIPTION}</div>
+            <div className="text-small text-default-500">{serviceRequest.DESCRIPTION}</div>
           </div>
           <div className="flex justify-end w-full">
             <div className="flex items-center space-x-2">
@@ -128,9 +128,15 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
             </div>
             <Spacer x={4} />
             <div className="flex items-center space-x-2">
-              <Chip variant="flat" color={status[0] && status[0].IS_FAILED ? "danger" : "success"}>
-                {status[0] && status[0].DESC_STATUS}{" "}
-              </Chip>
+              {testStatus != null ? (
+                <Chip variant="flat" color={testStatus.IS_FAILED != "N" ? "danger" : "success"}>
+                  {testStatus.DESC_STATUS}{" "}
+                </Chip>
+              ) : (
+                <Chip variant="flat" color={"default"}>
+                  No Status{" "}
+                </Chip>
+              )}
             </div>
             <Spacer x={4} />
             <div className="flex items-center space-x-2">
@@ -138,7 +144,7 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
             </div>
             <Spacer x={4} />
             <div className="flex items-center space-x-2">
-              <Badge color="default" variant="faded" content={attachedInfo.length}>
+              <Badge color="default" variant="faded" content={attachedInfo != null ? "1" : "0"}>
                 <Clip />
               </Badge>
             </div>

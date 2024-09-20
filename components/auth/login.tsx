@@ -6,13 +6,12 @@ import { Button, Input } from "@nextui-org/react";
 import { Formik } from "formik";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
-import Cookies from "universal-cookie";
 
 export const Login = () => {
   const [error, setError] = useState("");
   const router = useRouter();
   const initialValues: LoginFormType = {
-    user_name: "u5003006",
+    user_name: "ITL",
     password: "Nacho369852",
   };
 
