@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextApiRequest } from "next";
 import type { NextRequest } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { get } from "http";
 
 const prisma = new PrismaClient();
 
@@ -11,13 +12,17 @@ type Data = {
   error?: string;
 };
 
-export async function GET(req: NextRequest, { params }: { params: { params: string[] } }) {
-  const paramMap = {
-    APP: params.params[0],
-    RELEASE_VERSION: params.params[1],
-    STAGE: params.params[2],
-    SR_NUMBER: params.params[3],
+function getParams(params: string[]) {
+  return {
+    APP: params[0],
+    RELEASE_VERSION: params[1],
+    STAGE: params[2],
+    SR_NUMBER: params[3],
   };
+}
+
+export async function GET(req: NextRequest, { params }: { params: { params: string[] } }) {
+  const paramMap = getParams(params.params);
   try {
     const result = await prisma.tEST_PSS_SYSTEM.findUniqueOrThrow({
       where: {
@@ -40,18 +45,24 @@ export async function GET(req: NextRequest, { params }: { params: { params: stri
   }
 }
 
-// Method for unlink the tester
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
-  await dbConnect();
-
-  const objectId = new mongoose.Types.ObjectId(id);
-
+export async function PATCH(req: NextRequest, { params }: { params: { params: string[] } }) {
+  const paramMap = getParams(params.params);
+  const { ASSIGNED } = await req.json();
   try {
-    const doc = await TestPssSystem.updateOne({ _id: objectId }, { $set: { ASSIGNED: "" } }, { new: true });
-
-    console.log(doc);
-
+    const resultado = await prisma.tEST_PSS_SYSTEM.update({
+      where: {
+        SR_NUMBER_APP_RELEASE_VERSION_STAGE: {
+          APP: paramMap.APP,
+          SR_NUMBER: paramMap.SR_NUMBER,
+          RELEASE_VERSION: paramMap.RELEASE_VERSION,
+          STAGE: paramMap.STAGE,
+        },
+      }, // O el identificador que estés usando
+      data: {
+        ASSIGNED: ASSIGNED, // Campo que deseas actualizar
+      },
+    });
+    console.log(resultado);
     // if (!resultado.acknowledged || resultado.modifiedCount === 0) {
     //   return NextResponse.json({ message: "Couldn't update" }, { status: 400 });
     // }

@@ -12,10 +12,22 @@ export const TestRelease = () => {
   const { isOpen, onOpenChange, onOpen, onClose } = useDisclosure();
   const [id, setId] = useState("");
   const [primaryKey, setPrimaryKey] = useState({ SR_NUMBER: "", APP: "", RELEASE_VERSION: "", STAGE: "" });
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     fetchServiceRequests();
   }, []);
+
+  useEffect(() => {
+    if (refresh) {
+      fetchServiceRequests();
+      setRefresh(false);
+    }
+  }, [refresh]);
+
+  const handleRefresh = () => {
+    setRefresh(true);
+  };
 
   const fetchServiceRequests = async () => {
     try {
@@ -40,7 +52,7 @@ export const TestRelease = () => {
   return (
     <div>
       {serviceRequests.map((serviceRequest: ServiceRequestProps, index: number) => (
-        <ServiceRequest key={index} {...serviceRequest} onOpen={onOpen} onView={onView} />
+        <ServiceRequest key={index} {...serviceRequest} onOpen={onOpen} onView={onView} handleRefresh={handleRefresh} />
       ))}
       <ViewModal
         isOpen={isOpen}

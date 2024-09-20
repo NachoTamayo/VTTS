@@ -14,6 +14,7 @@ export interface ServiceRequestProps {
   attachedInfo: AttachedInfo[];
   onView: (primKey: ServiceRequestPrimaryKey) => void;
   onOpen: () => void;
+  handleRefresh: () => void;
 }
 
 export interface Status {

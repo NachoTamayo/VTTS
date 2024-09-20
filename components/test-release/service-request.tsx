@@ -27,7 +27,7 @@ import {
   BookmarkIcon,
   PinCode,
 } from "../icons/icons";
-export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, ...props }) => {
+export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, handleRefresh, ...props }) => {
   const {
     _id,
     serviceRequest,
@@ -56,15 +56,20 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
 
   const handleUnlink = async () => {
     try {
-      const response = await fetch(`/api/v1/testPssSystem/${_id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `/api/v1/testPssSystem/${APP}/${RELEASE_VERSION}/${STAGE}/${serviceRequest.SR_NUMBER}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ASSIGNED: null }),
+        }
+      );
 
       await response.json().then((data) => {
         console.log(data);
+        handleRefresh();
       });
     } catch (error) {
       console.error("Error to unlink tester:", error);
