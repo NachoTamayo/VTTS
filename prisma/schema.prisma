@@ -85,7 +85,7 @@ model TEST_ATTACHED_INFO {
   STAGE           String  @db.VarChar(30)
 
   // Relación inversa hacia TEST_PSS_SYSTEM
-  testPssSystem TEST_PSS_SYSTEM[]
+  testPssSystem   TEST_PSS_SYSTEM? @relation(fields: [APP, RELEASE_VERSION, SR_NUMBER, STAGE], references: [APP, RELEASE_VERSION, SR_NUMBER, STAGE])
 
   @@id([APP, RELEASE_VERSION, SR_NUMBER, STAGE])
   @@unique([APP, RELEASE_VERSION, SR_NUMBER, STAGE], map: "PK_TEST_ATTACHED_INFO")
@@ -109,7 +109,7 @@ model TEST_PSS_SYSTEM {
   testStatus     TEST_STATUS?    @relation(fields: [STATUS], references: [ID_STATUS])
 
   // Relación con TEST_ATTACHED_INFO
-  attached TEST_ATTACHED_INFO? @relation(fields: [APP, RELEASE_VERSION, SR_NUMBER, STAGE], references: [APP, RELEASE_VERSION, SR_NUMBER, STAGE])
+  attached TEST_ATTACHED_INFO?
 
   @@id([SR_NUMBER, APP, RELEASE_VERSION, STAGE])
   @@unique([APP, RELEASE_VERSION, SR_NUMBER, STAGE], map: "PK_TEST_PSS_SYSTEM")
