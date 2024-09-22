@@ -1,4 +1,4 @@
-import { DocIcon, XLSIcon, ImgIcon, PDFIcon, ViewIcon } from "../icons/icons";
+import { DocIcon, XLSIcon, ImgIcon, PDFIcon, DownloadIcon } from "../icons/icons";
 import { useEffect, useState } from "react";
 import { Spacer } from "@nextui-org/react";
 
@@ -45,7 +45,7 @@ export const AttachedDocument: React.FC<AttachedDocumentProps> = ({ file }) => {
       <Spacer />
       {file} <Spacer x={2} />
       {
-        <ViewIcon
+        <DownloadIcon
           className="cursor-pointer"
           onClick={() => {
             handleDownload(file);

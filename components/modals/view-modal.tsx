@@ -18,9 +18,13 @@ import { Clip } from "../icons/icons";
 import { Comments } from "./comments";
 import { AttachedDocument } from "./attached";
 import ViewModalSkeleton from "./view-modal-skeleton";
+import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 
 export const ViewModal: React.FC<ViewModalProps> = (props) => {
   const [content, setContent] = useState<ModalViewContentProps>();
+  const docs = [
+    { uri: `/documents/${content?.attached.FILE_NAME}` }, // Ruta al archivo en la carpeta /public
+  ];
 
   useEffect(() => {
     if (props.isOpen && props.primKey) fetchInfo();
@@ -114,23 +118,25 @@ export const ViewModal: React.FC<ViewModalProps> = (props) => {
                       type="text"
                       label="Test Status"
                       color={
-                        content != null && content.testStatus && content.testStatus.IS_FAILED != "N"
-                          ? "danger"
-                          : "success"
+                        content != null && content.testStatus
+                          ? content.testStatus.IS_FAILED != "N"
+                            ? "danger"
+                            : "success"
+                          : "default"
                       }
-                      value={content != null && content.testStatus ? content.testStatus.DESC_STATUS : ""}
+                      value={content != null && content.testStatus ? content.testStatus.DESC_STATUS : "No Status"}
                       className="max-w-48"
                     />
                   </div>
                 </div>
                 <div className="flex w-full flex-wrap md:flex-nowrap items-end mb-6 md:mb-0 gap-4">
                   <div className="flex flex-col max-w-92">
-                    {content != null && content.attachedInfo ? (
+                    {content != null && content.attached ? (
                       <>
                         <div className="bg-gray-100 border border-gray-100 rounded-lg p-4 text-gray-800">
                           <p className="w-full mb-2 text-default-500 text-sm">Attached</p>
                           <Tooltip content="Download" color="primary">
-                            <AttachedDocument file={content.attachedInfo.FILE_NAME} />
+                            <AttachedDocument file={content.attached.FILE_NAME} />
                           </Tooltip>
                         </div>
                       </>

@@ -41,7 +41,7 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
     COMMENTS,
     APP,
     DATE_MODIFICATION,
-    attachedInfo,
+    attached,
   } = props;
   const username = localStorage.getItem("assigned");
 
@@ -173,7 +173,7 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
             </div>
             <Spacer x={4} />
             <div className="flex items-center space-x-2">
-              <Badge color="default" variant="faded" content={attachedInfo != null ? "1" : "0"}>
+              <Badge color="default" variant="faded" content={attached != null ? "1" : "0"}>
                 <Clip />
               </Badge>
             </div>

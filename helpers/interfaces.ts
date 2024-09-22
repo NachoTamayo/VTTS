@@ -11,7 +11,7 @@ export interface ServiceRequestProps {
   COMMENTS: string;
   APP: string;
   DATE_MODIFICATION: string;
-  attachedInfo: AttachedInfo[];
+  attached: AttachedInfo[];
   onView: (primKey: ServiceRequestPrimaryKey) => void;
   onOpen: () => void;
   handleRefresh: () => void;
@@ -70,7 +70,7 @@ export interface ViewModal {
   comments: string;
   assigned: string;
   status: string;
-  attachedFiles: AttachedFile[];
+  attached: AttachedFile;
   trellolink: string;
   externalLink: string;
   dateTest: string;
@@ -95,5 +95,5 @@ export interface ModalViewContentProps {
   COMMENTS: string;
   APP: string;
   DATE_MODIFICATION: string;
-  attachedInfo: AttachedInfo;
+  attached: AttachedInfo;
 }
