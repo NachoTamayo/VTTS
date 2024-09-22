@@ -25,6 +25,7 @@
     "prisma": "^5.19.1",
     "react": "18.2.0",
     "react-apexcharts": "^1.4.0",
+    "react-doc-viewer": "^0.1.14",
     "react-dom": "18.2.0",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
