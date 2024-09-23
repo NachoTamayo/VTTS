@@ -10,6 +10,9 @@ import {
   Input,
   ScrollShadow,
   Tooltip,
+  Card,
+  CardBody,
+  CardHeader,
 } from "@nextui-org/react";
 import { ViewModalProps, ModalViewContentProps } from "@/helpers/interfaces";
 import { useEffect, useState } from "react";
@@ -22,9 +25,6 @@ import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 
 export const ViewModal: React.FC<ViewModalProps> = (props) => {
   const [content, setContent] = useState<ModalViewContentProps>();
-  const docs = [
-    { uri: `/documents/${content?.attached.FILE_NAME}` }, // Ruta al archivo en la carpeta /public
-  ];
 
   useEffect(() => {
     if (props.isOpen && props.primKey) fetchInfo();
@@ -133,12 +133,16 @@ export const ViewModal: React.FC<ViewModalProps> = (props) => {
                   <div className="flex flex-col max-w-92">
                     {content != null && content.attached ? (
                       <>
-                        <div className="bg-gray-100 border border-gray-100 rounded-lg p-4 text-gray-800">
-                          <p className="w-full mb-2 text-default-500 text-sm">Attached</p>
-                          <Tooltip content="Download" color="primary">
-                            <AttachedDocument file={content.attached.FILE_NAME} />
-                          </Tooltip>
-                        </div>
+                        <Card shadow="sm">
+                          <CardHeader>
+                            <p className="w-full mb-2 text-default-500 text-sm">Attached</p>
+                          </CardHeader>
+                          <CardBody>
+                            <Tooltip content="Download" color="primary">
+                              <AttachedDocument file={content.attached.FILE_NAME} />
+                            </Tooltip>
+                          </CardBody>
+                        </Card>
                       </>
                     ) : (
                       ""
@@ -148,10 +152,22 @@ export const ViewModal: React.FC<ViewModalProps> = (props) => {
 
                 <div className="flex w-full flex-wrap md:flex-nowrap items-end mb-6 md:mb-0 gap-4">
                   <div className="flex flex-col w-full">
-                    <h5 className="w-full mb-2 text-default-500">Comments</h5>
-                    <ScrollShadow className="w-full h-fit max-h-92">
-                      {content != null ? <Comments comment={content.COMMENTS} /> : ""}
-                    </ScrollShadow>
+                    {/* {content != null ? <Comments comment={content.COMMENTS} /> : ""} */}
+                    {content != null ? (
+                      <Card shadow="sm" allowTextSelectionOnPress={true}>
+                        <CardHeader>
+                          {" "}
+                          <p className="text-small text-default-500">Comments</p>
+                        </CardHeader>
+                        <CardBody>
+                          <ScrollShadow className="w-full h-fit max-h-92">
+                            <div dangerouslySetInnerHTML={{ __html: content.COMMENTS || "" }}></div>
+                          </ScrollShadow>
+                        </CardBody>
+                      </Card>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               </ModalBody>
