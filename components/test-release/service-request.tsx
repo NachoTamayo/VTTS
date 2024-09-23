@@ -12,8 +12,7 @@ import {
 } from "@nextui-org/react";
 import { ServiceRequestProps } from "@/helpers/interfaces";
 import { formatDate } from "@/helpers/js-utils";
-import { ViewModal } from "@/components/modals/view-modal";
-import { useState, useEffect } from "react";
+import { useAuthStore } from "@/helpers/auth-store";
 import {
   Calendar03Icon,
   SourceCodeSquareIcon,
@@ -26,6 +25,7 @@ import {
   UnlinkIcon,
   BookmarkIcon,
   PinCode,
+  ExternalLinkIcon,
 } from "../icons/icons";
 export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, handleRefresh, ...props }) => {
   const {
@@ -44,6 +44,7 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
     attached,
   } = props;
   const username = localStorage.getItem("assigned");
+  const { showDescription } = useAuthStore();
 
   const handleView = () => {
     onView({
@@ -101,7 +102,7 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
     <div>
       <Card className="mx-4 my-2">
         <CardHeader className="flex gap-3">
-          <div className="flex flex-col min-w-[40%]">
+          <div className="flex flex-col min-w-[37%]">
             <div className="flex text-md">
               {serviceRequest.SR_NUMBER}
               <Spacer className="flex" x={4} />
@@ -135,13 +136,13 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
             <div className="flex items-center space-x-2">
               <PinCode />
               <Tooltip content="Stage" color="primary">
-                <p>{STAGE}</p>
+                <p className="min-w-7">{STAGE}</p>
               </Tooltip>
             </div>
             <Spacer x={4} />
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 ">
               <CloudServerIcon />
-              <p>{APP}</p>
+              <p className="min-w-16">{APP}</p>
             </div>
             <Spacer x={4} />
             <div className="flex items-center space-x-2">
@@ -153,16 +154,19 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
             <Spacer x={4} />
             <div className="flex items-center space-x-2">
               <Calendar03Icon />
-              <p>{formatDate(DATE_TEST)}</p>
+              <p className="min-w-24">{formatDate(DATE_TEST)}</p>
             </div>
             <Spacer x={4} />
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 ">
               {testStatus != null ? (
-                <Chip variant="flat" color={testStatus.IS_FAILED != "N" ? "danger" : "success"}>
+                <Chip
+                  variant="flat"
+                  className="min-w-36 text-center"
+                  color={testStatus.IS_FAILED != "N" ? "danger" : "success"}>
                   {testStatus.DESC_STATUS}{" "}
                 </Chip>
               ) : (
-                <Chip variant="flat" color={"default"}>
+                <Chip variant="flat" color={"default"} className="min-w-36 text-center">
                   No Status{" "}
                 </Chip>
               )}
@@ -178,15 +182,23 @@ export const ServiceRequest: React.FC<ServiceRequestProps> = ({ onView, onOpen, 
               </Badge>
             </div>
             <Spacer x={4} />
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 cursor-pointer">
               <TrelloIcon />
+            </div>
+            <Spacer x={4} />
+            <div className="flex items-center space-x-2 cursor-pointer">
+              <ExternalLinkIcon />
             </div>
           </div>
         </CardHeader>
-        <Divider />
-        <CardBody>
-          <p className="text-small text-default-500">{COMMENTS}</p>
-        </CardBody>
+        {showDescription ? (
+          <>
+            <Divider />
+            <CardBody>
+              <p className="text-small text-default-500">{COMMENTS}</p>
+            </CardBody>
+          </>
+        ) : null}
       </Card>
     </div>
   );

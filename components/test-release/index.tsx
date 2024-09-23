@@ -6,6 +6,7 @@ import { ServiceRequestProps, ServiceRequestPrimaryKey } from "@/helpers/interfa
 import { ServiceRequestSkeleton } from "./service-request-skeleton";
 import { ViewModal } from "@/components/modals/view-modal";
 import { useDisclosure } from "@nextui-org/react";
+import { useAuthStore } from "@/helpers/auth-store";
 
 export const TestRelease = () => {
   const [serviceRequests, setServiceRequests] = useState([]);
@@ -13,9 +14,11 @@ export const TestRelease = () => {
   const [id, setId] = useState("");
   const [primaryKey, setPrimaryKey] = useState({ SR_NUMBER: "", APP: "", RELEASE_VERSION: "", STAGE: "" });
   const [refresh, setRefresh] = useState(false);
+  const { setCurrentWindow } = useAuthStore();
 
   useEffect(() => {
     fetchServiceRequests();
+    setCurrentWindow("test-release");
   }, []);
 
   useEffect(() => {
