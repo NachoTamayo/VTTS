@@ -7,157 +7,206 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model FORECAST_STATUS {
-  STATUS      String  @id @unique(map: "PK_FORECAST_STATUS") @db.VarChar(10)
-  DESCRIPTION String? @db.VarChar(64)
+model ForecastStatus {
+  id                      BigInt                @id @default(autoincrement())
+  status                  String                @unique
+  description             String?
+  forecastStatusRulesFrom ForecastStatusRules[] @relation("StatusFrom")
+  forecastStatusRulesTo   ForecastStatusRules[] @relation("StatusTo")
+  versionForecast         VersionForecast[]
 }
 
-model FORECAST_STATUS_RULES {
-  STATUS_FROM String @db.VarChar(10)
-  STATUS_TO   String @db.VarChar(10)
+model ForecastStatusRules {
+  id         BigInt @id @default(autoincrement())
+  statusFrom BigInt
+  statusTo   BigInt
 
-  @@id([STATUS_FROM, STATUS_TO])
-  @@unique([STATUS_FROM, STATUS_TO], map: "FORECAST_STATUS_PK")
+  statusFromRelation ForecastStatus @relation("StatusFrom", fields: [statusFrom], references: [id])
+  statusToRelation   ForecastStatus @relation("StatusTo", fields: [statusTo], references: [id])
+
+  @@unique([statusFrom, statusTo])
 }
 
-model RELATED_SR {
-  SR_NUMBER_1 String  @db.VarChar(30)
-  SR_NUMBER_2 String  @db.VarChar(30)
-  LINKED_BY   String? @db.VarChar(3)
+model RelatedSr {
+  id        BigInt @id @default(autoincrement())
+  srNumber1 BigInt
+  srNumber2 BigInt
+  linkedBy  BigInt
 
-  @@id([SR_NUMBER_1, SR_NUMBER_2])
-  @@unique([SR_NUMBER_1, SR_NUMBER_2], map: "Key2")
+  srNumber1Relation ServiceRequest @relation("SrNumber1", fields: [srNumber1], references: [id])
+  srNumber2Relation ServiceRequest @relation("SrNumber2", fields: [srNumber2], references: [id])
+  linkedByRelation  VttsUser       @relation(fields: [linkedBy], references: [id])
+
+  @@unique([srNumber1, srNumber2])
 }
 
-model RELEASE_VERSION {
-  APP             String   @db.VarChar(8)
-  RELEASE_VERSION String   @db.VarChar(32)
-  TEST_DEADLINE   DateTime @db.Date
-  STAGE           String   @db.VarChar(30)
+model ReleaseVersion {
+  id             BigInt    @id @default(autoincrement())
+  app            BigInt
+  releaseVersion BigInt
+  testDeadline   DateTime?
+  stage          String
 
-  @@id([APP, RELEASE_VERSION, STAGE])
-  @@unique([APP, RELEASE_VERSION, STAGE], map: "PK_RELEASE_VERSION")
-  @@index([RELEASE_VERSION, APP], map: "IX_Relationship16")
+  appRelation   VttsSystem      @relation(fields: [app], references: [id])
+  releaseSystem SystemVersion   @relation(fields: [releaseVersion], references: [id])
+  testPssSystem TestPssSystem[]
+
+  @@unique([app, releaseVersion, stage])
 }
 
-model RESOLUTION {
-  SR_NUMBER       String    @db.VarChar(30)
-  ASSIGNED        String    @db.VarChar(3)
-  RESOLUTION_DATE DateTime? @db.Date
-  COMMENTS        String?   @db.LongText
+model Resolution {
+  id             BigInt    @id @default(autoincrement())
+  srNumber       BigInt
+  assigned       BigInt
+  resolutionDate DateTime?
+  comments       String?
 
-  @@id([SR_NUMBER, ASSIGNED])
-  @@index([SR_NUMBER], map: "IX_Relationship21")
-  @@index([ASSIGNED], map: "IX_Relationship22")
+  srNumberRelation ServiceRequest @relation(fields: [srNumber], references: [id])
+  assignedRelation VttsUser       @relation(fields: [assigned], references: [id])
 }
 
-model SERVICE_REQUEST {
-  SR_TYPE        String?           @db.VarChar(8)
-  SR_NUMBER      String            @id @unique(map: "PK_SERVICE_REQUEST_BCK") @db.VarChar(30)
-  DESCRIPTION    String?           @db.VarChar(1024)
-  EXTERNAL_LINK  String?           @db.VarChar(1024)
-  DATA_TEST_PATH String?           @db.VarChar(1024)
-  LAST_TESTER    String?           @db.VarChar(3)
-  STATUS_SR      String?           @db.VarChar(15)
-  testPssSystem  TEST_PSS_SYSTEM[]
+model ServiceRequest {
+  id           BigInt  @id @default(autoincrement())
+  srType       BigInt
+  srNumber     String  @unique
+  description  String?
+  externalLink String?
+  dataTestPath String?
+  trelloLink   String?
+  lastTester   BigInt
+  statusSr     String
+
+  srTypeRelation     SrType   @relation(fields: [srType], references: [id])
+  lastTesterRelation VttsUser @relation(fields: [lastTester], references: [id])
+
+  testPssSystem   TestPssSystem[]
+  versionForecast VersionForecast[]
+  relatedSr1      RelatedSr[]       @relation("SrNumber1")
+  relatedSr2      RelatedSr[]       @relation("SrNumber2")
+  resolution      Resolution[]
 }
 
-model SR_TYPE {
-  SR_TYPE     String  @id @unique(map: "SR_TYPE_PK") @db.VarChar(8)
-  DESCRIPTION String? @db.VarChar(256)
+model SrType {
+  id          BigInt  @id @default(autoincrement())
+  srType      String  @unique
+  description String?
+
+  serviceRequest ServiceRequest[]
+  testPssSystem  TestPssSystem[]
 }
 
-model SYSTEM_VERSION {
-  APP           String    @db.VarChar(8)
-  VERSION       String    @db.VarChar(32)
-  DELIVERY_DATE DateTime? @db.Date
+model SystemVersion {
+  id           BigInt    @id @default(autoincrement())
+  app          BigInt
+  version      String
+  deliveryDate DateTime?
 
-  @@id([APP, VERSION])
-  @@unique([APP, VERSION], map: "Key3")
-  @@index([APP], map: "IX_Relationship13")
+  appRelation    VttsSystem       @relation(fields: [app], references: [id])
+  releaseVersion ReleaseVersion[]
+  testPssSystem  TestPssSystem[]
+
+  // Relación inversa hacia VersionForecast (sin fields ni references)
+  versionForecast VersionForecast[]
 }
 
-model TEST_ATTACHED_INFO {
-  APP             String  @db.VarChar(8)
-  RELEASE_VERSION String  @db.VarChar(32)
-  SR_NUMBER       String  @db.VarChar(30)
-  FILE_NAME       String? @db.VarChar(128)
-  STAGE           String  @db.VarChar(30)
+model TestAttachedInfo {
+  id              BigInt @id @default(autoincrement())
+  idTestPssSystem BigInt
+  fileName        String
 
-  // Relación inversa hacia TEST_PSS_SYSTEM
-  testPssSystem   TEST_PSS_SYSTEM? @relation(fields: [APP, RELEASE_VERSION, SR_NUMBER, STAGE], references: [APP, RELEASE_VERSION, SR_NUMBER, STAGE])
+  testPssSystemRelation TestPssSystem @relation(fields: [idTestPssSystem], references: [id])
 
-  @@id([APP, RELEASE_VERSION, SR_NUMBER, STAGE])
-  @@unique([APP, RELEASE_VERSION, SR_NUMBER, STAGE], map: "PK_TEST_ATTACHED_INFO")
+  @@unique([idTestPssSystem, fileName])
 }
 
-model TEST_PSS_SYSTEM {
-  SR_TYPE           String?   @db.VarChar(8)
-  SR_NUMBER         String    @db.VarChar(30)
-  ASSIGNED          String?   @db.VarChar(3)
-  STATUS            String?   @db.VarChar(15)
-  DATE_TEST         DateTime? @db.Date
-  COMMENTS          String?   @db.LongText
-  DATE_MODIFICATION DateTime? @db.Date
-  RELEASE_NOTE      String?   @db.VarChar(1024)
-  WINDCHILL_COMMENT String?   @db.VarChar(3)
-  APP               String    @db.VarChar(8)
-  RELEASE_VERSION   String    @db.VarChar(32)
-  STAGE             String    @db.VarChar(30)
+model TestPssSystem {
+  id               BigInt    @id @default(autoincrement())
+  srType           BigInt
+  srNumber         BigInt
+  assigned         BigInt
+  status           BigInt
+  dateTest         DateTime?
+  comments         String?
+  dateModification DateTime?
+  releaseNote      String?
+  windchillComment String?
+  app              BigInt
+  releaseVersion   BigInt
+  stage            BigInt
 
-  serviceRequest SERVICE_REQUEST @relation(fields: [SR_NUMBER], references: [SR_NUMBER])
-  testStatus     TEST_STATUS?    @relation(fields: [STATUS], references: [ID_STATUS])
+  srTypeRelation   SrType         @relation(fields: [srType], references: [id])
+  srNumberRelation ServiceRequest @relation(fields: [srNumber], references: [id])
+  assignedRelation VttsUser       @relation(fields: [assigned], references: [id])
+  statusRelation   TestStatus     @relation(fields: [status], references: [id])
+  appRelation      VttsSystem     @relation(fields: [app], references: [id])
 
-  // Relación con TEST_ATTACHED_INFO
-  attached TEST_ATTACHED_INFO?
+  releaseVersionRelation SystemVersion @relation(fields: [releaseVersion], references: [id])
 
-  @@id([SR_NUMBER, APP, RELEASE_VERSION, STAGE])
-  @@unique([APP, RELEASE_VERSION, SR_NUMBER, STAGE], map: "PK_TEST_PSS_SYSTEM")
-  @@index([STATUS], map: "IX_Relationship11")
-  @@index([ASSIGNED], map: "IX_Relationship12")
-  @@index([SR_NUMBER], map: "SR_NUMBER_IDX")
+  testAttachedInfo TestAttachedInfo[]
+
+  stageRelation ReleaseVersion @relation(fields: [stage], references: [id])
+
+  @@unique([app, releaseVersion, srNumber, stage])
 }
 
-model TEST_STATUS {
-  ID_STATUS     String            @unique(map: "TEST_STATUS_PK") @db.VarChar(15)
-  DESC_STATUS   String            @db.VarChar(30)
-  IS_FAILED     String?           @db.VarChar(1)
-  DISPLAY_ORDER Decimal           @unique(map: "UK_STATUS_DISPLAY_ORDER") @db.Decimal(2, 0)
-  testPssSystem TEST_PSS_SYSTEM[]
+model TestStatus {
+  id           BigInt  @id @default(autoincrement())
+  idStatus     String  @unique
+  descStatus   String?
+  isFailed     String?
+  displayOrder Int     @unique
 
-  @@id([ID_STATUS, DISPLAY_ORDER])
+  testPssSystem TestPssSystem[]
 }
 
-model VERSION_FORECAST {
-  APP               String    @db.VarChar(8)
-  VERSION           String    @db.VarChar(32)
-  SR_NUMBER         String    @db.VarChar(30)
-  DATE_MODIFICATION DateTime? @db.Date
-  ASSIGNED          String    @db.VarChar(3)
-  STATUS            String?   @db.VarChar(10)
+model VersionForecast {
+  id               BigInt    @id @default(autoincrement())
+  app              BigInt
+  version          BigInt
+  srNumber         BigInt
+  dateModification DateTime?
+  assigned         BigInt
+  status           BigInt
 
-  @@id([APP, VERSION, SR_NUMBER, ASSIGNED])
-  @@unique([APP, VERSION, SR_NUMBER], map: "Key4")
-  @@index([ASSIGNED], map: "IX_Relationship20")
+  appRelation      VttsSystem     @relation(fields: [app], references: [id])
+  versionRelation  SystemVersion  @relation(fields: [version], references: [id]) // Relación con SystemVersion
+  srNumberRelation ServiceRequest @relation(fields: [srNumber], references: [id])
+  assignedRelation VttsUser       @relation(fields: [assigned], references: [id])
+  statusRelation   ForecastStatus @relation(fields: [status], references: [id])
+
+  @@unique([app, version, srNumber])
 }
 
-model VTTS_SYSTEM {
-  APP         String  @id @unique(map: "SYSTEM_PK") @db.VarChar(8)
-  DESCRIPTION String? @db.VarChar(256)
-  IE_VERSION  String? @db.VarChar(2)
-  JRE_VERSION String? @db.VarChar(8)
+model VttsSystem {
+  id          BigInt  @id @default(autoincrement())
+  app         String  @unique
+  description String?
+  explorerVersion   String?
+  jreVersion  String?
+
+  testPssSystem   TestPssSystem[]
+  releaseVersion  ReleaseVersion[]
+  systemVersion   SystemVersion[]
+  versionForecast VersionForecast[]
 }
 
-model VTTS_USER {
-  ASSIGNED          String    @id @unique(map: "VTTS_USER_PK") @db.VarChar(3)
-  USER_NAME         String    @db.VarChar(8)
-  PASSWORD          String    @db.VarChar(256)
-  EMAIL             String    @db.VarChar(256)
-  MAIL_SIGN         String?   @db.VarChar(256)
-  DATE_MODIFICATION DateTime? @db.Date
-  USER_MODIFICATION String?   @db.VarChar(8)
-  USER_MESSAGE      String?   @db.VarChar(512)
-  PROFILE           String?   @db.VarChar(7)
-  SR_FILTER1        String?   @db.VarChar(256)
-  SR_FILTER2        String?   @db.VarChar(256)
+model VttsUser {
+  id               BigInt    @id @default(autoincrement())
+  assigned         String    @unique
+  userName         String?
+  password         String?
+  email            String?
+  mailSign         String?
+  dateModification DateTime?
+  userModification String?
+  userMessage      String?
+  profile          String?
+  srFilter1        String?
+  srFilter2        String?
+
+  serviceRequest  ServiceRequest[]
+  versionForecast VersionForecast[]
+  testPssSystem   TestPssSystem[]
+  resolution      Resolution[]
+  relatedSr       RelatedSr[]
 }
