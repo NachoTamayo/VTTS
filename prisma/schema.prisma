@@ -123,8 +123,8 @@ model TestPssSystem {
   id               BigInt    @id @default(autoincrement())
   srType           BigInt
   srNumber         BigInt
-  assigned         BigInt
-  status           BigInt
+  assigned         BigInt?
+  status           BigInt?
   dateTest         DateTime?
   comments         String?
   dateModification DateTime?
@@ -136,8 +136,8 @@ model TestPssSystem {
 
   srTypeRelation   SrType         @relation(fields: [srType], references: [id])
   srNumberRelation ServiceRequest @relation(fields: [srNumber], references: [id])
-  assignedRelation VttsUser       @relation(fields: [assigned], references: [id])
-  statusRelation   TestStatus     @relation(fields: [status], references: [id])
+  assignedRelation VttsUser?      @relation(fields: [assigned], references: [id])
+  statusRelation   TestStatus?    @relation(fields: [status], references: [id])
   appRelation      VttsSystem     @relation(fields: [app], references: [id])
 
   releaseVersionRelation SystemVersion @relation(fields: [releaseVersion], references: [id])
@@ -178,11 +178,11 @@ model VersionForecast {
 }
 
 model VttsSystem {
-  id          BigInt  @id @default(autoincrement())
-  app         String  @unique
-  description String?
-  explorerVersion   String?
-  jreVersion  String?
+  id              BigInt  @id @default(autoincrement())
+  app             String  @unique
+  description     String?
+  explorerVersion String?
+  jreVersion      String?
 
   testPssSystem   TestPssSystem[]
   releaseVersion  ReleaseVersion[]
