@@ -6,11 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prisma": "rm -rf node_modules/@prisma/client && npx prisma format && npx prisma generate"
   },
   "dependencies": {
     "@nextui-org/react": "^2.4.0",
-    "@prisma/client": "^5.19.1",
+    "@prisma/client": "^5.20.0",
     "apexcharts": "^3.35.5",
     "clsx": "^2.0.0",
     "dotenv": "^16.4.5",
@@ -22,7 +23,7 @@
     "next": "^14.0.4",
     "next-client-cookies": "^1.1.1",
     "next-themes": "0.2.1",
-    "prisma": "^5.19.1",
+    "prisma": "^5.20.0",
     "react": "18.2.0",
     "react-apexcharts": "^1.4.0",
     "react-doc-viewer": "^0.1.14",
