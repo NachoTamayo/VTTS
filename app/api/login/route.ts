@@ -13,9 +13,9 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
   const { user_name, password } = await req.json();
 
   // Buscar el usuario en la base de datos
-  const user = await prisma.vTTS_USER.findUnique({
+  const user = await prisma.vttsUser.findUnique({
     where: {
-      ASSIGNED: user_name,
+      assigned: user_name,
     },
   });
 
@@ -25,21 +25,20 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
   }
 
   // Comparar la contraseña proporcionada con la almacenada en la base de datos
-  const isMatch = await bcrypt.compare(password, user.PASSWORD);
-  console.log(user.PASSWORD);
+  const isMatch = await bcrypt.compare(password, user.password || "");
 
   if (!isMatch) {
     return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
   }
 
   // Si las credenciales son correctas, crear el token JWT
-  const payload = { username: user.USER_NAME, ASSIGNED: user.ASSIGNED };
+  const payload = { username: user.userName, ASSIGNED: user.assigned };
 
   const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: "96h" });
-
+  console.log(token);
   // Configurar la cookie con el token
-  const response = NextResponse.json({ message: "Login successful", token: token, user: user.ASSIGNED });
-  response.headers.set("Set-Cookie", `userAuth=${token}; HttpOnly; Path=/; Max-Age=3600; Secure; SameSite=Strict`);
+  const response = NextResponse.json({ message: "Login successful", token: token, user: user.assigned });
+  response.headers.set("Set-Cookie", `userAuth=${token}; HttpOnly; Path=/; Max-Age=345600; Secure; SameSite=Strict`);
 
   //return response;
   return response;

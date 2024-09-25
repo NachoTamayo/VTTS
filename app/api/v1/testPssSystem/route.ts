@@ -6,11 +6,16 @@ const prisma = new PrismaClient();
 
 export async function GET() {
   try {
-    const result = await prisma.tEST_PSS_SYSTEM.findMany({
+    const result = await prisma.testPssSystem.findMany({
       include: {
-        serviceRequest: true,
-        testStatus: true,
-        attached: true,
+        testAttachedInfo: true,
+        srTypeRelation: true,
+        srNumberRelation: true,
+        assignedRelation: true,
+        statusRelation: true,
+        appRelation: true,
+        releaseVersionRelation: true,
+        stageRelation: true,
       },
     });
     return NextResponse.json(result, { status: 200 });
@@ -20,11 +25,9 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  await dbConnect();
-
   try {
     const body = await req.json();
-    const test = await TestPssSystem.create(body);
+    const test = await prisma.testPssSystem.create(body);
     return NextResponse.json({ success: true, data: test }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ success: false, error: "Failed to create data" }, { status: 400 });

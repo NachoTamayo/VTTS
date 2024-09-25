@@ -8,7 +8,7 @@ datasource db {
 }
 
 model ForecastStatus {
-  id                      BigInt                @id @default(autoincrement())
+  id                      Int                   @id @default(autoincrement())
   status                  String                @unique
   description             String?
   forecastStatusRulesFrom ForecastStatusRules[] @relation("StatusFrom")
@@ -17,9 +17,9 @@ model ForecastStatus {
 }
 
 model ForecastStatusRules {
-  id         BigInt @id @default(autoincrement())
-  statusFrom BigInt
-  statusTo   BigInt
+  id         Int @id @default(autoincrement())
+  statusFrom Int
+  statusTo   Int
 
   statusFromRelation ForecastStatus @relation("StatusFrom", fields: [statusFrom], references: [id])
   statusToRelation   ForecastStatus @relation("StatusTo", fields: [statusTo], references: [id])
@@ -28,10 +28,10 @@ model ForecastStatusRules {
 }
 
 model RelatedSr {
-  id        BigInt @id @default(autoincrement())
-  srNumber1 BigInt
-  srNumber2 BigInt
-  linkedBy  BigInt
+  id        Int @id @default(autoincrement())
+  srNumber1 Int
+  srNumber2 Int
+  linkedBy  Int
 
   srNumber1Relation ServiceRequest @relation("SrNumber1", fields: [srNumber1], references: [id])
   srNumber2Relation ServiceRequest @relation("SrNumber2", fields: [srNumber2], references: [id])
@@ -41,9 +41,9 @@ model RelatedSr {
 }
 
 model ReleaseVersion {
-  id             BigInt    @id @default(autoincrement())
-  app            BigInt
-  releaseVersion BigInt
+  id             Int       @id @default(autoincrement())
+  app            Int
+  releaseVersion Int
   testDeadline   DateTime?
   stage          String
 
@@ -55,9 +55,9 @@ model ReleaseVersion {
 }
 
 model Resolution {
-  id             BigInt    @id @default(autoincrement())
-  srNumber       BigInt
-  assigned       BigInt
+  id             Int       @id @default(autoincrement())
+  srNumber       Int
+  assigned       Int
   resolutionDate DateTime?
   comments       String?
 
@@ -66,14 +66,14 @@ model Resolution {
 }
 
 model ServiceRequest {
-  id           BigInt  @id @default(autoincrement())
-  srType       BigInt
+  id           Int     @id @default(autoincrement())
+  srType       Int
   srNumber     String  @unique
   description  String?
   externalLink String?
   dataTestPath String?
   trelloLink   String?
-  lastTester   BigInt
+  lastTester   Int
   statusSr     String
 
   srTypeRelation     SrType   @relation(fields: [srType], references: [id])
@@ -87,7 +87,7 @@ model ServiceRequest {
 }
 
 model SrType {
-  id          BigInt  @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   srType      String  @unique
   description String?
 
@@ -96,8 +96,8 @@ model SrType {
 }
 
 model SystemVersion {
-  id           BigInt    @id @default(autoincrement())
-  app          BigInt
+  id           Int       @id @default(autoincrement())
+  app          Int
   version      String
   deliveryDate DateTime?
 
@@ -110,8 +110,8 @@ model SystemVersion {
 }
 
 model TestAttachedInfo {
-  id              BigInt @id @default(autoincrement())
-  idTestPssSystem BigInt
+  id              Int    @id @default(autoincrement())
+  idTestPssSystem Int
   fileName        String
 
   testPssSystemRelation TestPssSystem @relation(fields: [idTestPssSystem], references: [id])
@@ -120,19 +120,19 @@ model TestAttachedInfo {
 }
 
 model TestPssSystem {
-  id               BigInt    @id @default(autoincrement())
-  srType           BigInt
-  srNumber         BigInt
-  assigned         BigInt?
-  status           BigInt?
+  id               Int       @id @default(autoincrement())
+  srType           Int
+  srNumber         Int
+  assigned         Int?
+  status           Int?
   dateTest         DateTime?
-  comments         String?
+  comments         String?   @db.VarChar(1024)
   dateModification DateTime?
   releaseNote      String?
   windchillComment String?
-  app              BigInt
-  releaseVersion   BigInt
-  stage            BigInt
+  app              Int
+  releaseVersion   Int
+  stage            Int
 
   srTypeRelation   SrType         @relation(fields: [srType], references: [id])
   srNumberRelation ServiceRequest @relation(fields: [srNumber], references: [id])
@@ -150,7 +150,7 @@ model TestPssSystem {
 }
 
 model TestStatus {
-  id           BigInt  @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   idStatus     String  @unique
   descStatus   String?
   isFailed     String?
@@ -160,13 +160,13 @@ model TestStatus {
 }
 
 model VersionForecast {
-  id               BigInt    @id @default(autoincrement())
-  app              BigInt
-  version          BigInt
-  srNumber         BigInt
+  id               Int       @id @default(autoincrement())
+  app              Int
+  version          Int
+  srNumber         Int
   dateModification DateTime?
-  assigned         BigInt
-  status           BigInt
+  assigned         Int
+  status           Int
 
   appRelation      VttsSystem     @relation(fields: [app], references: [id])
   versionRelation  SystemVersion  @relation(fields: [version], references: [id]) // Relación con SystemVersion
@@ -178,7 +178,7 @@ model VersionForecast {
 }
 
 model VttsSystem {
-  id              BigInt  @id @default(autoincrement())
+  id              Int     @id @default(autoincrement())
   app             String  @unique
   description     String?
   explorerVersion String?
@@ -191,12 +191,12 @@ model VttsSystem {
 }
 
 model VttsUser {
-  id               BigInt    @id @default(autoincrement())
+  id               Int       @id @default(autoincrement())
   assigned         String    @unique
-  userName         String?
-  password         String?
-  email            String?
-  mailSign         String?
+  userName         String
+  password         String
+  email            String
+  mailSign         String
   dateModification DateTime?
   userModification String?
   userMessage      String?
