@@ -1,4 +1,4 @@
-import { DocIcon, XLSIcon, ImgIcon, PDFIcon, DownloadIcon } from "../icons/icons";
+import { DocIcon, XLSIcon, ImgIcon, PDFIcon, DownloadIcon } from "../../icons/icons";
 import { useEffect, useState } from "react";
 import { Spacer } from "@nextui-org/react";
 
@@ -25,13 +25,13 @@ export const AttachedDocument: React.FC<AttachedDocumentProps> = ({ file }) => {
   const [document, setDocument] = useState<JSX.Element | null>(null);
   useEffect(() => {
     if (file.includes(".doc")) {
-      setDocument(<DocIcon className="cursor-pointer" />);
+      setDocument(<DocIcon width={36} height={36} />);
     } else if (file.includes(".xls")) {
-      setDocument(<XLSIcon className="cursor-pointer" />);
+      setDocument(<XLSIcon width={36} height={36} />);
     } else if (file.includes(".pdf")) {
-      setDocument(<PDFIcon className="cursor-pointer" />);
+      setDocument(<PDFIcon width={36} height={36} />);
     } else {
-      setDocument(<ImgIcon className="cursor-pointer" />);
+      setDocument(<ImgIcon width={36} height={36} />);
     }
   }, [file]);
 
@@ -43,15 +43,19 @@ export const AttachedDocument: React.FC<AttachedDocumentProps> = ({ file }) => {
     <div className="flex">
       {document}
       <Spacer />
-      {file} <Spacer x={2} />
-      {
-        <DownloadIcon
-          className="cursor-pointer"
-          onClick={() => {
-            handleDownload(file);
-          }}
-        />
-      }
+      <div className="flex items-center">
+        <p className="text-sm">{file}</p>
+
+        <Spacer x={8} />
+        {
+          <DownloadIcon
+            className="cursor-pointer"
+            onClick={() => {
+              handleDownload(file);
+            }}
+          />
+        }
+      </div>
     </div>
   );
 };
