@@ -9,7 +9,7 @@ export const NotificationsDropdown = () => {
       <DropdownTrigger>
         <NavbarItem>
           <Badge content="5" color="danger" placement="top-right">
-            <NotificationIcon />
+            <NotificationIcon width={28} height={28} />
           </Badge>
         </NavbarItem>
       </DropdownTrigger>
