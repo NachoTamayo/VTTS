@@ -19,7 +19,6 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
     },
   });
 
-  console.log(user);
   if (!user) {
     return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
   }

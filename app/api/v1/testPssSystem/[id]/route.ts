@@ -20,7 +20,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       include: {
         testAttachedInfo: true,
         srTypeRelation: true,
-        srNumberRelation: true,
+        srNumberRelation: {
+          include: {
+            lastTesterRelation: true,
+          },
+        },
         assignedRelation: true,
         statusRelation: true,
         appRelation: true,
@@ -47,7 +51,6 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         assigned: ASSIGNED, // Campo que deseas actualizar
       },
     });
-    console.log(resultado);
     // if (!resultado.acknowledged || resultado.modifiedCount === 0) {
     //   return NextResponse.json({ message: "Couldn't update" }, { status: 400 });
     // }

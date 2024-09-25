@@ -10,7 +10,11 @@ export async function GET() {
       include: {
         testAttachedInfo: true,
         srTypeRelation: true,
-        srNumberRelation: true,
+        srNumberRelation: {
+          include: {
+            lastTesterRelation: true,
+          },
+        },
         assignedRelation: true,
         statusRelation: true,
         appRelation: true,

@@ -1,56 +1,114 @@
-export interface ServiceRequestProps {
-  _id: string;
-  serviceRequest: SRNumber;
-  RELEASE_VERSION: string;
-  SR_TYPE: string;
-  RELEASE_NOTE: string;
-  DATE_TEST: string;
-  testStatus: Status;
-  ASSIGNED: string;
-  STAGE: string;
-  COMMENTS: string;
-  APP: string;
-  DATE_MODIFICATION: string;
-  attached: AttachedInfo[];
-  onView: (primKey: ServiceRequestPrimaryKey) => void;
+export interface TestPssSystemProps {
+  /* Properties */
+  id: number;
+  srType: number;
+  srNumber: number;
+  assigned: number;
+  status: number;
+  dateTest: string;
+  comments: string;
+  dateModification: string;
+  releaseNote: string;
+  windchillComment: string;
+  app: number;
+  releaseVersion: number;
+  stage: number;
+  /* Relations */
+  appRelation: VttsSystem;
+  srTypeRelation: SrType;
+  srNumberRelation: ServiceRequest;
+  stageRelation: Stage;
+  statusRelation: Status;
+  assignedRelation: VttsUser;
+  testAttachedInfo: AttachedInfo[];
+  releaseVersionRelation: ReleaseVersion;
+  /* Functions */
+  onView: (id: number) => void;
   onOpen: () => void;
   handleRefresh: () => void;
 }
 
-export interface Status {
-  _id: string;
-  ID_STATUS: string;
-  DESC_STATUS: string;
-  IS_FAILED: string;
-  DISPLAY_ORDER: number;
+export interface VttsSystem {
+  id: number;
+  app: string;
+  description: string;
+  explorerVersion: string;
+  jreVersion: string;
 }
 
-export interface SRNumber {
-  _id: string;
-  SR_NUMBER: string;
-  SR_TYPE: string;
-  DESCRIPTION: string;
-  EXTERNAL_LINK: string;
-  TRELLO_LINK?: string;
-  DATA_TEST_PATH: string;
-  LAST_TESTER: string;
-  STATUS_SR: string;
+export interface VttsUser {
+  id: number;
+  assigned: string;
+  userName: string;
+  password: string;
+  email: string;
+  mailSign: string;
+  dateModification?: string;
+  userModification?: string;
+  userMessage?: string;
+  profile?: string;
+  srFilter1?: string;
+  srFilter2?: string;
+}
+
+export interface SrType {
+  id: number;
+  srType: string;
+  description: string;
+}
+
+export interface Stage {
+  id: number;
+  app: VttsSystem;
+  releaseVersion: ReleaseVersion;
+  stage: string;
+  testDeadline: string;
+}
+
+export interface ServiceRequest {
+  id: number;
+  srNumber: string;
+  srType: SrType;
+  description: string;
+  externalLink: string;
+  trelloLink?: string;
+  dataTestPath: string;
+  lastTester: VttsUser;
+  statusSR: string;
+}
+
+export interface TestPssSystem {
+  id: number;
+  dataTestPath: string;
+  description: string;
+  externalLink: string;
+  appRelation: VttsSystem;
+  lastTesterRelation: VttsUser;
+  srTypeRelation: SrType;
+  stageRelation: Stage;
+  statusRelation: Status;
+  assignedRelation: VttsUser;
+  testAttachedInfo: AttachedInfo;
+}
+
+export interface ReleaseVersion {
+  id: number;
+  app: number;
+  deliveryDate: string;
+  version: string;
+}
+export interface Status {
+  id: number;
+  idStatus: string;
+  descStatus: string;
+  isFailed: string;
+  displayOrder: number;
 }
 
 export interface AttachedInfo {
-  APP: string;
-  FILE_NAME: string;
-  RELEASE_VERSION: string;
-  SR_NUMBER: string;
-  STAGE: string;
-  _id: string;
-}
-
-export interface ServiceRequestPrimaryKey {
-  APP: string;
-  RELEASE_VERSION: string;
-  SR_NUMBER: string;
-  STAGE: string;
+  idTestPssSystem: TestPssSystem;
+  fileName: string;
+  id: number;
 }
 
 export interface ViewModalProps {
@@ -58,8 +116,8 @@ export interface ViewModalProps {
   onOpen?: () => void;
   onClose?: () => void;
   onOpenChange?: (isOpen: boolean) => void;
-  onView?: (primKey: ServiceRequestPrimaryKey) => void;
-  primKey: ServiceRequestPrimaryKey;
+  onView?: (id: number) => void;
+  id: number;
 }
 
 export interface ViewModal {
@@ -77,23 +135,33 @@ export interface ViewModal {
 }
 
 export interface AttachedFile {
-  _id: string;
+  id: number;
   filename: string;
   path: string;
 }
 
 export interface ModalViewContentProps {
-  _id: string;
-  serviceRequest: SRNumber;
-  RELEASE_VERSION: string;
-  SR_TYPE: string;
-  RELEASE_NOTE: string;
-  DATE_TEST: string;
-  testStatus: Status;
-  ASSIGNED: string;
-  STAGE: string;
-  COMMENTS: string;
-  APP: string;
-  DATE_MODIFICATION: string;
-  attached: AttachedInfo;
+  /* Properties */
+  id: number;
+  srType: number;
+  srNumber: number;
+  assigned: number;
+  status: number;
+  dateTest: string;
+  comments: string;
+  dateModification: string;
+  releaseNote: string;
+  windchillComment: string;
+  app: number;
+  releaseVersion: number;
+  stage: number;
+  /* Relations */
+  appRelation: VttsSystem;
+  srTypeRelation: SrType;
+  srNumberRelation: ServiceRequest;
+  stageRelation: Stage;
+  statusRelation: Status;
+  assignedRelation: VttsUser;
+  testAttachedInfo: AttachedInfo[];
+  releaseVersionRelation: ReleaseVersion;
 }
