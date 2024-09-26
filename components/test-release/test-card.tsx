@@ -27,7 +27,7 @@ import {
   PinCode,
   ExternalLinkIcon,
 } from "../icons/icons";
-export const TestCard: React.FC<TestPssSystemProps> = ({ onView, onOpen, handleRefresh, ...props }) => {
+export const TestCard: React.FC<TestPssSystemProps> = ({ onView, handleRefresh, ...props }) => {
   const {
     id,
     dateTest,
@@ -42,6 +42,7 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, onOpen, handleR
     assignedRelation,
     testAttachedInfo,
     releaseVersionRelation,
+    systemVersionRelation,
   } = props;
   const username = localStorage.getItem("assigned");
   const { showDescription } = useAuthStore();
@@ -125,14 +126,14 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, onOpen, handleR
             <div className="flex items-center space-x-2">
               <SourceCodeSquareIcon />
               <Tooltip content="Version" color="primary">
-                <p>{releaseVersionRelation.version}</p>
+                <p>{systemVersionRelation.version}</p>
               </Tooltip>
             </div>
             <Spacer x={4} />
             <div className="flex items-center space-x-2">
               <PinCode />
               <Tooltip content="Stage" color="primary">
-                <p className="min-w-7">{stageRelation.stage}</p>
+                <p className="min-w-7">{releaseVersionRelation.stageRelation.stage}</p>
               </Tooltip>
             </div>
             <Spacer x={4} />
@@ -183,7 +184,7 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, onOpen, handleR
             </div>
             <Spacer x={4} />
             <div className="flex items-center space-x-2 cursor-pointer">
-              <ExternalLinkIcon />
+              <ExternalLinkIcon className={srNumberRelation.externalLink != null ? "opacity-100" : "opacity-20"} />
             </div>
           </div>
         </CardHeader>

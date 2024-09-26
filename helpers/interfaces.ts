@@ -1,5 +1,3 @@
-import { SystemVersion } from "@prisma/client";
-
 export interface TestPssSystemProps {
   /* Properties */
   id: number;
@@ -24,6 +22,7 @@ export interface TestPssSystemProps {
   assignedRelation: VttsUser;
   testAttachedInfo: AttachedInfo[];
   releaseVersionRelation: ReleaseVersion;
+  systemVersionRelation: SystemVersion;
   /* Functions */
   onView: (id: number) => void;
   onOpen: () => void;
@@ -93,12 +92,19 @@ export interface TestPssSystem {
   testAttachedInfo: AttachedInfo;
 }
 
+export interface SystemVersion {
+  id: number;
+  app: number;
+  deliveryDate: string;
+  version: string;
+}
+
 export interface ReleaseVersion {
   id: number;
   app: number;
   deliveryDate: string;
   version: string;
-  stage: string;
+  stageRelation: Stage;
   systemVersion: SystemVersion;
 }
 export interface Status {

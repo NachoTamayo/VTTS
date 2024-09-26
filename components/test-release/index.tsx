@@ -55,7 +55,7 @@ export const TestRelease = () => {
   return (
     <div>
       {testPssSystem.map((testInfo: TestPssSystemProps, index: number) => (
-        <TestCard key={index} {...testInfo} onOpen={onOpen} onView={onView} handleRefresh={handleRefresh} />
+        <TestCard key={index} {...testInfo} onView={onView} handleRefresh={handleRefresh} />
       ))}
       <ViewModal
         isOpen={isOpen}
