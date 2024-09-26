@@ -18,8 +18,12 @@ export async function GET() {
         assignedRelation: true,
         statusRelation: true,
         appRelation: true,
-        releaseVersionRelation: true,
-        stageRelation: true,
+        systemVersionRelation: true,
+        releaseVersionRelation: {
+          include: {
+            stageRelation: true,
+          },
+        },
       },
     });
     return NextResponse.json(result, { status: 200 });
