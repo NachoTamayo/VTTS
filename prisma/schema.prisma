@@ -40,16 +40,23 @@ model RelatedSr {
   @@unique([srNumber1, srNumber2])
 }
 
+model StageVersion {
+  id             Int              @id @default(autoincrement())
+  stage          String           @unique
+  ReleaseVersion ReleaseVersion[]
+}
+
 model ReleaseVersion {
   id             Int       @id @default(autoincrement())
   app            Int
   releaseVersion Int
   testDeadline   DateTime?
-  stage          String
+  stage          Int
 
   appRelation   VttsSystem      @relation(fields: [app], references: [id])
-  releaseSystem SystemVersion   @relation(fields: [releaseVersion], references: [id])
+  systemVersion SystemVersion   @relation(fields: [releaseVersion], references: [id])
   testPssSystem TestPssSystem[]
+  stageRelation StageVersion    @relation(fields: [stage], references: [id])
 
   @@unique([app, releaseVersion, stage])
 }
@@ -140,11 +147,11 @@ model TestPssSystem {
   statusRelation   TestStatus?    @relation(fields: [status], references: [id])
   appRelation      VttsSystem     @relation(fields: [app], references: [id])
 
-  releaseVersionRelation SystemVersion @relation(fields: [releaseVersion], references: [id])
+  systemVersionRelation SystemVersion @relation(fields: [releaseVersion], references: [id])
 
   testAttachedInfo TestAttachedInfo[]
 
-  stageRelation ReleaseVersion @relation(fields: [stage], references: [id])
+  releaseVersionRelation ReleaseVersion @relation(fields: [stage], references: [id])
 
   @@unique([app, releaseVersion, srNumber, stage])
 }

@@ -1,3 +1,5 @@
+import { SystemVersion } from "@prisma/client";
+
 export interface TestPssSystemProps {
   /* Properties */
   id: number;
@@ -96,6 +98,8 @@ export interface ReleaseVersion {
   app: number;
   deliveryDate: string;
   version: string;
+  stage: string;
+  systemVersion: SystemVersion;
 }
 export interface Status {
   id: number;
