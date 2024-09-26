@@ -13,13 +13,15 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import React from "react";
-import { SearchIcon, TitleOnlyIcon, EdgeStyleIcon, FilterIcon } from "../icons/icons";
+import { TitleOnlyIcon, EdgeStyleIcon, FilterIcon } from "../icons/icons";
 import { BurguerButton } from "./burguer-button";
 import { NotificationsDropdown } from "./notifications-dropdown";
 import { UserDropdown } from "./user-dropdown";
 import { DarkModeSwitch } from "./darkmodeswitch";
 import { useTheme as useNextTheme } from "next-themes";
 import { useAuthStore } from "@/helpers/auth-store";
+import { FilterModal } from "./modals/filter-modal";
+import { filterProps } from "framer-motion";
 
 interface Props {
   children: React.ReactNode;
@@ -27,10 +29,14 @@ interface Props {
 
 export const NavbarWrapper = ({ children }: Props) => {
   const { currentWindow, setShowDescription, showDescription } = useAuthStore();
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const handleTitleOnly = () => {
     setShowDescription(!showDescription);
+  };
+
+  const handleModalOpen = () => {
+    onOpen();
   };
 
   return (
@@ -60,7 +66,8 @@ export const NavbarWrapper = ({ children }: Props) => {
                   )}
                 </div>
               </Tooltip>
-              <FilterIcon className="cursor-pointer" onClick={onOpen} />
+              <FilterIcon className="cursor-pointer" onClick={handleModalOpen} />
+              <FilterModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} onClose={onClose} />
             </NavbarContent>
           ) : (
             <NavbarContent justify="start" className="w-full max-md:hidden"></NavbarContent>
@@ -79,32 +86,6 @@ export const NavbarWrapper = ({ children }: Props) => {
         </Navbar>
         {children}
       </div>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
-              <ModalBody>
-                <Input autoFocus label="Email" placeholder="Enter your email" variant="bordered" />
-                <Input label="Password" placeholder="Enter your password" type="password" variant="bordered" />
-                <div className="flex py-2 px-1 justify-between">
-                  <Link color="primary" href="#" size="sm">
-                    Forgot password?
-                  </Link>
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Sign in
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
     </>
   );
 };
