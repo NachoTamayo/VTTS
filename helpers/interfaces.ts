@@ -60,10 +60,7 @@ export interface SrType {
 
 export interface Stage {
   id: number;
-  app: VttsSystem;
-  releaseVersion: ReleaseVersion;
   stage: string;
-  testDeadline: string;
 }
 
 export interface ServiceRequest {
@@ -74,7 +71,7 @@ export interface ServiceRequest {
   externalLink: string;
   trelloLink?: string;
   dataTestPath: string;
-  lastTester: VttsUser;
+  lastTesterRelation: VttsUser;
   statusSR: string;
 }
 
@@ -174,4 +171,5 @@ export interface ModalViewContentProps {
   assignedRelation: VttsUser;
   testAttachedInfo: AttachedInfo[];
   releaseVersionRelation: ReleaseVersion;
+  systemVersionRelation: SystemVersion;
 }
