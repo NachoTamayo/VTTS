@@ -8,17 +8,19 @@ export async function GET(req: Request, res: Response) {
   const distinct = searchParams.get("distinct");
   try {
     if (distinct != null && distinct === "true") {
-      const result = await prisma.serviceRequest.findMany({
-        distinct: ["srNumber"],
+      const result = await prisma.systemVersion.findMany({
+        distinct: ["version"],
         select: {
-          srNumber: true,
+          version: true,
         },
       });
       return NextResponse.json(result, { status: 200 });
     } else {
-      const result = await prisma.serviceRequest.findMany();
+      const result = await prisma.systemVersion.findMany({});
       return NextResponse.json(result, { status: 200 });
     }
+    const result = await prisma.systemVersion.findMany({});
+    return NextResponse.json(result, { status: 200 });
   } catch (error) {
     return NextResponse.json({ success: false, error: "Failed to fetch data" }, { status: 500 });
   }

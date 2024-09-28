@@ -28,8 +28,12 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
         assignedRelation: true,
         statusRelation: true,
         appRelation: true,
-        releaseVersionRelation: true,
-        stageRelation: true,
+        releaseVersionRelation: {
+          include: {
+            stageRelation: true,
+          },
+        },
+        systemVersionRelation: true,
       },
     });
 
