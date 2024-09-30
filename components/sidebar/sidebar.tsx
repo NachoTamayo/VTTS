@@ -2,23 +2,23 @@ import React from "react";
 import { Sidebar } from "./sidebar.styles";
 import { Avatar, Tooltip } from "@nextui-org/react";
 import { CompaniesDropdown } from "./companies-dropdown";
-import { HomeIcon } from "../icons/sidebar/home-icon";
-import { BalanceIcon } from "../icons/sidebar/balance-icon";
-import { AccountsIcon } from "../icons/sidebar/accounts-icon";
-import { CustomersIcon } from "../icons/sidebar/customers-icon";
-import { ProductsIcon } from "../icons/sidebar/products-icon";
-import { ReportsIcon } from "../icons/sidebar/reports-icon";
-import { DevIcon } from "../icons/sidebar/dev-icon";
-import { ViewIcon } from "../icons/sidebar/view-icon";
-import { SettingsIcon } from "../icons/sidebar/settings-icon";
 import { CollapseItems } from "./collapse-items";
 import { SidebarItem } from "./sidebar-item";
 import { SidebarMenu } from "./sidebar-menu";
-import { FilterIcon } from "../icons/sidebar/filter-icon";
 import { useSidebarContext } from "../layout/layout-context";
-import { ChangeLogIcon } from "../icons/sidebar/changelog-icon";
 import { usePathname } from "next/navigation";
-import { TestIcon, DashboardIcon } from "../icons/icons";
+import {
+  TestIcon,
+  DashboardIcon,
+  SourceCodeIcon,
+  TaskIcon,
+  ReminderIcon,
+  CommandLineIcon,
+  DatabaseSyncIcon,
+  BubbleChatEditIcon,
+  GitBranchIcon,
+  SettingsIcon,
+} from "@/components/icons/icons";
 
 export const SidebarWrapper = () => {
   const pathname = usePathname();
@@ -37,48 +37,46 @@ export const SidebarWrapper = () => {
         <div className="flex flex-col justify-between h-full">
           <div className={Sidebar.Body()}>
             <SidebarItem title="Home" icon={<DashboardIcon />} isActive={pathname === "/"} href="/" />
-            <SidebarMenu title="Main Menu">
+            <SidebarMenu title="Project Management">
+              <SidebarItem isActive={pathname === "/a"} title="Service Request" icon={<BubbleChatEditIcon />} />
+              <SidebarItem isActive={pathname === "/a"} title="Version" icon={<GitBranchIcon />} />
+            </SidebarMenu>
+            <SidebarMenu title="Testing">
               <SidebarItem
-                isActive={pathname === "/accounts"}
-                title="Accounts"
-                icon={<AccountsIcon />}
-                href="accounts"
+                isActive={pathname === "/a"}
+                title="Manage Release"
+                icon={<DatabaseSyncIcon />}
+                href="manage-release"
               />
               <SidebarItem
-                isActive={pathname === "/testRelease"}
+                isActive={pathname === "/a"}
+                title="Create List"
+                icon={<ReminderIcon />}
+                href="create-list"
+              />
+              <SidebarItem
+                isActive={pathname === "/test-release"}
                 title="Test Release"
                 icon={<TestIcon />}
                 href="test-release"
               />
-              <CollapseItems
+
+              {/* <CollapseItems
                 icon={<BalanceIcon />}
                 items={["Banks Accounts", "Credit Cards", "Loans"]}
                 title="Balances"
-              />
-              <SidebarItem isActive={pathname === "/customers"} title="Customers" icon={<CustomersIcon />} />
-              <SidebarItem isActive={pathname === "/products"} title="Products" icon={<ProductsIcon />} />
-              <SidebarItem isActive={pathname === "/reports"} title="Reports" icon={<ReportsIcon />} />
+              /> */}
             </SidebarMenu>
 
-            <SidebarMenu title="General">
-              <SidebarItem isActive={pathname === "/developers"} title="Developers" icon={<DevIcon />} />
-              <SidebarItem isActive={pathname === "/view"} title="View Test Data" icon={<ViewIcon />} />
-              <SidebarItem isActive={pathname === "/settings"} title="Settings" icon={<SettingsIcon />} />
-            </SidebarMenu>
-
-            <SidebarMenu title="Updates">
-              <SidebarItem isActive={pathname === "/changelog"} title="Changelog" icon={<ChangeLogIcon />} />
+            <SidebarMenu title="Development">
+              <SidebarItem isActive={pathname === "/a"} title="SR Document" icon={<CommandLineIcon />} />
+              <SidebarItem isActive={pathname === "/a"} title="My Tasks" icon={<TaskIcon />} />
             </SidebarMenu>
           </div>
           <div className={Sidebar.Footer()}>
             <Tooltip content={"Settings"} color="primary">
               <div className="max-w-fit">
                 <SettingsIcon />
-              </div>
-            </Tooltip>
-            <Tooltip content={"Adjustments"} color="primary">
-              <div className="max-w-fit">
-                <FilterIcon />
               </div>
             </Tooltip>
             <Tooltip content={"Profile"} color="primary">
