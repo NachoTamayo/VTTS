@@ -36,6 +36,7 @@ export const ViewModal: React.FC<ViewModalProps> = (props) => {
         },
       });
       await response.json().then((data) => {
+        console.log(data);
         setContent(data);
       });
     } catch (error) {
@@ -71,7 +72,7 @@ export const ViewModal: React.FC<ViewModalProps> = (props) => {
                       isReadOnly
                       type="text"
                       label="Version"
-                      value={content?.releaseVersionRelation.version}
+                      value={content?.systemVersionRelation.version}
                       className="max-w-28"
                     />
                   </div>
@@ -80,7 +81,7 @@ export const ViewModal: React.FC<ViewModalProps> = (props) => {
                       isReadOnly
                       type="text"
                       label="Stage"
-                      value={content?.stageRelation.stage}
+                      value={content?.releaseVersionRelation.stageRelation.stage}
                       className="max-w-28"
                     />
                   </div>
@@ -106,8 +107,10 @@ export const ViewModal: React.FC<ViewModalProps> = (props) => {
                     <Input
                       isReadOnly
                       type="text"
-                      label="Last Tester"
-                      value={content != null ? content.assignedRelation?.assigned : ""}
+                      label="Assigned"
+                      value={
+                        content != null && content.assignedRelation != null ? content.assignedRelation.assigned : " "
+                      }
                       className="max-w-28"
                     />
                   </div>

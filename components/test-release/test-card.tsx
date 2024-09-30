@@ -10,7 +10,7 @@ import {
   Tooltip,
   Spacer,
 } from "@nextui-org/react";
-import { TestPssSystemProps } from "@/helpers/interfaces";
+import { TestPssSystemProps, VttsUser } from "@/helpers/interfaces";
 import { formatDate } from "@/helpers/js-utils";
 import { useAuthStore } from "@/helpers/auth-store";
 import {
@@ -44,7 +44,7 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, handleRefresh, 
     releaseVersionRelation,
     systemVersionRelation,
   } = props;
-  const username = localStorage.getItem("assigned");
+  const username: VttsUser = JSON.parse(localStorage.getItem("user")?.toString() || "{}");
   const { showDescription } = useAuthStore();
 
   const handleView = () => {
@@ -58,7 +58,7 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, handleRefresh, 
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ASSIGNED: null }),
+        body: JSON.stringify({ id: null }),
       });
 
       await response.json().then((data) => {
@@ -72,13 +72,15 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, handleRefresh, 
   const handleEdit = () => {};
 
   const handleBookmark = async () => {
+    const user = window.localStorage.getItem("user");
+
     try {
       const response = await fetch(`/api/v1/testPssSystem/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ASSIGNED: window.localStorage.getItem("assigned") }),
+        body: user,
       });
 
       await response.json().then((data) => {
@@ -110,7 +112,7 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, handleRefresh, 
                   <BookmarkIcon onClick={handleBookmark} className="cursor-pointer mt-0.5" width={18} height={18} />
                 </>
               ) : null}
-              {assignedRelation?.assigned === username ? (
+              {assignedRelation?.id === username.id ? (
                 <>
                   <Spacer x={2} />
                   <EditIcon onClick={handleEdit} className="cursor-pointer mt-0.5" width={18} height={18} />

@@ -29,7 +29,7 @@ export const Login = () => {
 
       if (res.ok) {
         await res.json().then((data) => {
-          localStorage.setItem("assigned", data.user);
+          localStorage.setItem("user", JSON.stringify(data.user));
           router.push("/");
         });
 

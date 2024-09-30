@@ -36,7 +36,7 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
   const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: "96h" });
   console.log(token);
   // Configurar la cookie con el token
-  const response = NextResponse.json({ message: "Login successful", token: token, user: user.assigned });
+  const response = NextResponse.json({ message: "Login successful", token: token, user: user });
   response.headers.set("Set-Cookie", `userAuth=${token}; HttpOnly; Path=/; Max-Age=345600; Secure; SameSite=Strict`);
 
   //return response;
