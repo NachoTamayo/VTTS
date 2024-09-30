@@ -2,25 +2,44 @@ import React from "react";
 import { useIconColor } from "./icon-switch";
 
 // List of icons
-/*
-  Calendar03Icon,
-  SourceCodeSquareIcon,
-  CloudServerIcon,
-  Note05Icon,
-  Clip,
-  TrelloIcon,
-  SearchIcon,
-  EditIcon,
-  ViewIcon,
-  UnlinkIcon,
-  BookmarkIcon,
-  MoonIcon,
-  SunIcon,
-  NotificationIcon,
-  TestIcon,
-  DashboardIcon,
-  SettingsIcon
-*/
+// - Calendar03Icon
+// - SourceCodeSquareIcon
+// - CloudServerIcon
+// - Note05Icon
+// - Clip
+// - TrelloIcon
+// - SearchIcon
+// - EditIcon
+// - ViewIcon
+// - UnlinkIcon
+// - BookmarkIcon
+// - MoonIcon
+// - SunIcon
+// - NotificationIcon
+// - TestIcon
+// - DashboardIcon
+// - PinCode
+// - DocIcon
+// - ImgIcon
+// - XLSIcon
+// - PDFIcon
+// - EdgeStyleIcon
+// - TitleOnlyIcon
+// - DownloadIcon
+// - ExternalLinkIcon
+// - FilterIcon
+// - FloppyDiskIcon
+// - FolderOpenIcon
+// - CommandLineIcon
+// - SourceCodeIcon
+// - TaskIcon
+// - ReminderIcon
+// - DatabaseSyncIcon
+// - BubbleChatEditIcon
+// - GitBranchIcon
+// - SettingsIcon
+// - NotEqualSignCircleIcon
+// - EqualSignCircleIcon
 
 export const Calendar03Icon = (props: React.SVGProps<SVGSVGElement>) => {
   const colorIcon = useIconColor();
@@ -1124,6 +1143,47 @@ export const SettingsIcon = (props: React.SVGProps<SVGSVGElement>) => {
         strokeWidth="1.5"
         strokeLinecap="round"
       />
+    </svg>
+  );
+};
+
+export const NotEqualSignCircleIcon = (props: React.SVGProps<SVGSVGElement>) => {
+  const colorIcon = useIconColor();
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={props.width || 24}
+      height={props.height || 24}
+      color={colorIcon}
+      fill={"none"}
+      {...props}>
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
+      <path
+        d="M7 9.77778H17M7 14.2222H17M8.66667 17L15.3333 7"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+};
+
+export const EqualSignCircleIcon = (props: React.SVGProps<SVGSVGElement>) => {
+  const colorIcon = useIconColor();
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={props.width || 24}
+      height={props.height || 24}
+      color={colorIcon}
+      fill={"none"}
+      {...props}>
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M8 9H16M8 15H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   );
 };

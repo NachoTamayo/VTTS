@@ -45,14 +45,14 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  const { ASSIGNED } = await req.json();
+  const { id } = await req.json();
   try {
     const resultado = await prisma.testPssSystem.update({
       where: {
         id: parseInt(params.id),
       }, // O el identificador que estés usando
       data: {
-        assigned: ASSIGNED, // Campo que deseas actualizar
+        assigned: id, // Campo que deseas actualizar
       },
     });
     // if (!resultado.acknowledged || resultado.modifiedCount === 0) {

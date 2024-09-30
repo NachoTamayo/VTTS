@@ -4,7 +4,51 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function GET() {
+export async function GET(req: Request, res: Response) {
+  // srType=1&equalType=true&system=1&systemVersion=08.00.00&stageVersion=1&equalStageVersion=true&serviceRequest=ISR.1116&user=1&equalUser=true&systemStatus=1&equalSystemStatus=true&releaseNote=YES&
+  const { searchParams } = new URL(req.url);
+  const srType = searchParams.get("srType");
+  const equalType = searchParams.get("equalType");
+  const system = searchParams.get("system");
+  const systemVersion = searchParams.get("systemVersion");
+  const stageVersion = searchParams.get("stageVersion");
+  const equalStageVersion = searchParams.get("equalStageVersion");
+  const serviceRequest = searchParams.get("serviceRequest");
+  const user = searchParams.get("user");
+  const equalUser = searchParams.get("equalUser");
+  const systemStatus = searchParams.get("systemStatus");
+  const equalSystemStatus = searchParams.get("equalSystemStatus");
+  const releaseNote = searchParams.get("releaseNote");
+
+  let whereClause = {};
+  if (srType) {
+    if (equalType === "true") whereClause = { ...whereClause, srType: parseInt(srType) };
+    else whereClause = { ...whereClause, srType: { not: parseInt(srType) } };
+  }
+  if (system) whereClause = { ...whereClause, app: parseInt(system) };
+  if (systemVersion) whereClause = { ...whereClause, systemVersionRelation: { version: systemVersion } };
+  if (stageVersion) {
+    if (equalStageVersion === "true")
+      whereClause = { ...whereClause, releaseVersionRelation: { stageRelation: { stage: stageVersion } } };
+    else
+      whereClause = { ...whereClause, releaseVersionRelation: { isNot: { stageRelation: { stage: stageVersion } } } };
+  }
+  if (serviceRequest) whereClause = { ...whereClause, serviceRequest: serviceRequest };
+  if (user) {
+    if (equalUser === "true") {
+      if (user != "999") whereClause = { ...whereClause, user: parseInt(user) };
+      else whereClause = { ...whereClause, user: null };
+    } else {
+      if (user != "999") whereClause = { ...whereClause, user: { isNot: parseInt(user) } };
+      else whereClause = { ...whereClause, user: { not: null } };
+    }
+  }
+  if (systemStatus) {
+    if (equalSystemStatus === "true") whereClause = { ...whereClause, status: parseInt(systemStatus) };
+    else whereClause = { ...whereClause, status: { not: parseInt(systemStatus) } };
+  }
+  if (releaseNote) whereClause = { ...whereClause, releaseNote: releaseNote };
+  console.log(whereClause);
   try {
     const result = await prisma.testPssSystem.findMany({
       include: {
@@ -25,9 +69,11 @@ export async function GET() {
           },
         },
       },
+      where: whereClause,
     });
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
+    console.error("Error fetching data:", error);
     return NextResponse.json({ success: false, error: "Failed to fetch data" }, { status: 500 });
   }
 }
