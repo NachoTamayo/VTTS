@@ -128,7 +128,7 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, handleRefresh, 
             <div className="flex items-center space-x-2">
               <SourceCodeSquareIcon />
               <Tooltip content="Version" color="primary">
-                <p>{systemVersionRelation.version}</p>
+                <p>{releaseVersionRelation.systemVersion.version}</p>
               </Tooltip>
             </div>
             <Spacer x={4} />
@@ -141,7 +141,7 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, handleRefresh, 
             <Spacer x={4} />
             <div className="flex items-center space-x-2 ">
               <CloudServerIcon />
-              <p className="min-w-16">{appRelation.app}</p>
+              <p className="min-w-16">{releaseVersionRelation.appRelation.app}</p>
             </div>
             <Spacer x={4} />
             <div className="flex items-center space-x-2">

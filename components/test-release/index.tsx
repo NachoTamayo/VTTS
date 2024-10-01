@@ -2,8 +2,7 @@
 
 import { TestCard } from "@/components/test-release/test-card";
 import { useEffect, useState } from "react";
-import { TestPssSystemProps } from "@/helpers/interfaces";
-import { ServiceRequestSkeleton } from "./service-request-skeleton";
+import { ListSrSkeleton } from "@/components/test-release/list-sr-skeleton";
 import { ViewModal } from "@/components/test-release/modals/view-modal";
 import { useDisclosure } from "@nextui-org/react";
 import { useAuthStore } from "@/helpers/auth-store";
@@ -15,6 +14,7 @@ export const TestRelease = () => {
   const [refresh, setRefresh] = useState(false);
   const { setCurrentWindow } = useAuthStore();
   const { testPssSystem, setTestPssSystem } = useDataStore();
+  const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
     fetchServiceRequests();
@@ -43,6 +43,7 @@ export const TestRelease = () => {
       const data = await response.json();
       console.log(data);
       setTestPssSystem(data);
+      setLoaded(true);
     } catch (error) {
       console.error("Error fetching service requests:", error);
     }
@@ -54,9 +55,17 @@ export const TestRelease = () => {
 
   return (
     <div>
-      {testPssSystem.map((testInfo: TestPssSystemProps, index: number) => (
-        <TestCard key={index} {...testInfo} onView={onView} handleRefresh={handleRefresh} />
-      ))}
+      {isLoaded ? (
+        testPssSystem.length > 0 ? (
+          testPssSystem.map((testInfo, index) => (
+            <TestCard key={index} {...testInfo} onView={onView} handleRefresh={handleRefresh} />
+          ))
+        ) : (
+          <div className="flex justify-center items-center h-[80vh]">No service requests found</div>
+        )
+      ) : (
+        <ListSrSkeleton />
+      )}
       <ViewModal
         isOpen={isOpen}
         onClose={onClose}

@@ -2,12 +2,13 @@
 
 import { LoginSchema } from "@/helpers/schemas";
 import { LoginFormType } from "@/helpers/types";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Spinner } from "@nextui-org/react";
 import { Formik } from "formik";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 
 export const Login = () => {
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
   const initialValues: LoginFormType = {
@@ -17,7 +18,7 @@ export const Login = () => {
 
   const handleLogin = useCallback(
     async (values: LoginFormType) => {
-      // `values` contiene email & password. Puedes usar estos valores directamente
+      setLoading(true);
 
       const res = await fetch("/api/login", {
         method: "POST",
@@ -32,8 +33,6 @@ export const Login = () => {
           localStorage.setItem("user", JSON.stringify(data.user));
           router.push("/");
         });
-
-        // Redirigir al usuario a la página principal o a otra página protegida
       } else {
         const data = await res.json();
         setError(data.message);
@@ -71,7 +70,7 @@ export const Login = () => {
             </div>
 
             <Button onPress={() => handleSubmit()} variant="flat" color="primary">
-              Login
+              {!loading ? "Login" : <Spinner />}
             </Button>
           </>
         )}
