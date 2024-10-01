@@ -98,7 +98,7 @@ export interface SystemVersion {
 
 export interface ReleaseVersion {
   id: number;
-  app: number;
+  appRelation: VttsSystem;
   deliveryDate: string;
   version: string;
   stageRelation: Stage;

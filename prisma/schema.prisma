@@ -110,7 +110,6 @@ model SystemVersion {
 
   appRelation    VttsSystem       @relation(fields: [app], references: [id])
   releaseVersion ReleaseVersion[]
-  testPssSystem  TestPssSystem[]
 
   // Relación inversa hacia VersionForecast (sin fields ni references)
   versionForecast VersionForecast[]
@@ -137,23 +136,16 @@ model TestPssSystem {
   dateModification DateTime?
   releaseNote      String?
   windchillComment String?
-  app              Int
   releaseVersion   Int
-  stage            Int
 
-  srTypeRelation   SrType         @relation(fields: [srType], references: [id])
-  srNumberRelation ServiceRequest @relation(fields: [srNumber], references: [id])
-  assignedRelation VttsUser?      @relation(fields: [assigned], references: [id])
-  statusRelation   TestStatus?    @relation(fields: [status], references: [id])
-  appRelation      VttsSystem     @relation(fields: [app], references: [id])
+  srTypeRelation         SrType             @relation(fields: [srType], references: [id])
+  srNumberRelation       ServiceRequest     @relation(fields: [srNumber], references: [id])
+  assignedRelation       VttsUser?          @relation(fields: [assigned], references: [id])
+  statusRelation         TestStatus?        @relation(fields: [status], references: [id])
+  testAttachedInfo       TestAttachedInfo[]
+  releaseVersionRelation ReleaseVersion     @relation(fields: [releaseVersion], references: [id])
 
-  systemVersionRelation SystemVersion @relation(fields: [releaseVersion], references: [id])
-
-  testAttachedInfo TestAttachedInfo[]
-
-  releaseVersionRelation ReleaseVersion @relation(fields: [stage], references: [id])
-
-  @@unique([app, releaseVersion, srNumber, stage])
+  @@unique([releaseVersion, srNumber])
 }
 
 model TestStatus {
@@ -191,7 +183,6 @@ model VttsSystem {
   explorerVersion String?
   jreVersion      String?
 
-  testPssSystem   TestPssSystem[]
   releaseVersion  ReleaseVersion[]
   systemVersion   SystemVersion[]
   versionForecast VersionForecast[]

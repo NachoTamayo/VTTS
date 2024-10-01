@@ -61,11 +61,11 @@ export async function GET(req: Request, res: Response) {
         },
         assignedRelation: true,
         statusRelation: true,
-        appRelation: true,
-        systemVersionRelation: true,
         releaseVersionRelation: {
           include: {
             stageRelation: true,
+            systemVersion: true,
+            appRelation: true,
           },
         },
       },
