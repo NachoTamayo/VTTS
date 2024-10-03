@@ -10,8 +10,10 @@
     "prisma": "rm -rf node_modules/@prisma/client && npx prisma format && npx prisma generate"
   },
   "dependencies": {
+    "@internationalized/date": "^3.5.6",
     "@nextui-org/react": "^2.4.0",
     "@prisma/client": "^5.20.0",
+    "@react-aria/i18n": "^3.12.3",
     "apexcharts": "^3.35.5",
     "clsx": "^2.0.0",
     "dotenv": "^16.4.5",
@@ -28,6 +30,7 @@
     "react-apexcharts": "^1.4.0",
     "react-doc-viewer": "^0.1.14",
     "react-dom": "18.2.0",
+    "react-draft-wysiwyg": "^1.15.0",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
     "yup": "^1.4.0",
