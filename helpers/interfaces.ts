@@ -25,6 +25,7 @@ export interface TestPssSystemProps {
   systemVersionRelation: SystemVersion;
   /* Functions */
   onView: (id: number) => void;
+  onEdit: (id: number) => void;
   onOpen: () => void;
   handleRefresh: () => void;
 }
@@ -127,6 +128,15 @@ export interface ViewModalProps {
   id: number;
 }
 
+export interface EditModalProps {
+  isOpen: boolean;
+  onOpen?: () => void;
+  onClose?: () => void;
+  onOpenChange?: (isOpen: boolean) => void;
+  onEdit?: (id: number) => void;
+  id: number;
+}
+
 export interface ViewModal {
   title: string;
   sr_number: string;
@@ -148,6 +158,33 @@ export interface AttachedFile {
 }
 
 export interface ModalViewContentProps {
+  /* Properties */
+  id: number;
+  srType: number;
+  srNumber: number;
+  assigned: number;
+  status: number;
+  dateTest: string;
+  comments: string;
+  dateModification: string;
+  releaseNote: string;
+  windchillComment: string;
+  app: number;
+  releaseVersion: number;
+  stage: number;
+  /* Relations */
+  appRelation: VttsSystem;
+  srTypeRelation: SrType;
+  srNumberRelation: ServiceRequest;
+  stageRelation: Stage;
+  statusRelation: Status;
+  assignedRelation: VttsUser;
+  testAttachedInfo: AttachedInfo[];
+  releaseVersionRelation: ReleaseVersion;
+  systemVersionRelation: SystemVersion;
+}
+
+export interface ModalEditContentProps {
   /* Properties */
   id: number;
   srType: number;

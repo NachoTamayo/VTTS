@@ -99,7 +99,6 @@ model SrType {
   description String?
 
   serviceRequest ServiceRequest[]
-  testPssSystem  TestPssSystem[]
 }
 
 model SystemVersion {
@@ -127,7 +126,6 @@ model TestAttachedInfo {
 
 model TestPssSystem {
   id               Int       @id @default(autoincrement())
-  srType           Int
   srNumber         Int
   assigned         Int?
   status           Int?
@@ -138,7 +136,6 @@ model TestPssSystem {
   windchillComment String?
   releaseVersion   Int
 
-  srTypeRelation         SrType             @relation(fields: [srType], references: [id])
   srNumberRelation       ServiceRequest     @relation(fields: [srNumber], references: [id])
   assignedRelation       VttsUser?          @relation(fields: [assigned], references: [id])
   statusRelation         TestStatus?        @relation(fields: [status], references: [id])
