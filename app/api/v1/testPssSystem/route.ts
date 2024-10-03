@@ -33,7 +33,7 @@ export async function GET(req: Request, res: Response) {
     else
       whereClause = { ...whereClause, releaseVersionRelation: { isNot: { stageRelation: { stage: stageVersion } } } };
   }
-  if (serviceRequest) whereClause = { ...whereClause, serviceRequest: serviceRequest };
+  if (serviceRequest) whereClause = { ...whereClause, srNumberRelation: { srNumber: serviceRequest } };
   if (user) {
     if (equalUser === "true") {
       if (user != "999") whereClause = { ...whereClause, user: parseInt(user) };
@@ -53,10 +53,10 @@ export async function GET(req: Request, res: Response) {
     const result = await prisma.testPssSystem.findMany({
       include: {
         testAttachedInfo: true,
-        srTypeRelation: true,
         srNumberRelation: {
           include: {
             lastTesterRelation: true,
+            srTypeRelation: true,
           },
         },
         assignedRelation: true,
@@ -70,6 +70,7 @@ export async function GET(req: Request, res: Response) {
         },
       },
       where: whereClause,
+      orderBy: {},
     });
     return NextResponse.json(result, { status: 200 });
   } catch (error) {

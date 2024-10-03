@@ -19,10 +19,10 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       },
       include: {
         testAttachedInfo: true,
-        srTypeRelation: true,
         srNumberRelation: {
           include: {
             lastTesterRelation: true,
+            srTypeRelation: true,
           },
         },
         assignedRelation: true,
