@@ -24,25 +24,30 @@ interface FilterModalProps {
   onClose: () => void;
 }
 
+interface SelectValue {
+  key: string;
+  value: string;
+}
+
 export const FilterModal: React.FC<FilterModalProps> = (props) => {
   const { testPssSystem, setTestPssSystem } = useDataStore();
 
-  const [srTypes, setSrTypes] = useState<SrType[]>([]);
+  const [srTypes, setSrTypes] = useState<SelectValue[]>([]);
   const [selectedSrType, setSelectedSrType] = useState("0");
-  const [systems, setSystems] = useState<VttsSystem[]>([]);
+  const [systems, setSystems] = useState<SelectValue[]>([]);
   const [selectedSystem, setSelectedSystem] = useState("0");
-  const [releaseVersions, setReleaseVersions] = useState<ReleaseVersion[]>([]);
+  const [releaseVersions, setReleaseVersions] = useState<SelectValue[]>([]);
   const [selectedReleaseVersion, setSelectedReleaseVersion] = useState("all");
-  const [stageVersions, setStageVersions] = useState<Stage[]>([]);
-  const [selectedStageVersion, setSelectedStageVersion] = useState("All");
-  const [serviceRequests, setServiceRequests] = useState<ServiceRequest[]>([]);
+  const [stageVersions, setStageVersions] = useState<SelectValue[]>([]);
+  const [selectedStageVersion, setSelectedStageVersion] = useState("0");
+  const [serviceRequests, setServiceRequests] = useState<SelectValue[]>([]);
   const [selectedServiceRequest, setSelectedServiceRequest] = useState("all");
-  const [users, setUsers] = useState<VttsUser[]>([]);
+  const [users, setUsers] = useState<SelectValue[]>([]);
   const [selectedUser, setSelectedUser] = useState("0");
   const [loaded, setLoaded] = useState(false);
   const [selectedReleaseNote, setSelectedReleaseNote] = useState("all");
-  const [systemStatuses, setSystemStatuses] = useState<Status[]>([]);
-  const [selectedSystemStatus, setSelectedSystemStatus] = useState("all");
+  const [systemStatuses, setSystemStatuses] = useState<SelectValue[]>([]);
+  const [selectedSystemStatus, setSelectedSystemStatus] = useState("0");
 
   const [equalType, setEqualType] = useState(true);
   const [equalStageVersion, setEqualStageVersion] = useState(true);
@@ -50,7 +55,7 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
   const [equalSystemStatus, setEqualSystemStatus] = useState(true);
 
   const releaseNotes = [
-    { key: "all", value: "ALL" },
+    { key: "all", value: "All" },
     { key: "yes", value: "YES" },
     { key: "no", value: "NO" },
   ];
@@ -64,7 +69,8 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
         },
       });
       let data = await response.json();
-      let dataAux = [{ id: 0, srType: "All" }, ...data];
+      data = data.map((item: SrType) => ({ key: item.id, value: item.srType }));
+      let dataAux = [{ key: 0, value: "All" }, ...data];
       setSrTypes(dataAux);
     } catch (error) {
       console.error("Error fetching service requests:", error);
@@ -79,7 +85,8 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
         },
       });
       let data = await response.json();
-      let dataAux = [{ id: 0, app: "All" }, ...data];
+      data = data.map((item: VttsSystem) => ({ key: item.id, value: item.app }));
+      let dataAux = [{ key: 0, value: "All" }, ...data];
       setSystems(dataAux);
     } catch (error) {
       console.error("Error fetching service requests:", error);
@@ -95,8 +102,8 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
         },
       });
       let data = await response.json();
-      let dataAux = [{ version: "All" }, ...data];
-      console.log(dataAux);
+      data = data.map((item: ReleaseVersion) => ({ key: item.version, value: item.version }));
+      let dataAux = [{ key: "all", value: "All" }, ...data];
       setReleaseVersions(dataAux);
     } catch (error) {
       console.error("Error fetching service requests:", error);
@@ -112,7 +119,8 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
         },
       });
       let data = await response.json();
-      let dataAux = [{ id: 0, stage: "All" }, ...data];
+      data = data.map((item: Stage) => ({ key: item.id, value: item.stage }));
+      let dataAux = [{ key: 0, value: "All" }, ...data];
       setStageVersions(dataAux);
     } catch (error) {
       console.error("Error fetching service requests:", error);
@@ -128,7 +136,8 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
         },
       });
       let data = await response.json();
-      let dataAux = [{ key: "All", srNumber: "All" }, ...data];
+      data = data.map((item: ServiceRequest) => ({ key: item.srNumber, value: item.srNumber }));
+      let dataAux = [{ key: "all", value: "All" }, ...data];
       setServiceRequests(dataAux);
       setLoaded(true);
     } catch (error) {
@@ -145,7 +154,8 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
         },
       });
       let data = await response.json();
-      let dataAux = [{ id: 0, assigned: "All" }, { id: 999, assigned: "Unassigned" }, ...data];
+      data = data.map((item: VttsUser) => ({ key: item.id, value: item.assigned }));
+      let dataAux = [{ key: 0, value: "All" }, { key: 999, value: "Unassigned" }, ...data];
       setUsers(dataAux);
     } catch (error) {
       console.error("Error fetching service requests:", error);
@@ -160,7 +170,8 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
         },
       });
       let data = await response.json();
-      let dataAux = [{ id: 0, descStatus: "All" }, ...data];
+      data = data.map((item: Status) => ({ key: item.id, value: item.descStatus }));
+      let dataAux = [{ key: 0, value: "All" }, ...data];
       setSystemStatuses(dataAux);
     } catch (error) {
       console.error("Error fetching service requests:", error);
@@ -171,10 +182,10 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
     setSelectedSrType("0");
     setSelectedSystem("0");
     setSelectedReleaseVersion("all");
-    setSelectedStageVersion("All");
+    setSelectedStageVersion("0");
     setSelectedServiceRequest("all");
     setSelectedUser("0");
-    setSelectedSystemStatus("all");
+    setSelectedSystemStatus("0");
     setSelectedReleaseNote("all");
   };
 
@@ -213,31 +224,32 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
     let filter = "?";
     if (selectedSrType !== "0") {
       filter += `srType=${selectedSrType}&`;
+      filter += `equalType=${equalType}&`;
     }
-    filter += `equalType=${equalType}&`;
+
     if (selectedSystem !== "0") {
       filter += `system=${selectedSystem}&`;
     }
     if (selectedReleaseVersion !== "all") {
       filter += `systemVersion=${selectedReleaseVersion}&`;
     }
-    if (selectedStageVersion !== "All") {
+    if (selectedStageVersion !== "0") {
       filter += `stageVersion=${selectedStageVersion}&`;
+      filter += `equalStageVersion=${equalStageVersion}&`;
     }
-
-    filter += `equalStageVersion=${equalStageVersion}&`;
 
     if (selectedServiceRequest !== "all") {
       filter += `serviceRequest=${selectedServiceRequest}&`;
     }
     if (selectedUser !== "0") {
       filter += `user=${selectedUser}&`;
+      filter += `equalUser=${equalUser}&`;
     }
-    filter += `equalUser=${equalUser}&`;
-    if (selectedSystemStatus !== "all") {
+
+    if (selectedSystemStatus !== "0") {
       filter += `systemStatus=${selectedSystemStatus}&`;
+      filter += `equalSystemStatus=${equalSystemStatus}&`;
     }
-    filter += `equalSystemStatus=${equalSystemStatus}&`;
 
     if (selectedReleaseNote !== "all") {
       filter += `releaseNote=${selectedReleaseNote}&`;
@@ -251,7 +263,6 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
         },
       });
       const data = await response.json();
-      console.log(data);
       setTestPssSystem(data);
     } catch (error) {
       console.error("Error fetching service requests:", error);
@@ -286,6 +297,7 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
                   <div className="flex flex-row gap-2">
                     <Select
                       label="Type"
+                      items={srTypes}
                       className="max-w-xs w-2/12"
                       size="sm"
                       radius="sm"
@@ -293,9 +305,7 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
                       selectedKeys={[selectedSrType]}
                       startContent={<EqualChanger value={equalType} setValue={setEqualType} />}
                       onChange={(event) => handleSelectionChange("srType", event.target.value)}>
-                      {srTypes.map((item, index) => {
-                        return <SelectItem key={item.id}>{item.srType}</SelectItem>;
-                      })}
+                      {(item: SelectValue) => <SelectItem key={item.key}>{item.value}</SelectItem>}
                     </Select>
                     <Select
                       label="App"
@@ -306,21 +316,18 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
                       selectionMode="single"
                       selectedKeys={[selectedSystem]}
                       onChange={(event) => handleSelectionChange("system", event.target.value)}>
-                      {(system: VttsSystem) => <SelectItem key={system.id}>{system.app}</SelectItem>}
+                      {(item: SelectValue) => <SelectItem key={item.key}>{item.value}</SelectItem>}
                     </Select>
                     <Select
                       label="Version"
+                      items={releaseVersions}
                       className="max-w-xs w-2/12"
                       size="sm"
                       radius="sm"
                       selectionMode="single"
                       selectedKeys={[selectedReleaseVersion]}
                       onChange={(event) => handleSelectionChange("systemVersion", event.target.value)}>
-                      {releaseVersions.map((item, index) => (
-                        <SelectItem key={index === 0 ? "all" : item.version}>
-                          {index === 0 ? "All" : item.version}
-                        </SelectItem>
-                      ))}
+                      {(item: SelectValue) => <SelectItem key={item.key}>{item.value}</SelectItem>}
                     </Select>
                     <Select
                       label="Stage"
@@ -332,9 +339,7 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
                       selectedKeys={[selectedStageVersion]}
                       startContent={<EqualChanger value={equalStageVersion} setValue={setEqualStageVersion} />}
                       onChange={(event) => handleSelectionChange("stageVersion", event.target.value)}>
-                      {stageVersions.map((item, index) => (
-                        <SelectItem key={item.stage}>{item.stage}</SelectItem>
-                      ))}
+                      {(item: SelectValue) => <SelectItem key={item.key}>{item.value}</SelectItem>}
                     </Select>
                     <Select
                       label="Assigned"
@@ -346,28 +351,24 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
                       selectedKeys={[selectedUser]}
                       startContent={<EqualChanger value={equalUser} setValue={setEqualUser} />}
                       onChange={(event) => handleSelectionChange("user", event.target.value)}>
-                      {users.map((item, index) => (
-                        <SelectItem key={item.id}>{item.assigned}</SelectItem>
-                      ))}
+                      {(item: SelectValue) => <SelectItem key={item.key}>{item.value}</SelectItem>}
                     </Select>
                   </div>
                   <div className="flex flex-row gap-2">
                     <Select
                       label="Service Request"
+                      items={serviceRequests}
                       className="max-w-xs w-6/12"
                       size="sm"
                       radius="sm"
                       selectionMode="single"
                       selectedKeys={[selectedServiceRequest]}
                       onChange={(event) => handleSelectionChange("serviceRequest", event.target.value)}>
-                      {serviceRequests.map((item, index) => (
-                        <SelectItem key={index === 0 ? "all" : item.srNumber}>
-                          {index === 0 ? "All" : item.srNumber}
-                        </SelectItem>
-                      ))}
+                      {(item: SelectValue) => <SelectItem key={item.key}>{item.value}</SelectItem>}
                     </Select>
                     <Select
                       label="Test Status"
+                      items={systemStatuses}
                       className="max-w-xs w-4/12"
                       size="sm"
                       radius="sm"
@@ -375,25 +376,18 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
                       selectedKeys={[selectedSystemStatus]}
                       startContent={<EqualChanger value={equalSystemStatus} setValue={setEqualSystemStatus} />}
                       onChange={(event) => handleSelectionChange("systemStatus", event.target.value)}>
-                      {systemStatuses.map((item, index) => (
-                        <SelectItem key={index === 0 ? "all" : item.id}>
-                          {index === 0 ? "All" : item.descStatus}
-                        </SelectItem>
-                      ))}
+                      {(item: SelectValue) => <SelectItem key={item.key}>{item.value}</SelectItem>}
                     </Select>
                     <Select
                       label="Release Note"
+                      items={releaseNotes}
                       className="max-w-xs w-2/12"
                       size="sm"
                       radius="sm"
                       selectionMode="single"
                       selectedKeys={[selectedReleaseNote]}
                       onChange={(event) => handleSelectionChange("releaseNote", event.target.value)}>
-                      {releaseNotes.map((item, index) => (
-                        <SelectItem key={index === 0 ? "all" : item.value}>
-                          {index === 0 ? "All" : item.value}
-                        </SelectItem>
-                      ))}
+                      {(item: SelectValue) => <SelectItem key={item.key}>{item.value}</SelectItem>}
                     </Select>
                   </div>
                 </>

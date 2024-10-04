@@ -30,17 +30,16 @@ export async function GET(req: Request, res: Response) {
   if (stageVersion) {
     if (equalStageVersion === "true")
       whereClause = { ...whereClause, releaseVersionRelation: { stageRelation: { stage: stageVersion } } };
-    else
-      whereClause = { ...whereClause, releaseVersionRelation: { isNot: { stageRelation: { stage: stageVersion } } } };
+    else whereClause = { ...whereClause, releaseVersionRelation: { not: { stageRelation: { stage: stageVersion } } } };
   }
   if (serviceRequest) whereClause = { ...whereClause, srNumberRelation: { srNumber: serviceRequest } };
   if (user) {
     if (equalUser === "true") {
-      if (user != "999") whereClause = { ...whereClause, user: parseInt(user) };
-      else whereClause = { ...whereClause, user: null };
+      if (user != "999") whereClause = { ...whereClause, assigned: parseInt(user) };
+      else whereClause = { ...whereClause, assigned: null };
     } else {
-      if (user != "999") whereClause = { ...whereClause, user: { isNot: parseInt(user) } };
-      else whereClause = { ...whereClause, user: { not: null } };
+      if (user != "999") whereClause = { ...whereClause, assigned: { not: parseInt(user) } };
+      else whereClause = { ...whereClause, assigned: { not: null } };
     }
   }
   if (systemStatus) {
