@@ -2,7 +2,6 @@ import React from "react";
 import { Sidebar } from "./sidebar.styles";
 import { Avatar, Tooltip } from "@nextui-org/react";
 import { CompaniesDropdown } from "./companies-dropdown";
-import { CollapseItems } from "./collapse-items";
 import { SidebarItem } from "./sidebar-item";
 import { SidebarMenu } from "./sidebar-menu";
 import { useSidebarContext } from "../layout/layout-context";
@@ -60,12 +59,6 @@ export const SidebarWrapper = () => {
                 icon={<TestIcon />}
                 href="test-release"
               />
-
-              {/* <CollapseItems
-                icon={<BalanceIcon />}
-                items={["Banks Accounts", "Credit Cards", "Loans"]}
-                title="Balances"
-              /> */}
             </SidebarMenu>
 
             <SidebarMenu title="Development">
