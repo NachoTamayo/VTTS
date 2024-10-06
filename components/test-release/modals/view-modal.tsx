@@ -65,14 +65,20 @@ export const ViewModal: React.FC<ViewModalProps> = (props) => {
               <ModalBody>
                 <div className="flex w-full flex-wrap md:flex-nowrap items-end mb-6 md:mb-0 gap-4">
                   <div className="flex flex-nowrap">
-                    <Input isReadOnly type="text" label="App" value={content?.appRelation.app} className="max-w-28" />
+                    <Input
+                      isReadOnly
+                      type="text"
+                      label="App"
+                      value={content?.releaseVersionRelation.appRelation.app}
+                      className="max-w-28"
+                    />
                   </div>
                   <div className="flex flex-nowrap">
                     <Input
                       isReadOnly
                       type="text"
                       label="Version"
-                      value={content?.systemVersionRelation.version}
+                      value={content?.releaseVersionRelation.systemVersion.version}
                       className="max-w-28"
                     />
                   </div>

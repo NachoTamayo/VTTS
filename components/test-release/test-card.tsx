@@ -13,6 +13,7 @@ import {
 import { TestPssSystemProps, VttsUser } from "@/helpers/interfaces";
 import { formatDate } from "@/helpers/js-utils";
 import { useAuthStore } from "@/helpers/auth-store";
+import { useDataStore } from "@/helpers/data-store";
 import {
   Calendar03Icon,
   SourceCodeSquareIcon,
@@ -27,7 +28,7 @@ import {
   PinCode,
   ExternalLinkIcon,
 } from "../icons/icons";
-export const TestCard: React.FC<TestPssSystemProps> = ({ onView, handleRefresh, ...props }) => {
+export const TestCard: React.FC<TestPssSystemProps> = ({ onView, onEdit, handleRefresh, ...props }) => {
   const {
     id,
     dateTest,
@@ -46,9 +47,14 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, handleRefresh, 
   } = props;
   const username: VttsUser = JSON.parse(localStorage.getItem("user")?.toString() || "{}");
   const { showDescription } = useAuthStore();
+  const { testPssSystem, setTestPssSystem } = useDataStore();
 
   const handleView = () => {
     onView(props.id);
+  };
+
+  const handleEdit = () => {
+    onEdit(props.id);
   };
 
   const handleUnlink = async () => {
@@ -69,7 +75,21 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, handleRefresh, 
     }
   };
 
-  const handleEdit = () => {};
+  const handleFilterSRNumber = async (srNumber: string) => {
+    try {
+      const response = await fetch("/api/v1/testPssSystem?serviceRequest=" + srNumber, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+      setTestPssSystem(data);
+    } catch (error) {
+      console.error("Error fetching service requests:", error);
+    }
+  };
 
   const handleBookmark = async () => {
     const user = window.localStorage.getItem("user");
@@ -96,7 +116,13 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, handleRefresh, 
         <CardHeader className="flex gap-3">
           <div className="flex flex-col min-w-[37%]">
             <div className="flex text-md">
-              {srNumberRelation.srNumber}
+              <div
+                className="cursor-pointer hover:underline"
+                onClick={() => {
+                  handleFilterSRNumber(srNumberRelation.srNumber);
+                }}>
+                {srNumberRelation.srNumber}
+              </div>
               {!showDescription ? (
                 <>
                   <Spacer x={2} />

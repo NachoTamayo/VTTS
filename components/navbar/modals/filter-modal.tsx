@@ -16,6 +16,8 @@ import { useState, useEffect, ChangeEvent } from "react";
 import { FloppyDiskIcon, FolderOpenIcon } from "@/components/icons/icons";
 import { EqualChanger } from "./equal-changer";
 import { useDataStore } from "@/helpers/data-store";
+import { useAuthStore } from "@/helpers/auth-store";
+import { equal } from "assert";
 
 interface FilterModalProps {
   isOpen: boolean;
@@ -29,8 +31,22 @@ interface SelectValue {
   value: string;
 }
 
+interface LastRelease {
+  id: number;
+  app: number;
+  releaseVersion: number;
+  stage: number;
+}
+
+interface SRFilters {
+  filter1: string;
+  filter2: string;
+}
+
 export const FilterModal: React.FC<FilterModalProps> = (props) => {
   const { testPssSystem, setTestPssSystem } = useDataStore();
+  const { id: userID } = JSON.parse(localStorage.getItem("user") || "{}");
+  const [userFilters, setUserFilters] = useState<SRFilters>();
 
   const [srTypes, setSrTypes] = useState<SelectValue[]>([]);
   const [selectedSrType, setSelectedSrType] = useState("0");
@@ -53,6 +69,13 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
   const [equalStageVersion, setEqualStageVersion] = useState(true);
   const [equalUser, setEqualUser] = useState(true);
   const [equalSystemStatus, setEqualSystemStatus] = useState(true);
+
+  const [lastRelease, setLastRelease] = useState<LastRelease>();
+
+  const [isLoadingSF1, setIsLoadingSF1] = useState(false);
+  const [isLoadingSF2, setIsLoadingSF2] = useState(false);
+  const [isLoadingLF2, setIsLoadingLF2] = useState(false);
+  const [isLoadingLF1, setIsLoadingLF1] = useState(false);
 
   const releaseNotes = [
     { key: "all", value: "All" },
@@ -139,7 +162,26 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
       data = data.map((item: ServiceRequest) => ({ key: item.srNumber, value: item.srNumber }));
       let dataAux = [{ key: "all", value: "All" }, ...data];
       setServiceRequests(dataAux);
-      setLoaded(true);
+    } catch (error) {
+      console.error("Error fetching service requests:", error);
+    }
+  };
+
+  const fetchUser = async () => {
+    try {
+      const response = await fetch(`/api/v1/users/${userID}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      const newFilters = {
+        filter1: data.srFilter1,
+        filter2: data.srFilter2,
+      };
+      setUserFilters(newFilters);
+      return newFilters; // Retorna los filtros actualizados
     } catch (error) {
       console.error("Error fetching service requests:", error);
     }
@@ -154,8 +196,13 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
         },
       });
       let data = await response.json();
-      data = data.map((item: VttsUser) => ({ key: item.id, value: item.assigned }));
-      let dataAux = [{ key: 0, value: "All" }, { key: 999, value: "Unassigned" }, ...data];
+      data = data.map((item: VttsUser) => (item.id != userID ? { key: item.id, value: item.assigned } : null));
+      let dataAux = [
+        { key: 0, value: "All" },
+        { key: 999, value: "Unassigned" },
+        { key: userID, value: "My SRs" },
+        ...data,
+      ];
       setUsers(dataAux);
     } catch (error) {
       console.error("Error fetching service requests:", error);
@@ -178,6 +225,26 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
     }
   };
 
+  const fetchLastRelease = async () => {
+    try {
+      const response = await fetch("/api/v1/releaseVersion?orderBy=id&orderType=desc&limit=1", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      setLastRelease({
+        id: data[0].id,
+        app: data[0].app,
+        releaseVersion: data[0].releaseVersion,
+        stage: data[0].stage,
+      });
+    } catch (error) {
+      console.error("Error fetching service requests:", error);
+    }
+  };
+
   const clearFilter = () => {
     setSelectedSrType("0");
     setSelectedSystem("0");
@@ -187,6 +254,27 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
     setSelectedUser("0");
     setSelectedSystemStatus("0");
     setSelectedReleaseNote("all");
+  };
+
+  const handleLastRelease = async () => {
+    let filter = "?";
+    if (lastRelease) {
+      filter += `system=${lastRelease.app}&`;
+      filter += `systemVersionId=${lastRelease.releaseVersion}&`;
+      filter += `stageVersion=${lastRelease.stage}&`;
+    }
+    try {
+      const response = await fetch("/api/v1/testPssSystem" + filter, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      setTestPssSystem(data);
+    } catch (error) {
+      console.error("Error fetching service requests:", error);
+    }
   };
 
   const handleSelectionChange = (select: string, value: string) => {
@@ -269,8 +357,71 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
     }
   };
 
-  const saveFilter = (filter: string) => {};
-  const loadFilter = (filter: string) => {};
+  const saveFilter = async (filter: string) => {
+    filter === "one" ? setIsLoadingSF1(true) : setIsLoadingSF2(true);
+    let body;
+    const bodyJSON = JSON.stringify({
+      srType: selectedSrType,
+      srTypeEqual: equalType,
+      system: selectedSystem,
+      systemVersion: selectedReleaseVersion,
+      stageVersion: selectedStageVersion,
+      equalStage: equalStageVersion,
+      serviceRequest: selectedServiceRequest,
+      user: selectedUser,
+      equalUser: equalUser,
+      systemStatus: selectedSystemStatus,
+      equalSystemStatus: equalSystemStatus,
+      releaseNote: selectedReleaseNote,
+    });
+
+    if (filter === "one") {
+      body = JSON.stringify({
+        filter1: bodyJSON,
+      });
+    } else {
+      body = JSON.stringify({
+        filter2: bodyJSON,
+      });
+    }
+
+    const response = fetch(`/api/v1/users/${userID}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: body,
+    });
+    await response.then(() => {
+      setTimeout(() => {
+        filter === "one" ? setIsLoadingSF1(false) : setIsLoadingSF2(false);
+      }, 250);
+    });
+  };
+  const loadFilter = async (filter: string) => {
+    filter === "one" ? setIsLoadingLF1(true) : setIsLoadingLF2(true);
+    const response = await fetchUser();
+    const filters = filter === "one" ? response?.filter1 : response?.filter2;
+
+    if (filters) {
+      const data = JSON.parse(filters);
+      setSelectedSrType(data.srType);
+      setEqualType(data.srTypeEqual);
+      setSelectedSystem(data.system);
+      setSelectedReleaseVersion(data.systemVersion);
+      setSelectedStageVersion(data.stageVersion);
+      setEqualStageVersion(data.equalStage);
+      setSelectedServiceRequest(data.serviceRequest);
+      setSelectedUser(data.user);
+      setEqualUser(data.equalUser);
+      setSelectedSystemStatus(data.systemStatus);
+      setEqualSystemStatus(data.equalSystemStatus);
+      setSelectedReleaseNote(data.releaseNote);
+    }
+    setTimeout(() => {
+      filter === "one" ? setIsLoadingLF1(false) : setIsLoadingLF2(false);
+    }, 250);
+  };
 
   useEffect(() => {
     if (props.isOpen) {
@@ -281,6 +432,10 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
       fetchServiceRequests();
       fetchUsers();
       fetchSystemStatuses();
+      fetchLastRelease();
+      setTimeout(() => {
+        setLoaded(true);
+      }, 750);
     }
   }, [props.isOpen]);
   return (
@@ -396,42 +551,56 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
             <ModalFooter>
               <div className=" flex justify-start w-5/12 gap-1 align-middle">
                 <div className="align-middle">
-                  <Button onClick={() => loadFilter("one")}>Load Filter 1</Button>
+                  <Button
+                    size="sm"
+                    onClick={() => loadFilter("one")}
+                    className="bg-amber-300"
+                    isLoading={isLoadingLF1}
+                    isIconOnly>
+                    <FolderOpenIcon width={15} height={15} />
+                  </Button>
                 </div>
-                <Tooltip content="Save Filter 1" color="primary">
-                  <div>
-                    <FloppyDiskIcon
-                      className="cursor-pointer mt-1"
-                      height={30}
-                      width={30}
-                      onClick={() => saveFilter("one")}
-                    />
-                  </div>
-                </Tooltip>
                 <div>
-                  <Button onClick={() => loadFilter("two")}>Load Filter 2</Button>
+                  <Button
+                    size="sm"
+                    onClick={() => saveFilter("one")}
+                    className="bg-green-400"
+                    isLoading={isLoadingSF1}
+                    isIconOnly>
+                    <FloppyDiskIcon width={15} height={15} />
+                  </Button>
                 </div>
-                <Tooltip content="Save Filter 2" color="primary">
-                  <div>
-                    <FloppyDiskIcon
-                      className="cursor-pointer mt-1"
-                      height={30}
-                      width={30}
-                      onClick={() => saveFilter("two")}
-                    />
-                  </div>
-                </Tooltip>
+                <div>
+                  <Button
+                    size="sm"
+                    onClick={() => loadFilter("two")}
+                    className="bg-amber-300"
+                    isLoading={isLoadingLF2}
+                    isIconOnly>
+                    <FolderOpenIcon width={15} height={15} />
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    size="sm"
+                    onClick={() => saveFilter("two")}
+                    className="bg-green-400"
+                    isLoading={isLoadingSF2}
+                    isIconOnly>
+                    <FloppyDiskIcon width={15} height={15} />
+                  </Button>
+                </div>
               </div>
               <div className=" flex gap-2 justify-center w-4/12">
-                <Button color="default" onPress={props.onClose}>
+                <Button size="sm" color="default" onPress={props.onClose} onClick={handleLastRelease}>
                   Last Release
                 </Button>
               </div>
               <div className=" flex flex-row gap-2 justify-end w-3/12">
-                <Button color="danger" variant="flat" onClick={clearFilter}>
+                <Button size="sm" color="danger" variant="flat" onClick={clearFilter}>
                   Clear
                 </Button>
-                <Button color="primary" onPress={props.onClose} onClick={applyFilter}>
+                <Button size="sm" color="primary" onPress={props.onClose} onClick={applyFilter}>
                   Apply
                 </Button>
               </div>

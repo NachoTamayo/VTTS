@@ -1,6 +1,6 @@
 import { NotEqualSignCircleIcon, EqualSignCircleIcon } from "@/components/icons/icons";
 import exp from "constants";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface EqualChangerProps {
   value: boolean;
@@ -8,6 +8,9 @@ interface EqualChangerProps {
 }
 
 export const EqualChanger = (props: EqualChangerProps) => {
+  useEffect(() => {
+    setEqual(props.value);
+  }, [props]);
   const [equal, setEqual] = useState<boolean>(true);
   const handleClick = () => {
     setEqual(!equal);
