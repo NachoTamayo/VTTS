@@ -22,6 +22,7 @@ import { useTheme as useNextTheme } from "next-themes";
 import { useAuthStore } from "@/helpers/auth-store";
 import { FilterModal } from "./modals/filter-modal";
 import { filterProps } from "framer-motion";
+import { InfoAlert } from "@/components/alert/info-alert";
 
 interface Props {
   children: React.ReactNode;
@@ -41,6 +42,7 @@ export const NavbarWrapper = ({ children }: Props) => {
 
   return (
     <>
+      <InfoAlert />
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
         <Navbar
           isBordered

@@ -16,8 +16,8 @@ import { useState, useEffect, ChangeEvent } from "react";
 import { FloppyDiskIcon, FolderOpenIcon } from "@/components/icons/icons";
 import { EqualChanger } from "./equal-changer";
 import { useDataStore } from "@/helpers/data-store";
-import { useAuthStore } from "@/helpers/auth-store";
-import { equal } from "assert";
+import { InfoAlert } from "@/components/alert/info-alert";
+import { useAlert } from "@/helpers/alert-context";
 
 interface FilterModalProps {
   isOpen: boolean;
@@ -47,6 +47,7 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
   const { testPssSystem, setTestPssSystem } = useDataStore();
   const { id: userID } = JSON.parse(localStorage.getItem("user") || "{}");
   const [userFilters, setUserFilters] = useState<SRFilters>();
+  const { showAlert, alert } = useAlert();
 
   const [srTypes, setSrTypes] = useState<SelectValue[]>([]);
   const [selectedSrType, setSelectedSrType] = useState("0");
