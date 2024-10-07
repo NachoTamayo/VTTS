@@ -24,8 +24,8 @@ export async function GET(req: Request, res: Response) {
 
   let whereClause = {};
   if (srType) {
-    if (equalType === "true") whereClause = { ...whereClause, srType: parseInt(srType) };
-    else whereClause = { ...whereClause, srType: { not: parseInt(srType) } };
+    if (equalType === "true") whereClause = { ...whereClause, srNumberRelation: { srType: parseInt(srType) } };
+    else whereClause = { ...whereClause, srNumberRelation: { srType: { not: parseInt(srType) } } };
   }
   let releaseVersionConditions: any = {};
 

@@ -40,6 +40,10 @@ import { useIconColor } from "./icon-switch";
 // - SettingsIcon
 // - NotEqualSignCircleIcon
 // - EqualSignCircleIcon
+// - CloudUploadIcon
+// - DeleteIcon
+// - TxtIcon
+// - UnknownFileIcon
 
 export const Calendar03Icon = (props: React.SVGProps<SVGSVGElement>) => {
   const colorIcon = useIconColor();
@@ -200,7 +204,7 @@ export const TrelloIcon = (props: React.SVGProps<SVGSVGElement>) => {
       viewBox="0 0 24 24"
       width={24}
       height={24}
-      color={colorIcon}
+      color="#0079BF"
       fill={"none"}
       {...props}>
       <path
@@ -1184,6 +1188,128 @@ export const EqualSignCircleIcon = (props: React.SVGProps<SVGSVGElement>) => {
       {...props}>
       <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
       <path d="M8 9H16M8 15H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+};
+
+export const CloudUploadIcon = (props: React.SVGProps<SVGSVGElement>) => {
+  const colorIcon = useIconColor();
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={props.width || 24}
+      height={props.height || 24}
+      color={props.color || colorIcon}
+      fill={"none"}
+      {...props}>
+      <path
+        d="M17.4776 9.01106C17.485 9.01102 17.4925 9.01101 17.5 9.01101C19.9853 9.01101 22 11.0294 22 13.5193C22 15.8398 20.25 17.7508 18 18M17.4776 9.01106C17.4924 8.84606 17.5 8.67896 17.5 8.51009C17.5 5.46695 15.0376 3 12 3C9.12324 3 6.76233 5.21267 6.52042 8.03192M17.4776 9.01106C17.3753 10.1476 16.9286 11.1846 16.2428 12.0165M6.52042 8.03192C3.98398 8.27373 2 10.4139 2 13.0183C2 15.4417 3.71776 17.4632 6 17.9273M6.52042 8.03192C6.67826 8.01687 6.83823 8.00917 7 8.00917C8.12582 8.00917 9.16474 8.38194 10.0005 9.01101"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 13L12 21M12 13C11.2998 13 9.99153 14.9943 9.5 15.5M12 13C12.7002 13 14.0085 14.9943 14.5 15.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+export const DeleteIcon = (props: React.SVGProps<SVGSVGElement>) => {
+  const colorIcon = useIconColor();
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={props.width || 24}
+      height={props.height || 24}
+      color={props.color || colorIcon}
+      fill={"none"}
+      {...props}>
+      <path
+        d="M19.5 5.5L18.8803 15.5251C18.7219 18.0864 18.6428 19.3671 18.0008 20.2879C17.6833 20.7431 17.2747 21.1273 16.8007 21.416C15.8421 22 14.559 22 11.9927 22C9.42312 22 8.1383 22 7.17905 21.4149C6.7048 21.1257 6.296 20.7408 5.97868 20.2848C5.33688 19.3626 5.25945 18.0801 5.10461 15.5152L4.5 5.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M3 5.5H21M16.0557 5.5L15.3731 4.09173C14.9196 3.15626 14.6928 2.68852 14.3017 2.39681C14.215 2.3321 14.1231 2.27454 14.027 2.2247C13.5939 2 13.0741 2 12.0345 2C10.9688 2 10.436 2 9.99568 2.23412C9.8981 2.28601 9.80498 2.3459 9.71729 2.41317C9.32164 2.7167 9.10063 3.20155 8.65861 4.17126L8.05292 5.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path d="M9.5 16.5L9.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M14.5 16.5L14.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+};
+
+export const TxtIcon = (props: React.SVGProps<SVGSVGElement>) => {
+  const colorIcon = useIconColor();
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={props.width || 24}
+      height={props.height || 24}
+      color={props.color || colorIcon}
+      fill={"none"}
+      {...props}>
+      <path
+        d="M12.3529 13L14 15.5M14 15.5L15.6471 18M14 15.5L15.6471 13M14 15.5L12.3529 18M17.7059 13H19.3529M19.3529 13H21M19.3529 13V18M7 13H8.64706M8.64706 13H10.2941M8.64706 13V18"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M15 22H10.7273C7.46607 22 5.83546 22 4.70307 21.2022C4.37862 20.9736 4.09058 20.7025 3.8477 20.3971C3 19.3313 3 17.7966 3 14.7273V12.1818C3 9.21865 3 7.73706 3.46894 6.55375C4.22281 4.65142 5.81714 3.15088 7.83836 2.44135C9.09563 2 10.6698 2 13.8182 2C15.6173 2 16.5168 2 17.2352 2.2522C18.3902 2.65765 19.3012 3.5151 19.732 4.60214C20 5.27832 20 6.12494 20 7.81818V10"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M3 12C3 10.1591 4.49238 8.66667 6.33333 8.66667C6.99912 8.66667 7.78404 8.78333 8.43137 8.60988C9.00652 8.45576 9.45576 8.00652 9.60988 7.43136C9.78333 6.78404 9.66667 5.99912 9.66667 5.33333C9.66667 3.49238 11.1591 2 13 2"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+export const FileUnknownIcon = (props: React.SVGProps<SVGSVGElement>) => {
+  const colorIcon = useIconColor();
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={props.width || 24}
+      height={props.height || 24}
+      color={props.color || colorIcon}
+      fill={"none"}
+      {...props}>
+      <path
+        d="M7 11V11.5M5 4C5 2.89543 5.89543 2 7 2C8.07458 2 9 2.80976 9 3.91898C9 4.29783 8.88786 4.66821 8.67771 4.98344L7.5547 6.66795C7.19301 7.21049 7 7.84795 7 8.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4 12L4 14.5442C4 17.7892 4 19.4117 4.88607 20.5107C5.06508 20.7327 5.26731 20.9349 5.48933 21.1139C6.58831 22 8.21082 22 11.4558 22C12.1614 22 12.5141 22 12.8372 21.886C12.9044 21.8623 12.9702 21.835 13.0345 21.8043C13.3436 21.6564 13.593 21.407 14.0919 20.9081L18.8284 16.1716C19.4065 15.5935 19.6955 15.3045 19.8478 14.9369C20 14.5694 20 14.1606 20 13.3431V10C20 6.22876 20 4.34315 18.8284 3.17157C17.6569 2 15.7712 2 12 2M13 21.5V21C13 18.1716 13 16.7574 13.8787 15.8787C14.7574 15 16.1716 15 19 15H19.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 };

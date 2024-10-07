@@ -22,3 +22,7 @@ body {
 .wysiwyg-color-blue {
   color: blue;
 }
+
+.tox-statusbar__branding {
+  display: none;
+}
