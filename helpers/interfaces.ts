@@ -210,3 +210,11 @@ export interface ModalEditContentProps {
   releaseVersionRelation: ReleaseVersion;
   systemVersionRelation: SystemVersion;
 }
+
+export interface InfoAlertProps {
+  message?: string;
+  onOpen?: () => void;
+  onClose?: () => void;
+  onOpenChange?: (isOpen: boolean) => void;
+  isOpen?: boolean;
+}
