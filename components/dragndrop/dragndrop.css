@@ -14,7 +14,7 @@
   position: relative;
   border-radius: 8px;
   cursor: pointer;
-  max-height: 150px;
+  max-height: 100px;
 
   &.active {
     border-color: #6dc24b;
