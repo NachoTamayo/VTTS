@@ -134,6 +134,7 @@ export interface EditModalProps {
   onClose?: () => void;
   onOpenChange?: (isOpen: boolean) => void;
   onEdit?: (id: number) => void;
+  handleRefresh?: () => void;
   id: number;
 }
 

@@ -13,12 +13,14 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Spacer,
 } from "@nextui-org/react";
 import { ViewModalProps, ModalViewContentProps } from "@/helpers/interfaces";
 import { useEffect, useState } from "react";
 import { formatDate } from "@/helpers/js-utils";
 import { AttachedDocument } from "./attached";
 import ViewModalSkeleton from "./view-modal-skeleton";
+import { Calendar03Icon, TrelloIcon, ExternalLinkIcon } from "@/components/icons/icons";
 
 export const ViewModal: React.FC<ViewModalProps> = (props) => {
   const [content, setContent] = useState<ModalViewContentProps>();
@@ -43,6 +45,10 @@ export const ViewModal: React.FC<ViewModalProps> = (props) => {
       console.error("Error fetching service requests:", error);
     }
   };
+
+  const handleExternalLink = (link: string) => {
+    window.open(link, "_blank");
+  };
   return (
     <Modal
       size="5xl"
@@ -57,9 +63,31 @@ export const ViewModal: React.FC<ViewModalProps> = (props) => {
             <>
               <ModalHeader className="flex flex-col gap-1">
                 <div>
-                  {content?.srNumberRelation.srNumber}
+                  <div className="flex flex-row w-full justify-between">
+                    <div className="flex flex-row gap-2">{content?.srNumberRelation.srNumber}</div>
+                    <div className="flex flex-row gap-4 align-middle">
+                      <TrelloIcon
+                        width={30}
+                        height={30}
+                        onClick={() => handleExternalLink(content.srNumberRelation.trelloLink ?? "")}
+                        className={
+                          content.srNumberRelation.trelloLink != null ? "opacity-100 cursor-pointer" : "opacity-20"
+                        }
+                      />
+                      <ExternalLinkIcon
+                        width={30}
+                        height={30}
+                        onClick={() => handleExternalLink(content.srNumberRelation.externalLink)}
+                        className={
+                          content.srNumberRelation.externalLink != null ? "opacity-100 cursor-pointer" : "opacity-20"
+                        }
+                      />
+                      <Spacer x={10} />
+                    </div>
+                  </div>
                   <div className="text-small text-default-500">{content?.srNumberRelation.description}</div>
                 </div>
+
                 <Divider />
               </ModalHeader>
               <ModalBody>
