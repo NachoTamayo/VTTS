@@ -65,3 +65,53 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
   }
 }
+
+export async function PUT(req: Request, { params }: { params: { id: string } }) {
+  //const { id, file, comments, status, releaseNote, dateTest } = await req.json();
+  const formData = await req.formData();
+  const { comments, status, releaseNote, dateTest, file, fileId } = Object.fromEntries(formData);
+  try {
+    const result = await prisma.$transaction(async (prisma) => {
+      const testPssSystem = await prisma.testPssSystem.update({
+        where: {
+          id: parseInt(params.id),
+        },
+        data: {
+          comments: comments.toString() ?? "",
+          status: parseInt(status.toString()) ?? 0,
+          releaseNote: releaseNote.toString() ?? "no",
+          dateTest: new Date(dateTest.toString()) ?? new Date(),
+          dateModification: new Date(),
+        },
+      });
+      let attachedInfo;
+      if (fileId !== "") {
+        attachedInfo = await prisma.testAttachedInfo.update({
+          where: {
+            id: parseInt(fileId.toString()),
+          },
+          data: {
+            fileName: file.toString() ?? "",
+          },
+        });
+      } else {
+        attachedInfo = await prisma.testAttachedInfo.create({
+          data: {
+            fileName: file.toString() ?? "",
+            testPssSystemRelation: {
+              connect: {
+                id: testPssSystem.id,
+              },
+            },
+          },
+        });
+      }
+      return { testPssSystem, attachedInfo };
+    });
+
+    return NextResponse.json(result, { status: 200 });
+  } catch (error) {
+    console.error("Error to update field:", error);
+    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
+  }
+}

@@ -92,6 +92,7 @@ export const TestRelease = () => {
         onOpen={onOpenEdit}
         onOpenChange={onOpenChangeEdit}
         onEdit={onEdit}
+        handleRefresh={handleRefresh}
         id={id}
       />
     </div>

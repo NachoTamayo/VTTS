@@ -1,5 +1,5 @@
 import React from "react";
-import { DateValue, now, parseAbsoluteToLocal } from "@internationalized/date";
+import { DateValue, now, parseAbsoluteToLocal, toCalendarDate } from "@internationalized/date";
 import { I18nProvider } from "@react-aria/i18n";
 import {
   Modal,
@@ -47,10 +47,15 @@ export const EditModal: React.FC<EditModalProps> = (props) => {
   const [selectedSystemStatus, setSelectedSystemStatus] = useState("14");
   const [selectedReleaseNote, setSelectedReleaseNote] = useState("no");
 
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFileName, setSelectedFileName] = useState<string | undefined>(undefined);
+  const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
+
   const [comments, setComments] = useState<string>("");
 
   useEffect(() => {
     if (props.isOpen && props.id) {
+      setContent(undefined);
       fetchInfo();
       fetchSystemStatuses();
     }
@@ -80,12 +85,15 @@ export const EditModal: React.FC<EditModalProps> = (props) => {
         },
       });
       await response.json().then((data) => {
-        console.log(systemStatuses);
         setContent(data);
         //setSelectedSystemStatus(data.status);
-        setSelectedSystemStatus(data.status.toString());
+        setSelectedSystemStatus(data.status?.toString() ?? null);
         setSelectedReleaseNote(data.releaseNote);
-        setActualDate(today(getLocalTimeZone()));
+        setSelectedFileId(data.testAttachedInfo[0]?.id ?? null);
+        setSelectedFileName(data.testAttachedInfo[0]?.fileName ?? undefined);
+        if (data.dateTest) {
+          setActualDate(toCalendarDate(parseAbsoluteToLocal(data.dateTest)));
+        }
       });
     } catch (error) {
       console.error("Error fetching service requests:", error);
@@ -104,6 +112,40 @@ export const EditModal: React.FC<EditModalProps> = (props) => {
         break;
     }
   };
+
+  const handleFileChange = async (file: File) => {
+    setSelectedFile(file);
+  };
+  const handleExternalLink = (link: string) => {
+    window.open(link, "_blank");
+  };
+
+  const handleSave = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile?.name ?? "");
+      formData.append("comments", comments);
+      formData.append("status", selectedSystemStatus);
+      formData.append("releaseNote", selectedReleaseNote);
+      formData.append("dateTest", actualDate.toString());
+      formData.append("fileId", selectedFileId ?? "");
+      console.log(selectedFile);
+
+      const response = await fetch(`/api/v1/testPssSystem/${props.id}`, {
+        method: "PUT",
+        body: formData,
+      });
+
+      if (response.ok) {
+        props.handleRefresh && props.handleRefresh();
+        props.onOpenChange && props.onOpenChange(false);
+      } else {
+        console.error("Failed to save");
+      }
+    } catch (error) {
+      console.error("Error saving data:", error);
+    }
+  };
   return (
     <Modal
       size="5xl"
@@ -120,13 +162,19 @@ export const EditModal: React.FC<EditModalProps> = (props) => {
                 <div>
                   <div className="flex flex-row w-full justify-between">
                     <div className="flex flex-row gap-2">{content?.srNumberRelation.srNumber}</div>
-                    <div className="flex flex-row gap-4">
+                    <div className="flex flex-row gap-4 align-middle">
                       <TrelloIcon
+                        width={30}
+                        height={30}
+                        onClick={() => handleExternalLink(content.srNumberRelation.trelloLink ?? "")}
                         className={
                           content.srNumberRelation.trelloLink != null ? "opacity-100 cursor-pointer" : "opacity-20"
                         }
                       />
                       <ExternalLinkIcon
+                        width={30}
+                        height={30}
+                        onClick={() => handleExternalLink(content.srNumberRelation.externalLink)}
                         className={
                           content.srNumberRelation.externalLink != null ? "opacity-100 cursor-pointer" : "opacity-20"
                         }
@@ -173,16 +221,6 @@ export const EditModal: React.FC<EditModalProps> = (props) => {
                   </div>
                   <div className="flex flex-nowrap">
                     <Input
-                      isReadOnly
-                      isDisabled
-                      type="text"
-                      label="Test Date"
-                      value={content != null ? formatDate(content.dateTest) : ""}
-                      className="max-w-32"
-                    />
-                  </div>
-                  <div className="flex flex-nowrap">
-                    <Input
                       isDisabled={true}
                       type="text"
                       label="Assigned"
@@ -224,7 +262,7 @@ export const EditModal: React.FC<EditModalProps> = (props) => {
                       size="sm"
                       radius="sm"
                       className="w-3/12"
-                      label={"Birth date"}
+                      label={"Test Date"}
                       variant={"flat"}
                       value={actualDate}
                       onChange={setActualDate}
@@ -236,7 +274,12 @@ export const EditModal: React.FC<EditModalProps> = (props) => {
                 <div className="flex w-full flex-wrap md:flex-nowrap items-end mb-6 md:mb-0 gap-4">
                   <div className="flex flex-col w-full">
                     {/* content != null && content.testAttachedInfo */}
-                    <DragNdrop onFilesSelected={() => console.log("aaa")} width={"100%"} height={105} />
+                    <DragNdrop
+                      onFilesSelected={handleFileChange}
+                      fileName={selectedFileName}
+                      width={"100%"}
+                      height={105}
+                    />
                   </div>
                 </div>
                 <Spacer y={10} />
@@ -250,13 +293,17 @@ export const EditModal: React.FC<EditModalProps> = (props) => {
                           setComments(newValue);
                         }}
                         init={{
+                          height: 300,
                           menubar: false,
                           plugins: [
                             // Core editing features
                             "wordcount",
+                            "lists",
+                            "code",
+                            "fullscreen",
                           ],
                           toolbar:
-                            "undo redo | forecolor | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
+                            "undo redo | forecolor | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat | code fullscreen",
                           mergetags_list: [
                             { value: "First.Name", title: "First Name" },
                             { value: "Email", title: "Email" },
@@ -274,7 +321,7 @@ export const EditModal: React.FC<EditModalProps> = (props) => {
                 <Button size="sm" color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button size="sm" color="primary" variant="light" onPress={onClose}>
+                <Button size="sm" color="primary" variant="light" onClick={handleSave}>
                   Save
                 </Button>
               </ModalFooter>

@@ -112,7 +112,8 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, onEdit, handleR
   };
   return (
     <div>
-      <Card className="mx-4 my-2">
+      <Card
+        className={srNumberRelation.lastTesterRelation.id === username.id ? "mx-4 my-2 bg-orange-100" : "mx-4 my-2"}>
         <CardHeader className="flex gap-3">
           <div className="flex flex-col min-w-[37%]">
             <div className="flex text-md">
@@ -179,7 +180,7 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, onEdit, handleR
             <Spacer x={4} />
             <div className="flex items-center space-x-2">
               <Calendar03Icon />
-              <p className="min-w-24">{formatDate(dateTest)}</p>
+              <p className="min-w-24">{dateTest != null ? formatDate(dateTest) : " "}</p>
             </div>
             <Spacer x={4} />
             <div className="flex items-center space-x-2 ">
@@ -202,7 +203,10 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, onEdit, handleR
             </div>
             <Spacer x={4} />
             <div className="flex items-center space-x-2">
-              <Badge color="default" variant="faded" content={testAttachedInfo[0] != null ? "1" : "0"}>
+              <Badge
+                color="default"
+                variant="faded"
+                content={testAttachedInfo[0] != null && testAttachedInfo[0].fileName != "" ? "1" : "0"}>
                 <Clip />
               </Badge>
             </div>
