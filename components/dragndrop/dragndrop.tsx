@@ -9,9 +9,10 @@ import {
   PDFIcon,
   DownloadIcon,
   FileUnknownIcon,
+  AlertCircleIcon,
 } from "@/components/icons/icons";
 import "@/components/dragndrop/dragndrop.css";
-import { Button, Spacer, Progress } from "@nextui-org/react";
+import { Button, Spacer, Progress, Tooltip } from "@nextui-org/react";
 import { toast } from "sonner";
 
 const DragNdrop = ({
@@ -19,17 +20,21 @@ const DragNdrop = ({
   width,
   height,
   fileName,
+  srNumber,
 }: {
   onFilesSelected: Function;
   width: number | string;
   height: number;
   fileName?: string;
+  srNumber?: string;
 }) => {
   const [files, setFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [isFailed, setIsFailed] = useState(false);
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = event.target.files;
+    console.log(srNumber);
 
     if (selectedFiles && selectedFiles.length > 0) {
       const newFiles = Array.from(selectedFiles);
@@ -37,6 +42,7 @@ const DragNdrop = ({
         newFiles[i];
         const formData = new FormData();
         formData.append("file", newFiles[i]);
+        formData.append("srNumber", srNumber ?? "");
 
         try {
           const response = await fetch("/api/upload", {
@@ -47,10 +53,10 @@ const DragNdrop = ({
           if (response.ok) {
             //alert("File uploaded successfully!");
           } else {
-            //alert("Failed to upload file.");
+            toast.error("Error uploading file", { duration: 3000, position: "top-right" });
           }
         } catch (error) {
-          console.error("Error uploading file:", error);
+          toast.error("Error uploading file", { duration: 3000, position: "top-right" });
           alert("Error uploading file.");
         }
       }
@@ -71,7 +77,7 @@ const DragNdrop = ({
   };
 
   const handleDownload = async (file: string) => {
-    const response = await fetch(`/documents/${file}`);
+    const response = await fetch(`/documents/${srNumber}/${file}`);
     if (response.status === 200) {
       const blob = await response.blob();
       const link = document.createElement("a");
@@ -95,11 +101,12 @@ const DragNdrop = ({
 
   const handleGetFile = async (fileName: string) => {
     // Realizar la solicitud HTTP para obtener el archivo
-    const response = await fetch("/documents/" + fileName);
+    const response = await fetch("/documents/" + srNumber + "/" + fileName);
 
     // Comprobar si la respuesta fue exitosa
     if (!response.ok) {
-      toast.error("Error downloading file");
+      setIsFailed(true);
+      toast.error("Error downloading file", { duration: 3000, position: "top-right" });
     }
 
     // Convertir la respuesta en un Blob
@@ -124,18 +131,15 @@ const DragNdrop = ({
   useEffect(() => {
     console.log(fileName);
     if (fileName != undefined && fileName != "") {
+      if (fileName.includes("/")) fileName = fileName.split("/")[1];
       handleGetFile(fileName).then((file) => {
         setFiles((prevFiles) => [file]);
-        onFilesSelected(file);
+        //onFilesSelected(file);
       });
     } else {
       setFiles([]);
     }
   }, []);
-
-  useEffect(() => {
-    onFilesSelected(files[0]);
-  }, [files, onFilesSelected]);
 
   return (
     <section className="drag-drop" style={{ width: width, height: height }}>
@@ -194,12 +198,20 @@ const DragNdrop = ({
                       <td>{handleFileType(file.type)}</td>
                       <td> {file.name}</td>
                       <td>
-                        <DownloadIcon
-                          className="cursor-pointer"
-                          onClick={() => {
-                            handleDownload(file.name);
-                          }}
-                        />
+                        {isFailed ? (
+                          <Tooltip content="File not found. Download unavailable" color="danger">
+                            <div>
+                              <AlertCircleIcon />
+                            </div>
+                          </Tooltip>
+                        ) : (
+                          <DownloadIcon
+                            className="cursor-pointer"
+                            onClick={() => {
+                              handleDownload(file.name);
+                            }}
+                          />
+                        )}
                       </td>
                       <td className="file-actions">
                         <DeleteIcon onClick={() => handleRemoveFile(index)} />
