@@ -10,10 +10,11 @@ import {
   Tooltip,
   Spacer,
 } from "@nextui-org/react";
-import { TestPssSystemProps, VttsUser } from "@/helpers/interfaces";
+import { TestPssSystemProps, VttsUser, RelatedSR } from "@/helpers/interfaces";
 import { formatDate } from "@/helpers/js-utils";
 import { useAuthStore } from "@/helpers/auth-store";
 import { useDataStore } from "@/helpers/data-store";
+import { useState } from "react";
 import {
   Calendar03Icon,
   SourceCodeSquareIcon,
@@ -48,6 +49,7 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, onEdit, handleR
   const username: VttsUser = JSON.parse(localStorage.getItem("user")?.toString() || "{}");
   const { showDescription } = useAuthStore();
   const { testPssSystem, setTestPssSystem } = useDataStore();
+  const [relatedSRs, setRelatedSRs] = useState<RelatedSR[]>([]);
 
   const handleView = () => {
     onView(props.id);
@@ -55,6 +57,28 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, onEdit, handleR
 
   const handleEdit = () => {
     onEdit(props.id);
+  };
+
+  const handleCheckRelated = async () => {
+    const result = await fetch(`/api/v1/related?srNumber1=${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    await result.json().then((data) => {
+      const newRelatedSRs = data.map((item: RelatedSR) => ({
+        id: item.id,
+        srNumber1Relation: item.srNumber1Relation,
+        srNumber2Relation: item.srNumber2Relation,
+        linkedByRelation: item.linkedByRelation,
+      }));
+      if (newRelatedSRs.length > 0) {
+        setRelatedSRs(newRelatedSRs);
+      } else {
+        handleBookmark();
+      }
+    });
   };
 
   const handleUnlink = async () => {
@@ -110,6 +134,24 @@ export const TestCard: React.FC<TestPssSystemProps> = ({ onView, onEdit, handleR
       console.error("Error to bookmark service request:", error);
     }
   };
+
+  /*
+    try {
+      const response = await fetch(`/api/v1/testPssSystem/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: user,
+      });
+
+      await response.json().then((data) => {
+        handleRefresh();
+      });
+    } catch (error) {
+      console.error("Error to bookmark service request:", error);
+    }*/
+
   return (
     <div>
       <Card

@@ -97,6 +97,13 @@ export interface SystemVersion {
   version: string;
 }
 
+export interface RelatedSR {
+  id: number;
+  srNumber1Relation: ServiceRequest;
+  srNumber2Relation: ServiceRequest;
+  linkedByRelation: VttsUser;
+}
+
 export interface ReleaseVersion {
   id: number;
   appRelation: VttsSystem;

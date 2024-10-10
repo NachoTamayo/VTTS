@@ -78,23 +78,27 @@ export const TestRelease = () => {
       ) : (
         <ListSrSkeleton />
       )}
-      <ViewModal
-        isOpen={isOpen}
-        onClose={onClose}
-        onOpen={onOpen}
-        onOpenChange={onOpenChange}
-        onView={onView}
-        id={id}
-      />
-      <EditModal
-        isOpen={isOpenEdit}
-        onClose={onCloseEdit}
-        onOpen={onOpenEdit}
-        onOpenChange={onOpenChangeEdit}
-        onEdit={onEdit}
-        handleRefresh={handleRefresh}
-        id={id}
-      />
+      {isOpen && (
+        <ViewModal
+          isOpen={isOpen}
+          onClose={onClose}
+          onOpen={onOpen}
+          onOpenChange={onOpenChange}
+          onView={onView}
+          id={id}
+        />
+      )}
+      {isOpenEdit && (
+        <EditModal
+          isOpen={isOpenEdit}
+          onClose={onCloseEdit}
+          onOpen={onOpenEdit}
+          onOpenChange={onOpenChangeEdit}
+          onEdit={onEdit}
+          handleRefresh={handleRefresh}
+          id={id}
+        />
+      )}
     </div>
   );
 };
