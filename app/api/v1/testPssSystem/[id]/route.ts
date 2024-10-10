@@ -69,7 +69,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
   //const { id, file, comments, status, releaseNote, dateTest } = await req.json();
   const formData = await req.formData();
-  const { comments, status, releaseNote, dateTest, file, fileId } = Object.fromEntries(formData);
+  const { comments, status, releaseNote, dateTest, file, fileId, srNumber } = Object.fromEntries(formData);
   try {
     const result = await prisma.$transaction(async (prisma) => {
       const testPssSystem = await prisma.testPssSystem.update({
@@ -91,13 +91,13 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
             id: parseInt(fileId.toString()),
           },
           data: {
-            fileName: file.toString() ?? "",
+            fileName: srNumber + "/" + file.toString() ?? "",
           },
         });
       } else {
         attachedInfo = await prisma.testAttachedInfo.create({
           data: {
-            fileName: file.toString() ?? "",
+            fileName: srNumber + "/" + file.toString() ?? "",
             testPssSystemRelation: {
               connect: {
                 id: testPssSystem.id,

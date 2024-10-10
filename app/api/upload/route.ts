@@ -2,12 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import fs from "fs";
 
-const UPLOAD_DIR = path.resolve("public/documents");
-
 export const POST = async (req: NextRequest) => {
   const formData = await req.formData();
   const body = Object.fromEntries(formData);
   const file = (body.file as Blob) || null;
+  const UPLOAD_DIR = path.resolve("public/documents" + "/" + body.srNumber);
 
   if (file) {
     const buffer = Buffer.from(await file.arrayBuffer());
