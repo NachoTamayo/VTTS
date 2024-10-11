@@ -1,0 +1,22 @@
+{
+  "Languages": {
+    "en": "Inglés",
+    "es": "Español"
+  },
+  "HomePage": {
+    "title": "Bienvenido al Ejemplo de Internacionalización",
+    "Description": "Este es un ejemplo simple de cómo internacionalizar una aplicación React usando react-intl."
+  },
+  "LocaleSwitcher": {
+    "label": "Cambiar Idioma",
+    "locale": "{locale, select, es {🇩🇪 Español} en {🇺🇸 Inglés} other {Desconocido}}"
+  },
+  "Sidebar": {
+    "links": {
+      "test-release": {
+        "href": "/test-release",
+        "label": "Test Release"
+      }
+    }
+  }
+}

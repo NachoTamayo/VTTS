@@ -6,6 +6,9 @@ import { SidebarItem } from "./sidebar-item";
 import { SidebarMenu } from "./sidebar-menu";
 import { useSidebarContext } from "../layout/layout-context";
 import { usePathname } from "next/navigation";
+import LocaleSwitcherSelect from "@/components/language/LocaleSwitcherSelect";
+import { useLocale, useTranslations } from "next-intl";
+import { routing } from "@/i18n/routing";
 import {
   TestIcon,
   DashboardIcon,
@@ -22,6 +25,9 @@ import {
 export const SidebarWrapper = () => {
   const pathname = usePathname();
   const { collapsed, setCollapsed } = useSidebarContext();
+  const locale = useLocale();
+  const t = useTranslations("LocaleSwitcher");
+  const l = useTranslations("Sidebar");
 
   return (
     <aside className="h-screen z-[20] sticky top-0">
@@ -57,7 +63,7 @@ export const SidebarWrapper = () => {
                 isActive={pathname === "/test-release"}
                 title="Test Release"
                 icon={<TestIcon />}
-                href="test-release"
+                href={l("links.test-release.href")}
               />
             </SidebarMenu>
 
@@ -75,6 +81,13 @@ export const SidebarWrapper = () => {
             <Tooltip content={"Profile"} color="primary">
               <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026704d" size="sm" />
             </Tooltip>
+            <LocaleSwitcherSelect defaultValue={locale} label={t("label")}>
+              {routing.locales.map((cur) => (
+                <option key={cur} value={cur}>
+                  {t("locale", { locale: cur })}
+                </option>
+              ))}
+            </LocaleSwitcherSelect>
           </div>
         </div>
       </div>
