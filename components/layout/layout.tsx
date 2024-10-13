@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { useLockedBody } from "../hooks/useBodyLock";
-import { NavbarWrapper } from "../navbar/navbar";
-import { SidebarWrapper } from "../sidebar/sidebar";
+import { useLockedBody } from "@/components/hooks/useBodyLock";
+import { NavbarWrapper } from "@/components/navbar/Navbar";
+import { SidebarWrapper } from "@/components/sidebar/Sidebar";
 import { SidebarContext } from "./layout-context";
 
 interface Props {
@@ -24,7 +24,7 @@ export const Layout = ({ children }: Props) => {
         collapsed: sidebarOpen,
         setCollapsed: handleToggleSidebar,
       }}>
-      <section className='flex'>
+      <section className="flex">
         <SidebarWrapper />
         <NavbarWrapper>{children}</NavbarWrapper>
       </section>

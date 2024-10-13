@@ -1,13 +1,13 @@
 "use client";
 
-import { TestCard } from "@/components/test-release/test-card";
+import { TestCard } from "@/components/test-release/TestCard";
 import { useEffect, useState } from "react";
-import { ListSrSkeleton } from "@/components/test-release/list-sr-skeleton";
-import { ViewModal } from "@/components/test-release/modals/view-modal";
+import { ListSrSkeleton } from "@/components/test-release/ListSRSkeleton";
+import { ViewModal } from "@/components/test-release/modals/ViewModal";
 import { useDisclosure } from "@nextui-org/react";
 import { useAuthStore } from "@/helpers/auth-store";
 import { useDataStore } from "@/helpers/data-store";
-import { EditModal } from "./modals/edit-modal";
+import { EditModal } from "./modals/EditModal";
 
 export const TestRelease = () => {
   const { isOpen, onOpenChange, onOpen, onClose } = useDisclosure();

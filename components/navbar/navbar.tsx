@@ -13,16 +13,16 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import React from "react";
-import { TitleOnlyIcon, EdgeStyleIcon, FilterIcon } from "../icons/icons";
-import { BurguerButton } from "./burguer-button";
-import { NotificationsDropdown } from "./notifications-dropdown";
-import { UserDropdown } from "./user-dropdown";
-import { DarkModeSwitch } from "./darkmodeswitch";
+import { TitleOnlyIcon, EdgeStyleIcon, FilterIcon } from "@/components/icons/Icons";
+import { BurguerButton } from "./BurgerButton";
+import { NotificationsDropdown } from "./NotificationsDropdown";
+import { UserDropdown } from "./UserDropdown";
+import { DarkModeSwitch } from "./DarkModeSwitch";
 import { useTheme as useNextTheme } from "next-themes";
 import { useAuthStore } from "@/helpers/auth-store";
-import { FilterModal } from "./modals/filter-modal";
+import { FilterModal } from "./modals/FilterModal";
 import { filterProps } from "framer-motion";
-import { InfoAlert } from "@/components/alert/info-alert";
+import { InfoAlert } from "@/components/alert/InfoAlert";
 
 interface Props {
   children: React.ReactNode;

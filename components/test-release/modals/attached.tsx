@@ -1,4 +1,4 @@
-import { DocIcon, XLSIcon, ImgIcon, PDFIcon, DownloadIcon } from "../../icons/icons";
+import { DocIcon, XLSIcon, ImgIcon, PDFIcon, DownloadIcon } from "../../icons/Icons";
 import { useEffect, useState } from "react";
 import { Spacer } from "@nextui-org/react";
 

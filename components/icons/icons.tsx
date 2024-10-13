@@ -1,5 +1,5 @@
 import React from "react";
-import { useIconColor } from "./icon-switch";
+import { useIconColor } from "./IconSwitch";
 
 // List of icons
 // - Calendar03Icon

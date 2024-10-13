@@ -6,7 +6,6 @@ import { useAlert } from "@/helpers/alert-context";
 
 export const InfoAlert: React.FC<InfoAlertProps> = (props) => {
   const { alert, showAlert, hideAlert } = useAlert();
-
   let { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   return (
     <>

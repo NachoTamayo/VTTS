@@ -1,9 +1,9 @@
 import React from "react";
-import { Sidebar } from "./sidebar.styles";
+import { Sidebar } from "./Sidebar.styles";
 import { Avatar, Tooltip } from "@nextui-org/react";
-import { CompaniesDropdown } from "./companies-dropdown";
-import { SidebarItem } from "./sidebar-item";
-import { SidebarMenu } from "./sidebar-menu";
+import { CompaniesDropdown } from "./CompaniesDropdown";
+import { SidebarItem } from "./SidebarItem";
+import { SidebarMenu } from "./SidebarMenu";
 import { useSidebarContext } from "../layout/layout-context";
 import { usePathname } from "next/navigation";
 import LocaleSwitcherSelect from "@/components/language/LocaleSwitcherSelect";
@@ -20,7 +20,7 @@ import {
   BubbleChatEditIcon,
   GitBranchIcon,
   SettingsIcon,
-} from "@/components/icons/icons";
+} from "@/components/icons/Icons";
 
 export const SidebarWrapper = () => {
   const pathname = usePathname();
@@ -81,13 +81,7 @@ export const SidebarWrapper = () => {
             <Tooltip content={"Profile"} color="primary">
               <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026704d" size="sm" />
             </Tooltip>
-            <LocaleSwitcherSelect defaultValue={locale} label={t("label")}>
-              {routing.locales.map((cur) => (
-                <option key={cur} value={cur}>
-                  {t("locale", { locale: cur })}
-                </option>
-              ))}
-            </LocaleSwitcherSelect>
+            <LocaleSwitcherSelect defaultValue={locale} />
           </div>
         </div>
       </div>

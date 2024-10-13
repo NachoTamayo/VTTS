@@ -11,12 +11,12 @@ import {
   select,
 } from "@nextui-org/react";
 import { SrType, VttsSystem, ReleaseVersion, Stage, ServiceRequest, VttsUser, Status } from "@/helpers/interfaces";
-import { FilterModalSkeleton } from "./filter-modal-skeleton";
+import { FilterModalSkeleton } from "./FilterModalSkeleton";
 import { useState, useEffect, ChangeEvent } from "react";
-import { FloppyDiskIcon, FolderOpenIcon } from "@/components/icons/icons";
-import { EqualChanger } from "./equal-changer";
+import { FloppyDiskIcon, FolderOpenIcon } from "@/components/icons/Icons";
+import { EqualChanger } from "./EqualChanger";
 import { useDataStore } from "@/helpers/data-store";
-import { InfoAlert } from "@/components/alert/info-alert";
+import { InfoAlert } from "@/components/alert/InfoAlert";
 import { useAlert } from "@/helpers/alert-context";
 
 interface FilterModalProps {

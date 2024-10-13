@@ -10,7 +10,7 @@ import {
   DownloadIcon,
   FileUnknownIcon,
   AlertCircleIcon,
-} from "@/components/icons/icons";
+} from "@/components/icons/Icons";
 import "@/components/dragndrop/dragndrop.css";
 import { Button, Spacer, Progress, Tooltip } from "@nextui-org/react";
 import { toast } from "sonner";
@@ -52,6 +52,8 @@ const DragNdrop = ({
 
           if (response.ok) {
             //alert("File uploaded successfully!");
+            setIsFailed(false);
+            onFilesSelected(newFiles[i]);
           } else {
             toast.error("Error uploading file", { duration: 3000, position: "top-right" });
           }
@@ -134,7 +136,7 @@ const DragNdrop = ({
       if (fileName.includes("/")) fileName = fileName.split("/")[1];
       handleGetFile(fileName).then((file) => {
         setFiles((prevFiles) => [file]);
-        //onFilesSelected(file);
+        onFilesSelected(file);
       });
     } else {
       setFiles([]);
