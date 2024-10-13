@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma": "rm -rf node_modules/@prisma/client && npx prisma format && npx prisma generate"
+    "prisma": "rm -rf node_modules/@prisma/client && npx prisma format && npx prisma generate",
+    "test": "jest"
   },
   "dependencies": {
     "@internationalized/date": "^3.5.6",
@@ -25,8 +26,8 @@
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.3",
     "next": "^14.2.4",
-    "next-intl": "^3.0.0",
     "next-client-cookies": "^1.1.1",
+    "next-intl": "^3.0.0",
     "next-themes": "0.2.1",
     "prisma": "^5.20.0",
     "react": "18.2.0",
@@ -40,8 +41,14 @@
     "zustand": "^4.5.5"
   },
   "devDependencies": {
+    "@babel/core": "^7.25.8",
+    "@babel/preset-env": "^7.25.8",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/formidable": "^3.4.5",
+    "@types/jest": "^29.5.13",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "18.7.18",
     "@types/react": "18.0.20",
@@ -49,12 +56,17 @@
     "@types/react-draft-wysiwyg": "^1.13.8",
     "@types/socket.io": "^3.0.1",
     "@types/socket.io-client": "^1.4.36",
+    "@types/testing-library__jest-dom": "^5.14.9",
     "autoprefixer": "^10.4.15",
+    "babel-jest": "^29.7.0",
     "bcryptjs": "^2.4.3",
     "eslint": "8.23.1",
     "eslint-config-next": "13.4.16",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8.4.28",
     "tailwindcss": "^3.3.3",
+    "ts-jest": "^29.2.5",
     "typescript": "4.8.3"
   }
 }

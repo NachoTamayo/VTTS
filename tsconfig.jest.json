@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // Puedes agregar opciones específicas para las pruebas aquí
+    "noEmit": true // Ejemplo: no generar archivos de salida
+  },
+  "include": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx"]
+}
