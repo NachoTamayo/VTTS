@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider = "postgres" // "mysql"
+  url      = env("POSTGRES_HOST") // env("DATABASE_URL")
 }
 
 model ForecastStatus {
@@ -196,8 +196,8 @@ model VttsUser {
   userModification String?
   userMessage      String?
   profile          String?
-  srFilter1        String? @db.VarChar(500)
-  srFilter2        String? @db.VarChar(500)
+  srFilter1        String?   @db.VarChar(500)
+  srFilter2        String?   @db.VarChar(500)
 
   serviceRequest  ServiceRequest[]
   versionForecast VersionForecast[]
