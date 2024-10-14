@@ -70,7 +70,6 @@ export async function GET(req: Request, res: Response) {
     else whereClause = { ...whereClause, status: { not: parseInt(systemStatus) } };
   }
   if (releaseNote) whereClause = { ...whereClause, releaseNote: releaseNote };
-  console.log(whereClause);
   try {
     const result = await prisma.testPssSystem.findMany({
       include: {
@@ -92,7 +91,7 @@ export async function GET(req: Request, res: Response) {
         },
       },
       where: whereClause,
-      orderBy: {},
+      orderBy: { id: "asc" },
     });
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
