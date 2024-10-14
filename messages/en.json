@@ -13,9 +13,46 @@
   },
   "Sidebar": {
     "links": {
-      "test-release": {
+      "home": {
+        "href": "/",
+        "label": "Home"
+      },
+      "projectManagement": {
+        "label": "Project Management"
+      },
+      "serviceRequest": {
+        "label": "Service Request",
+        "href": "/service-request"
+      },
+      "version": {
+        "label": "Version",
+        "href": "/version"
+      },
+      "testing": {
+        "label": "Testing"
+      },
+      "manageRelease": {
+        "label": "Manage Release",
+        "href": "/manage-release"
+      },
+      "createList": {
+        "label": "Create List",
+        "href": "/create-list"
+      },
+      "testRelease": {
         "href": "/test-release",
         "label": "Test Release"
+      },
+      "development": {
+        "label": "Development"
+      },
+      "srDocument": {
+        "label": "Document SR",
+        "href": "/sr-document"
+      },
+      "myTasks": {
+        "label": "My Assignments",
+        "href": "/my-tasks"
       }
     }
   }

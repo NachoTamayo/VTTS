@@ -8,7 +8,7 @@ export const routing = defineRouting({
     "/": "/",
     "/test-release": {
       en: "/test-release",
-      es: "/testeo-de-release",
+      es: "/test-release",
     },
   },
 });

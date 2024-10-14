@@ -26,8 +26,7 @@ export const SidebarWrapper = () => {
   const pathname = usePathname();
   const { collapsed, setCollapsed } = useSidebarContext();
   const locale = useLocale();
-  const t = useTranslations("LocaleSwitcher");
-  const l = useTranslations("Sidebar");
+  const t = useTranslations("Sidebar");
 
   return (
     <aside className="h-screen z-[20] sticky top-0">
@@ -41,35 +40,48 @@ export const SidebarWrapper = () => {
         </div>
         <div className="flex flex-col justify-between h-full">
           <div className={Sidebar.Body()}>
-            <SidebarItem title="Home" icon={<DashboardIcon />} isActive={pathname === "/"} href="/" />
-            <SidebarMenu title="Project Management">
-              <SidebarItem isActive={pathname === "/a"} title="Service Request" icon={<BubbleChatEditIcon />} />
-              <SidebarItem isActive={pathname === "/a"} title="Version" icon={<GitBranchIcon />} />
-            </SidebarMenu>
-            <SidebarMenu title="Testing">
+            <SidebarItem
+              title={t("links.home.label")}
+              icon={<DashboardIcon />}
+              isActive={pathname === "/" + locale}
+              href="/"
+            />
+            <SidebarMenu title={t("links.projectManagement.label")}>
               <SidebarItem
                 isActive={pathname === "/a"}
-                title="Manage Release"
+                title={t("links.serviceRequest.label")}
+                icon={<BubbleChatEditIcon />}
+              />
+              <SidebarItem isActive={pathname === "/a"} title={t("links.version.label")} icon={<GitBranchIcon />} />
+            </SidebarMenu>
+            <SidebarMenu title={t("links.testing.label")}>
+              <SidebarItem
+                isActive={pathname === "/a"}
+                title={t("links.manageRelease.label")}
                 icon={<DatabaseSyncIcon />}
                 href="manage-release"
               />
               <SidebarItem
                 isActive={pathname === "/a"}
-                title="Create List"
+                title={t("links.createList.label")}
                 icon={<ReminderIcon />}
                 href="create-list"
               />
               <SidebarItem
                 isActive={pathname === "/test-release"}
-                title="Test Release"
+                title={t("links.testRelease.label")}
                 icon={<TestIcon />}
-                href={l("links.test-release.href")}
+                href={t("links.testRelease.href")}
               />
             </SidebarMenu>
 
-            <SidebarMenu title="Development">
-              <SidebarItem isActive={pathname === "/a"} title="SR Document" icon={<CommandLineIcon />} />
-              <SidebarItem isActive={pathname === "/a"} title="My Tasks" icon={<TaskIcon />} />
+            <SidebarMenu title={t("links.development.label")}>
+              <SidebarItem
+                isActive={pathname === "/a"}
+                title={t("links.srDocument.label")}
+                icon={<CommandLineIcon />}
+              />
+              <SidebarItem isActive={pathname === "/a"} title={t("links.myTasks.label")} icon={<TaskIcon />} />
             </SidebarMenu>
           </div>
           <div className={Sidebar.Footer()}>
@@ -79,7 +91,10 @@ export const SidebarWrapper = () => {
               </div>
             </Tooltip>
             <Tooltip content={"Profile"} color="primary">
-              <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026704d" size="sm" />
+              <Avatar
+                src="https://trello-members.s3.amazonaws.com/5e68bc325c270506507aa81b/975e4d7f5e966e61fa5b37f80d99a5a9/170.png"
+                size="sm"
+              />
             </Tooltip>
             <LocaleSwitcherSelect defaultValue={locale} />
           </div>
