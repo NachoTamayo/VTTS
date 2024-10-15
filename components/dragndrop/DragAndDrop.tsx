@@ -11,7 +11,7 @@ import {
   FileUnknownIcon,
   AlertCircleIcon,
 } from "@/components/icons/Icons";
-import "@/components/dragndrop/dragndrop.css";
+import "@/components/dragndrop/DragAndDrop.css";
 import { Button, Spacer, Progress, Tooltip } from "@nextui-org/react";
 import { toast } from "sonner";
 
