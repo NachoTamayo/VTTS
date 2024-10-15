@@ -16,7 +16,12 @@ export const UserDropdown = () => {
     <Dropdown>
       <NavbarItem>
         <DropdownTrigger>
-          <Avatar as="button" color="secondary" size="md" src="https://i.pravatar.cc/150?u=a042581f4e29026704d" />
+          <Avatar
+            as="button"
+            color="secondary"
+            size="md"
+            src="https://trello-members.s3.amazonaws.com/5e68bc325c270506507aa81b/975e4d7f5e966e61fa5b37f80d99a5a9/170.png"
+          />
         </DropdownTrigger>
       </NavbarItem>
       <DropdownMenu aria-label="User menu actions" onAction={(actionKey) => console.log({ actionKey })}>
