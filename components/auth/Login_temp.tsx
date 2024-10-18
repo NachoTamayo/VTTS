@@ -6,7 +6,7 @@ import { Button, Input, Spinner } from "@nextui-org/react";
 import { Formik } from "formik";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
-
+//Cambio de Capitalize a PascalCase
 export const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

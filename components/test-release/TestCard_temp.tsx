@@ -28,7 +28,7 @@ import {
   BookmarkIcon,
   PinCode,
   ExternalLinkIcon,
-} from "../icons/Icons";
+} from "../icons/Icons_temp";
 export const TestCard: React.FC<TestPssSystemProps> = ({ onView, onEdit, handleRefresh, ...props }) => {
   const {
     id,

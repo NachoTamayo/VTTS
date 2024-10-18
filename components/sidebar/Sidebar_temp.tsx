@@ -20,7 +20,7 @@ import {
   BubbleChatEditIcon,
   GitBranchIcon,
   SettingsIcon,
-} from "@/components/icons/Icons";
+} from "@/components/icons/Icons_temp";
 
 export const SidebarWrapper = () => {
   const pathname = usePathname();
