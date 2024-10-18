@@ -19,8 +19,8 @@ import { ViewModalProps, ModalViewContentProps } from "@/helpers/interfaces";
 import { useEffect, useState } from "react";
 import { formatDate } from "@/helpers/js-utils";
 import { AttachedDocument } from "./Attached";
-import ViewModalSkeleton from "./ViewModalSkeleton";
-import { Calendar03Icon, TrelloIcon, ExternalLinkIcon } from "@/components/icons/Icons_temp";
+import ViewModalSkeleton from "@/components/test-release/modals/ViewModalSkeleton";
+import { Calendar03Icon, TrelloIcon, ExternalLinkIcon } from "@/components/icons/Icons";
 
 export const ViewModal: React.FC<ViewModalProps> = (props) => {
   const [content, setContent] = useState<ModalViewContentProps>();

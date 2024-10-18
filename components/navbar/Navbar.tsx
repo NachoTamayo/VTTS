@@ -13,14 +13,14 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import React from "react";
-import { TitleOnlyIcon, EdgeStyleIcon, FilterIcon } from "@/components/icons/Icons_temp";
-import { BurguerButton } from "./BurgerButton_temp";
-import { NotificationsDropdown } from "./NotificationsDropdown";
-import { UserDropdown } from "./UserDropdown";
-import { DarkModeSwitch } from "./DarkModeSwitch_temp";
+import { TitleOnlyIcon, EdgeStyleIcon, FilterIcon } from "@/components/icons/Icons";
+import { BurguerButton } from "./BurgerButton";
+import { NotificationsDropdown } from "@/components/navbar/NotificationsDropdown";
+import { UserDropdown } from "@/components/navbar/UserDropdown";
+import { DarkModeSwitch } from "./DarkModeSwitch";
 import { useTheme as useNextTheme } from "next-themes";
 import { useAuthStore } from "@/helpers/auth-store";
-import { FilterModal } from "./modals/FilterModal_temp";
+import { FilterModal } from "./modals/FilterModal";
 import { filterProps } from "framer-motion";
 import { InfoAlert } from "@/components/alert/InfoAlert";
 

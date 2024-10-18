@@ -1,4 +1,4 @@
-import { ServiceRequestSkeleton } from "./ServiceRequestSkeleton";
+import { ServiceRequestSkeleton } from "@/components/test-release/ServiceRequestSkeleton";
 
 export const ListSrSkeleton = () => {
   const numRows = 15;

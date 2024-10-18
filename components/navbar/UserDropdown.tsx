@@ -1,6 +1,6 @@
 import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Navbar, NavbarItem } from "@nextui-org/react";
 import React, { useCallback } from "react";
-import { DarkModeSwitch } from "./DarkModeSwitch_temp";
+import { DarkModeSwitch } from "./DarkModeSwitch";
 import { useRouter } from "next/navigation";
 import { deleteAuthCookie } from "@/actions/auth.action";
 

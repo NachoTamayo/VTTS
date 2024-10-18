@@ -19,7 +19,7 @@ import { EditModalProps, ModalEditContentProps } from "@/helpers/interfaces";
 import { useEffect, useState } from "react";
 import EditModalSkeleton from "./EditModalSkeleton";
 import { Status } from "@/helpers/interfaces";
-import { Calendar03Icon, TrelloIcon, ExternalLinkIcon } from "@/components/icons/Icons_temp";
+import { Calendar03Icon, TrelloIcon, ExternalLinkIcon } from "@/components/icons/Icons";
 import { getLocalTimeZone, today } from "@internationalized/date";
 import { Editor } from "@tinymce/tinymce-react";
 import DragNdrop from "@/components/dragndrop/DragAndDrop";

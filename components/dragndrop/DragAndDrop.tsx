@@ -10,7 +10,7 @@ import {
   DownloadIcon,
   FileUnknownIcon,
   AlertCircleIcon,
-} from "@/components/icons/Icons_temp";
+} from "@/components/icons/Icons";
 import "@/components/dragndrop/DragAndDrop.css";
 import { Button, Spacer, Progress, Tooltip } from "@nextui-org/react";
 import { toast } from "sonner";

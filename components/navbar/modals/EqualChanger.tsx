@@ -1,4 +1,4 @@
-import { NotEqualSignCircleIcon, EqualSignCircleIcon } from "@/components/icons/Icons_temp";
+import { NotEqualSignCircleIcon, EqualSignCircleIcon } from "@/components/icons/Icons";
 import exp from "constants";
 import { useState, useEffect } from "react";
 
