@@ -16,7 +16,11 @@ export async function GET(req: Request, res: Response) {
       });
       return NextResponse.json(result, { status: 200 });
     } else {
-      const result = await prisma.systemVersion.findMany({});
+      const result = await prisma.systemVersion.findMany({
+        include: {
+          appRelation: true,
+        },
+      });
       return NextResponse.json(result, { status: 200 });
     }
     const result = await prisma.systemVersion.findMany({});
