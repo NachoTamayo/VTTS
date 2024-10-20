@@ -3,6 +3,26 @@
     "en": "Inglés",
     "es": "Español"
   },
+  "Global": {
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Añadir",
+    "close": "Cerrar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "clear": "Limpiar",
+    "yes": "Sí",
+    "no": "No",
+    "loading": "Cargando...",
+    "actions": "Acciones",
+    "status": "Estado",
+    "system": "Sistema",
+    "prevision": "Previsión SR",
+    "version": "Versión",
+    "date": "Fecha de Entrega"
+  },
   "HomePage": {
     "title": "Bienvenido al Ejemplo de Internacionalización",
     "Description": "Este es un ejemplo simple de cómo internacionalizar una aplicación React usando react-intl."
@@ -10,6 +30,23 @@
   "LocaleSwitcher": {
     "label": "Cambiar Idioma",
     "locale": "{locale, select, es {🇩🇪 Español} en {🇺🇸 Inglés} other {Desconocido}}"
+  },
+  "Version": {
+    "table": {
+      "header": {
+        "version": "Versión",
+        "date": "Fecha de Entrega",
+        "status": "Estado",
+        "actions": "Acciones",
+        "system": "Sistema",
+        "prevision": "Previsión SR",
+        "id": "ID"
+      },
+      "actions": {
+        "edit": "Editar",
+        "delete": "Eliminar"
+      }
+    }
   },
   "Sidebar": {
     "links": {
