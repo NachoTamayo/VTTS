@@ -92,7 +92,7 @@ export interface TestPssSystem {
 
 export interface SystemVersion {
   id: number;
-  app: number;
+  appRelation: VttsSystem;
   deliveryDate: string;
   version: string;
 }

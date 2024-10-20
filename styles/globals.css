@@ -26,3 +26,7 @@ body {
 .tox-statusbar__branding {
   display: none;
 }
+
+.hideColumn {
+  display: none;
+}

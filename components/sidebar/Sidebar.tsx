@@ -52,7 +52,12 @@ export const SidebarWrapper = () => {
                 title={t("links.serviceRequest.label")}
                 icon={<BubbleChatEditIcon />}
               />
-              <SidebarItem isActive={pathname === "/a"} title={t("links.version.label")} icon={<GitBranchIcon />} />
+              <SidebarItem
+                isActive={pathname === "/a"}
+                title={t("links.version.label")}
+                href={t("links.version.href")}
+                icon={<GitBranchIcon />}
+              />
             </SidebarMenu>
             <SidebarMenu title={t("links.testing.label")}>
               <SidebarItem

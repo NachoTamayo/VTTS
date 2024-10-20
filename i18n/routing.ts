@@ -10,6 +10,10 @@ export const routing = defineRouting({
       en: "/test-release",
       es: "/test-release",
     },
+    "/version": {
+      en: "/version",
+      es: "/version",
+    },
   },
 });
 
