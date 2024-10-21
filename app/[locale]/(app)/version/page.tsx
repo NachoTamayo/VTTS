@@ -1,7 +1,7 @@
 import React from "react";
 import { Version } from "@/components/version";
 
-export const version = () => {
+const version = () => {
   return <Version />;
 };
 
