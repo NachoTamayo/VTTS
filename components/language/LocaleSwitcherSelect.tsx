@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { ChangeEvent, ReactNode, useTransition, useState } from "react";
-import { Locale, usePathname, useRouter } from "@/i18n/routing";
+import { Locale, usePathname, useRouter } from "@/routing";
 
 type Props = {
   defaultValue: string;

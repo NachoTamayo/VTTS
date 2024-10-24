@@ -2,13 +2,11 @@ import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Navbar, 
 import React, { useCallback } from "react";
 import { DarkModeSwitch } from "./DarkModeSwitch";
 import { useRouter } from "next/navigation";
-import { deleteAuthCookie } from "@/actions/auth.action";
 
 export const UserDropdown = () => {
   const router = useRouter();
 
   const handleLogout = useCallback(async () => {
-    await deleteAuthCookie();
     router.replace("/login");
   }, [router]);
 

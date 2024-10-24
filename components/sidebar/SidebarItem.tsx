@@ -4,7 +4,7 @@ import { useSidebarContext } from "../layout/layout-context";
 import clsx from "clsx";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { ComponentProps } from "react";
-import { Link, Pathnames } from "@/i18n/routing";
+import { Link, Pathnames } from "@/routing";
 
 interface Props {
   title: string;

@@ -91,13 +91,13 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
             id: parseInt(fileId.toString()),
           },
           data: {
-            fileName: srNumber + "/" + file.toString() ?? "",
+            fileName: srNumber + "/" + file.toString(),
           },
         });
       } else {
         attachedInfo = await prisma.testAttachedInfo.create({
           data: {
-            fileName: srNumber + "/" + file.toString() ?? "",
+            fileName: srNumber + "/" + file.toString(),
             testPssSystemRelation: {
               connect: {
                 id: testPssSystem.id,

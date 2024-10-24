@@ -2,10 +2,10 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { useParams } from "next/navigation";
 import LocaleSwitcherSelect from "@/components/language/LocaleSwitcherSelect";
 import { ChangeEvent, ReactNode, useTransition, useState } from "react";
-import { Locale, usePathname, useRouter } from "@/i18n/routing";
+import { Locale, usePathname, useRouter } from "@/routing";
 
 // Mockear el enrutador de Next.js
-jest.mock("@/i18n/routing", () => ({
+jest.mock("@/routing", () => ({
   useRouter: jest.fn(),
   usePathname: jest.fn(),
   useParams: jest.fn(),

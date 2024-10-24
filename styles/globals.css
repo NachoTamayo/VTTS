@@ -30,3 +30,14 @@ body {
 .hideColumn {
   display: none;
 }
+.narrowColumn {
+  width: 33px;
+  max-width: 33px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.centeredHeader {
+  padding-left: 2.2rem !important;
+}

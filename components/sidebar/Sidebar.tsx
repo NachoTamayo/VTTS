@@ -8,11 +8,9 @@ import { useSidebarContext } from "../layout/layout-context";
 import { usePathname } from "next/navigation";
 import LocaleSwitcherSelect from "@/components/language/LocaleSwitcherSelect";
 import { useLocale, useTranslations } from "next-intl";
-import { routing } from "@/i18n/routing";
 import {
   TestIcon,
   DashboardIcon,
-  SourceCodeIcon,
   TaskIcon,
   ReminderIcon,
   CommandLineIcon,
