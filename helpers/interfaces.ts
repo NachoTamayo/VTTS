@@ -67,13 +67,13 @@ export interface Stage {
 export interface ServiceRequest {
   id: number;
   srNumber: string;
-  srType: SrType;
+  srTypeRelation: SrType;
   description: string;
   externalLink: string;
   trelloLink?: string;
   dataTestPath: string;
   lastTesterRelation: VttsUser;
-  statusSR: string;
+  statusSr: string;
 }
 
 export interface TestPssSystem {

@@ -31,6 +31,26 @@
     "label": "Cambiar Idioma",
     "locale": "{locale, select, es {🇩🇪 Español} en {🇺🇸 Inglés} other {Desconocido}}"
   },
+  "ServiceRequest": {
+    "table": {
+      "header": {
+        "id": "ID",
+        "type": "Tipo",
+        "srNumber": "Número de SR",
+        "actions": "Acciones",
+        "description": "Descripción",
+        "externalLink": "Enlace Externo",
+        "trelloLink": "Enlace Trello",
+        "status": "Estado",
+        "dataTestPath": "data-test-path"
+      },
+      "actions": {
+        "edit": "Editar",
+        "associate": "Asociar",
+        "delete": "Borrar"
+      }
+    }
+  },
   "Version": {
     "table": {
       "header": {
@@ -59,7 +79,7 @@
       },
       "serviceRequest": {
         "label": "Service Request",
-        "href": "/service-request"
+        "href": "/serviceRequest"
       },
       "version": {
         "label": "Versión",
