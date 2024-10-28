@@ -1,1 +1,1 @@
-export const allowedRoutes = ["/", "/test-release", "/accounts"];
+export const allowedRoutes = ["/", "/test-release", "/version", "/serviceRequest"];
