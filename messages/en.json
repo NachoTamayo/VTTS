@@ -47,8 +47,19 @@
       "actions": {
         "edit": "Edit",
         "associate": "Associate",
-        "delete": "Delete"
+        "delete": "Delete",
+        "newSR": "New SR"
       }
+    },
+    "labels": {
+      "srNumber": "SR Number",
+      "type": "Type",
+      "description": "Description",
+      "externalLink": "External Link",
+      "trelloLink": "Trello Link",
+      "status": "Status",
+      "system": "System",
+      "prevision": "Prevision SR"
     }
   },
   "Version": {
@@ -97,7 +108,7 @@
         "href": "/create-list"
       },
       "testRelease": {
-        "href": "/test-release",
+        "href": "/testRelease",
         "label": "Test Release"
       },
       "development": {

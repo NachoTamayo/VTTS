@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import { SystemVersion } from "@/helpers/interfaces";
-import { TableWrapper } from "@/components/version/table/Table";
+import { TableWrapper } from "@/components/table/Table";
 import { Spinner } from "@nextui-org/react";
 import { useTranslations } from "next-intl";
 import { SortDescriptor } from "@nextui-org/react";
+import { RenderCell } from "./table/RenderCell";
 
 interface Version {
   id: string;
@@ -49,6 +50,7 @@ const columns = [
 export const Version = () => {
   const [rows, setRows] = useState<Version[]>([]);
   const [query, setQuery] = useState("/api/v1/systemVersion?orderBy=version&orderDirection=desc");
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({ column: "3", direction: "descending" });
   const fetchVersion = async () => {
     try {
       const response = await fetch(query, {
@@ -87,5 +89,17 @@ export const Version = () => {
     fetchVersion();
   }, [query]);
 
-  return <TableWrapper rows={rows} columns={columns} onSortChange={handleSortChange} onClick={handleClick} />;
+  return (
+    <div className="w-10/12 mx-auto mt-4 flex flex-col">
+      <TableWrapper
+        rows={rows}
+        columns={columns}
+        onSortChange={handleSortChange}
+        onClick={handleClick}
+        sortDescriptorProp={sortDescriptor}
+        multiLanguage="Version"
+        RenderCell={RenderCell}
+      />
+    </div>
+  );
 };

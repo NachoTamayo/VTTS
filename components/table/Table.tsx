@@ -33,6 +33,7 @@ interface Column {
   hideHeader?: boolean;
   hideColumn?: boolean;
   sortable?: boolean;
+  width?: string;
 }
 
 interface TableWrapperProps {
@@ -84,7 +85,7 @@ export const TableWrapper: React.FC<TableWrapperProps> = ({
               style={isActionsColumn ? { maxWidth: "100px" } : {}}
               className={`${column.hideColumn ? "hideColumn" : ""} ${
                 isActionsColumn ? "narrowColumn" : "centeredHeader"
-              }`}
+              } ${column.width ? column.width : ""}`}
               allowsSorting={column.sortable}>
               {t(column.name)}
             </TableColumn>

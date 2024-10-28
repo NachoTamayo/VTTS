@@ -47,8 +47,20 @@
       "actions": {
         "edit": "Editar",
         "associate": "Asociar",
-        "delete": "Borrar"
+        "delete": "Borrar",
+        "newSR": "Nueva SR"
       }
+    },
+    "labels": {
+      "srNumber": "Número de SR",
+      "type": "Tipo",
+      "description": "Descripción",
+      "externalLink": "Enlace Externo",
+      "trelloLink": "Enlace Trello",
+      "status": "Estado",
+      "system": "Sistema",
+      "prevision": "Previsión SR",
+      "id": "ID"
     }
   },
   "Version": {
@@ -97,7 +109,7 @@
         "href": "/create-list"
       },
       "testRelease": {
-        "href": "/test-release",
+        "href": "/testRelease",
         "label": "Testear Release"
       },
       "development": {

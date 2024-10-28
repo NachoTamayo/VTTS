@@ -6,6 +6,18 @@ const prisma = new PrismaClient();
 export async function GET(req: Request, res: Response) {
   const { searchParams } = new URL(req.url);
   const distinct = searchParams.get("distinct");
+  const srNumber = searchParams.get("srNumber");
+  const srType = searchParams.get("srType");
+  const status = searchParams.get("status");
+  const orderBy = searchParams.get("orderBy");
+  const orderDirection = searchParams.get("orderDirection");
+
+  const whereClause = {
+    srNumber: srNumber ? { contains: srNumber } : undefined,
+    srType: srType ? { equals: parseInt(srType) } : undefined,
+    statusSr: status ? { equals: status } : undefined,
+  };
+  const orderByClause = orderBy && orderDirection ? { [orderBy]: orderDirection } : undefined;
   try {
     if (distinct != null && distinct === "true") {
       const result = await prisma.serviceRequest.findMany({
@@ -16,10 +28,17 @@ export async function GET(req: Request, res: Response) {
       });
       return NextResponse.json(result, { status: 200 });
     } else {
-      const result = await prisma.serviceRequest.findMany();
+      const result = await prisma.serviceRequest.findMany({
+        include: {
+          srTypeRelation: true,
+        },
+        where: whereClause,
+        orderBy: orderByClause,
+      });
       return NextResponse.json(result, { status: 200 });
     }
   } catch (error) {
+    console.error("Error fetching service request", error);
     return NextResponse.json({ success: false, error: "Failed to fetch data" }, { status: 500 });
   }
 }
