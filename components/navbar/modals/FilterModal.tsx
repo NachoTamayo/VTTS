@@ -405,7 +405,8 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
     const filters = filter === "one" ? response?.filter1 : response?.filter2;
 
     if (filters) {
-      const data = JSON.parse(filters);
+      const unescapedFilters = JSON.parse(`"${filters}"`);
+      const data = JSON.parse(unescapedFilters);
       setSelectedSrType(data.srType);
       setEqualType(data.srTypeEqual);
       setSelectedSystem(data.system);
