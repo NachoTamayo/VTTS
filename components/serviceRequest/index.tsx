@@ -2,11 +2,13 @@
 import React, { useState, useEffect } from "react";
 import { TableWrapper } from "@/components/table/Table";
 import { ServiceRequest as IServiceRequest } from "@/helpers/interfaces";
-import { SortDescriptor, Select, SelectItem, Button } from "@nextui-org/react";
+import { SortDescriptor, Select, SelectItem, Button, useDisclosure } from "@nextui-org/react";
 import { RenderCell } from "@/components/serviceRequest/table/RenderCell";
 import { SrType, VttsSystem, ReleaseVersion, Stage, VttsUser, Status } from "@/helpers/interfaces";
 import { PlusIcon } from "@/components/icons/Icons";
 import { useTranslations } from "next-intl";
+import { EditModal } from "./modals/EditModal";
+import { toast } from "sonner";
 
 interface SelectValue {
   key: string;
@@ -70,6 +72,7 @@ export const ServiceRequest = () => {
   const [selectedStatus, setSelectedStatus] = useState("0");
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({ column: "3", direction: "descending" });
   const [descriptor, setDescriptor] = useState<Descriptor>({ column: "srNumber", direction: "desc" });
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const statusArray = [
     { key: "0", value: "All" },
@@ -121,9 +124,7 @@ export const ServiceRequest = () => {
     }
   };
 
-  const handleClick = (id: string, option: string) => {
-    console.log(id, option);
-  };
+  const handleClick = (id: string, option: string) => {};
 
   const refreshQuery = () => {
     let newQuery = "/api/v1/serviceRequest?";
@@ -151,6 +152,10 @@ export const ServiceRequest = () => {
     }
   };
 
+  const handleNew = () => {
+    onOpen();
+  };
+
   const handleSortChange = (sortDescriptor: SortDescriptor) => {
     const column =
       sortDescriptor.column === "2"
@@ -166,6 +171,12 @@ export const ServiceRequest = () => {
         : "trelloLink";
     const direction = sortDescriptor.direction === "ascending" ? "asc" : "desc";
     setDescriptor({ column, direction });
+  };
+
+  const handleSubmit = (title: string, tlink: string, elink: string, desc: string, type: string) => {
+    onClose();
+    console.log(title, tlink, elink, desc, type);
+    toast.success(t("messages.success"));
   };
 
   useEffect(() => {
@@ -184,7 +195,11 @@ export const ServiceRequest = () => {
     ready && (
       <div className="w-10/12 mx-auto mt-4 flex flex-col">
         <div className="w-full flex flex-row">
-          <Button className="bg-foreground h-12 text-background" endContent={<PlusIcon />} size="md">
+          <Button
+            className="bg-foreground h-12 text-background"
+            onClick={handleNew}
+            endContent={<PlusIcon />}
+            size="md">
             {t("table.actions.newSR")}
           </Button>
           <div className="w-4"></div>
@@ -223,6 +238,14 @@ export const ServiceRequest = () => {
             RenderCell={RenderCell}
           />
         </div>
+        <EditModal
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onOpenChange={onOpenChange}
+          onClose={onClose}
+          onSubmit={handleSubmit}
+          arrTypes={srTypes}
+        />
       </div>
     )
   );

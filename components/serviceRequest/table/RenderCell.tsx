@@ -41,6 +41,6 @@ export const RenderCell = ({ id, data, columnKey, onClick }: Props) => {
         </div>
       );
     default:
-      return <>{cellValue}</>;
+      return <>{cellValue != "" ? cellValue : null}</>;
   }
 };

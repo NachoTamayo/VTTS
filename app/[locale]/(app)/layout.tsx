@@ -6,7 +6,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <Layout>
       {children}
-      <Toaster richColors closeButton />
+      <Toaster richColors closeButton position="top-center" />
     </Layout>
   );
 }

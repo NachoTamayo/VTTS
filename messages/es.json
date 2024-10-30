@@ -60,7 +60,24 @@
       "status": "Estado",
       "system": "Sistema",
       "prevision": "Previsión SR",
-      "id": "ID"
+      "id": "ID",
+      "modal": {
+        "header": "Nueva Service Request",
+        "title": "Título",
+        "titlePlaceholder": "Introduce un título",
+        "description": "Descripción",
+        "descriptionPlaceholder": "Introduce una descripción",
+        "trelloLink": "Enlace Trello",
+        "trelloLinkPlaceholder": "https://trello.com/c/CF1Sw4VA/example-card",
+        "externalLink": "Enlace Externo",
+        "externalLinkPlaceholder": "https://example.com",
+        "type": "Tipo",
+        "typePlaceholder": "Selecciona un Tipo"
+      }
+    },
+    "messages": {
+      "requiredFields": "Por favor, rellene todos los campos obligatorios.",
+      "success": "Service Request creada con éxito"
     }
   },
   "Version": {

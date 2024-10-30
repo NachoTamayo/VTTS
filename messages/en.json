@@ -59,7 +59,25 @@
       "trelloLink": "Trello Link",
       "status": "Status",
       "system": "System",
-      "prevision": "Prevision SR"
+      "prevision": "Prevision SR",
+      "id": "ID",
+      "modal": {
+        "header": "New Service Request",
+        "title": "Title",
+        "titlePlaceholder": "Enter a SR title",
+        "description": "Description",
+        "descriptionPlaceholder": "Enter a SR description",
+        "trelloLink": "Trello Link",
+        "trelloLinkPlaceholder": "https://trello.com/c/CF1Sw4VA/example-card",
+        "externalLink": "External Link",
+        "externalLinkPlaceholder": "https://example.com",
+        "type": "Type",
+        "typePlaceholder": "Select a SR type"
+      }
+    },
+    "messages": {
+      "requiredFields": "Please fill in all required fields",
+      "success": "Service Request created successfully"
     }
   },
   "Version": {
