@@ -174,9 +174,39 @@ export const ServiceRequest = () => {
   };
 
   const handleSubmit = (title: string, tlink: string, elink: string, desc: string, type: string) => {
-    onClose();
-    console.log(title, tlink, elink, desc, type);
-    toast.success(t("messages.success"));
+    //onClose();
+    //console.log(title, tlink, elink, desc, type);
+    //toast.success(t("messages.success"));
+
+    const result = fetch("/api/v1/serviceRequest", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        srNumber: title,
+        trelloLink: tlink,
+        externalLink: elink,
+        description: desc,
+        srType: type,
+        statusSr: "OPEN",
+      }),
+    });
+
+    result
+      .then((res) => {
+        if (res.ok) {
+          toast.success(t("messages.success"));
+          onClose();
+          fetchServiceRequest();
+        } else {
+          toast.error(t("messages.error"));
+        }
+      })
+      .catch((error) => {
+        console.error("Error creating service request", error);
+        toast.error(t("messages.error"));
+      });
   };
 
   useEffect(() => {

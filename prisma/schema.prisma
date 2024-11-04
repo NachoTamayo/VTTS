@@ -80,11 +80,11 @@ model ServiceRequest {
   externalLink String?
   dataTestPath String?
   trelloLink   String?
-  lastTester   Int
+  lastTester   Int?
   statusSr     String
 
-  srTypeRelation     SrType   @relation(fields: [srType], references: [id])
-  lastTesterRelation VttsUser @relation(fields: [lastTester], references: [id])
+  srTypeRelation     SrType    @relation(fields: [srType], references: [id])
+  lastTesterRelation VttsUser? @relation(fields: [lastTester], references: [id])
 
   testPssSystem   TestPssSystem[]
   versionForecast VersionForecast[]

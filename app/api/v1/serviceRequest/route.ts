@@ -42,3 +42,25 @@ export async function GET(req: Request, res: Response) {
     return NextResponse.json({ success: false, error: "Failed to fetch data" }, { status: 500 });
   }
 }
+
+export async function POST(req: Request, res: Response) {
+  const { srNumber, srType, statusSr, description, externalLink, trelloLink } = await req.json();
+  externalLink != "" ? externalLink : undefined;
+  trelloLink != "" ? trelloLink : undefined;
+  try {
+    const result = await prisma.serviceRequest.create({
+      data: {
+        srNumber,
+        statusSr,
+        description,
+        externalLink,
+        trelloLink,
+        srTypeRelation: { connect: { id: parseInt(srType) } },
+      },
+    });
+    return NextResponse.json(result, { status: 200 });
+  } catch (error) {
+    console.error("Error creating service request", error);
+    return NextResponse.json({ success: false, error: "Failed to create data" }, { status: 500 });
+  }
+}
