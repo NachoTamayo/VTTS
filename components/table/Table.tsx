@@ -58,6 +58,7 @@ export const TableWrapper: React.FC<TableWrapperProps> = ({
   RenderCell,
 }) => {
   const t = useTranslations(multiLanguage);
+  const g = useTranslations("Global");
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>(sortDescriptorProp);
   const [hideColumn, setHideColumn] = React.useState(true);
 
@@ -92,7 +93,7 @@ export const TableWrapper: React.FC<TableWrapperProps> = ({
           );
         })}
       </TableHeader>
-      <TableBody items={rows}>
+      <TableBody items={rows} emptyContent={g("emptyTable")}>
         {rows.map((row, index) => (
           <TableRow key={index}>
             {Object.keys(row).map((key, index) => (

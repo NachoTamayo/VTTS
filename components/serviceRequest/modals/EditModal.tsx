@@ -27,6 +27,7 @@ interface EditModalProps {
   onClose: () => void;
   onSubmit: (title: string, tlink: string, elink: string, desc: string, type: string) => void;
   arrTypes: SelectValue[];
+  selectedId?: string;
 }
 
 export const EditModal: React.FC<EditModalProps> = (props) => {
@@ -37,7 +38,7 @@ export const EditModal: React.FC<EditModalProps> = (props) => {
   const [elink, setElink] = useState("");
   const [desc, setDesc] = useState("");
   const [type, setType] = useState("");
-  let arrTypes = props.arrTypes;
+  let auxTypes = props.arrTypes;
   const handleSubmit = () => {
     if (!title || !desc || !type) {
       toast.error(t("messages.requiredFields"), {
@@ -48,6 +49,19 @@ export const EditModal: React.FC<EditModalProps> = (props) => {
     props.onSubmit(title, tlink, elink, desc, type);
   };
 
+  const loadServiceRequest = async (id: string) => {
+    const response = await fetch(`/api/v1/serviceRequest/${id}`);
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      setTitle(data.srNumber);
+      setTlink(data.trelloLink || "");
+      setElink(data.externalLink || "");
+      setDesc(data.description);
+      setType(data.srType.toString());
+    }
+  };
+
   useEffect(() => {
     if (props.isOpen) {
       setTitle("");
@@ -55,22 +69,30 @@ export const EditModal: React.FC<EditModalProps> = (props) => {
       setElink("");
       setDesc("");
       setType("");
-      arrTypes[0] = { key: "", value: "" };
+      auxTypes[0] = { key: "", value: "" };
+      if (props.selectedId && props.selectedId != "0") {
+        loadServiceRequest(props.selectedId);
+      }
     }
   }, [props.isOpen]);
+
   return (
     <Modal size="2xl" isOpen={props.isOpen} onOpenChange={props.onOpenChange} isDismissable={false}>
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader>{t("labels.modal.header")}</ModalHeader>
+            {props.selectedId && props.selectedId != "0" ? (
+              <ModalHeader>{t("labels.modal.editHeader")}</ModalHeader>
+            ) : (
+              <ModalHeader>{t("labels.modal.header")}</ModalHeader>
+            )}
             <ModalBody>
               <Input
                 isRequired
                 type="text"
                 placeholder={t("labels.modal.titlePlaceholder")}
                 labelPlacement="outside"
-                label={t("labels.modal.title")}
+                label={t("labels.modal.srNumber")}
                 className="w-full"
                 value={title}
                 onValueChange={setTitle}
@@ -80,14 +102,14 @@ export const EditModal: React.FC<EditModalProps> = (props) => {
                 label={t("labels.type")}
                 labelPlacement="outside"
                 placeholder={t("labels.modal.typePlaceholder")}
-                items={arrTypes}
+                items={auxTypes}
                 className="max-w-xs w-6/12"
                 size="md"
                 radius="sm"
                 selectionMode="single"
                 selectedKeys={[type]}
                 onChange={(event) => setType(event.target.value)}>
-                {(item: SelectValue) => <SelectItem key={item.key}>{item.value}</SelectItem>}
+                {(item: SelectValue) => <SelectItem key={item.key ?? ""}>{item.value}</SelectItem>}
               </Select>
               <Input
                 type="text"

@@ -9,6 +9,7 @@ import { PlusIcon } from "@/components/icons/Icons";
 import { useTranslations } from "next-intl";
 import { EditModal } from "./modals/EditModal";
 import { toast } from "sonner";
+import { on } from "events";
 
 interface SelectValue {
   key: string;
@@ -73,6 +74,7 @@ export const ServiceRequest = () => {
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({ column: "3", direction: "descending" });
   const [descriptor, setDescriptor] = useState<Descriptor>({ column: "srNumber", direction: "desc" });
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const [selectedId, setSelectedId] = useState("0");
 
   const statusArray = [
     { key: "0", value: "All" },
@@ -124,7 +126,14 @@ export const ServiceRequest = () => {
     }
   };
 
-  const handleClick = (id: string, option: string) => {};
+  const handleClick = (id: string, option: string) => {
+    if (option === "edit") {
+      setSelectedId(id);
+      onOpen();
+    } else {
+      console.log("Delete", id);
+    }
+  };
 
   const refreshQuery = () => {
     let newQuery = "/api/v1/serviceRequest?";
@@ -174,10 +183,6 @@ export const ServiceRequest = () => {
   };
 
   const handleSubmit = (title: string, tlink: string, elink: string, desc: string, type: string) => {
-    //onClose();
-    //console.log(title, tlink, elink, desc, type);
-    //toast.success(t("messages.success"));
-
     const result = fetch("/api/v1/serviceRequest", {
       method: "POST",
       headers: {
@@ -242,7 +247,11 @@ export const ServiceRequest = () => {
             selectionMode="single"
             selectedKeys={[selectedSrType]}
             onChange={(event) => handleSelectionChange("srType", event.target.value)}>
-            {(item: SelectValue) => <SelectItem key={item.key}>{item.value}</SelectItem>}
+            {(item: SelectValue) => (
+              <SelectItem key={item.key ?? ""} textValue={item.value}>
+                {item.value}
+              </SelectItem>
+            )}
           </Select>
           <div className="w-6"></div>
           <Select
@@ -275,6 +284,7 @@ export const ServiceRequest = () => {
           onClose={onClose}
           onSubmit={handleSubmit}
           arrTypes={srTypes}
+          selectedId={selectedId}
         />
       </div>
     )
