@@ -21,7 +21,8 @@
     "system": "System",
     "prevision": "Prevision SR",
     "version": "Version",
-    "date": "Delivery Date"
+    "date": "Delivery Date",
+    "emptyTable": "No data to display"
   },
   "HomePage": {
     "title": "Welcome to the Internationalization Example",
@@ -63,8 +64,9 @@
       "id": "ID",
       "modal": {
         "header": "New Service Request",
-        "title": "Title",
-        "titlePlaceholder": "Enter a SR title",
+        "editHeader": "Editar Service Request",
+        "srNumber": "SR Number",
+        "titlePlaceholder": "Enter a SR Number",
         "description": "Description",
         "descriptionPlaceholder": "Enter a SR description",
         "trelloLink": "Trello Link",
