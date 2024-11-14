@@ -6,11 +6,13 @@ type AlertType = "info" | "success" | "warning" | "error";
 interface Alert {
   message: string;
   type: AlertType;
+  multilang?: string;
+  callback?: () => void;
 }
 
 interface AlertContextType {
   alert: Alert | null;
-  showAlert: (message: string, type?: AlertType) => void;
+  showAlert: (message: string, type?: AlertType, multilang?: string, callback?: () => void) => void;
   hideAlert: () => void;
 }
 
@@ -27,8 +29,9 @@ export const AlertProvider: React.FC<AlertProviderProps> = ({ children }) => {
   const [alert, setAlert] = useState<Alert | null>(null);
 
   // Función para mostrar una alerta
-  const showAlert = (message: string, type: AlertType = "info") => {
-    setAlert({ message, type });
+  const showAlert = (message: string, type: AlertType = "info", multilang = "Global", callback?: () => void): void => {
+    console.log("showAlert", message, type, callback);
+    setAlert({ message, type, multilang, callback });
   };
 
   // Función para ocultar la alerta
