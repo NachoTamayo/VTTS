@@ -15,6 +15,8 @@
     "clear": "Limpiar",
     "yes": "Sí",
     "no": "No",
+    "ok": "OK",
+    "confirm": "Confirmar",
     "loading": "Cargando...",
     "actions": "Acciones",
     "status": "Estado",
@@ -22,7 +24,12 @@
     "prevision": "Previsión SR",
     "version": "Versión",
     "date": "Fecha de Entrega",
-    "emptyTable": "No hay datos disponibles"
+    "emptyTable": "No hay datos disponibles",
+    "messages": {
+      "requiredFields": "Por favor, rellena todos los campos obligatorios",
+      "delete": "¿Estás seguro?",
+      "info": "Información"
+    }
   },
   "HomePage": {
     "title": "Bienvenido al Ejemplo de Internacionalización",
@@ -78,8 +85,15 @@
       }
     },
     "messages": {
-      "requiredFields": "Por favor, rellene todos los campos obligatorios.",
-      "success": "Service Request creada con éxito"
+      "requiredFields": "Por favor, rellena todos los campos obligatorios.",
+      "invalidLink": "Enlace Externo inválido",
+      "invalidTrelloLink": "Enlace a Trello inválido",
+      "success": {
+        "create": "Service Request creada con éxito",
+        "update": "Service Request actualizada con éxito",
+        "delete": "Service Request eliminada con éxito"
+      },
+      "deleteConfirmation": "Estás apunto de eliminar esta Service Request. ¿Estás realmente seguro?"
     }
   },
   "Version": {

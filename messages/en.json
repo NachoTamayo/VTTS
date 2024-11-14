@@ -15,6 +15,8 @@
     "clear": "Clear",
     "yes": "Yes",
     "no": "No",
+    "ok": "OK",
+    "confirm": "Confirm",
     "loading": "Loading...",
     "actions": "Actions",
     "status": "Status",
@@ -22,7 +24,12 @@
     "prevision": "Prevision SR",
     "version": "Version",
     "date": "Delivery Date",
-    "emptyTable": "No data to display"
+    "emptyTable": "No data to display",
+    "messages": {
+      "requiredFields": "Please fill in all required fields",
+      "delete": "Are you sure?",
+      "info": "Information"
+    }
   },
   "HomePage": {
     "title": "Welcome to the Internationalization Example",
@@ -79,7 +86,14 @@
     },
     "messages": {
       "requiredFields": "Please fill in all required fields",
-      "success": "Service Request created successfully"
+      "invalidLink": "Invalid External link",
+      "invalidTrelloLink": "Invalid Trello link",
+      "success": {
+        "create": "Service Request created successfully",
+        "update": "Service Request updated successfully",
+        "delete": "Service Request deleted successfully"
+      },
+      "deleteConfirmation": "You are about to delete this Service Request. Are you really sure?"
     }
   },
   "Version": {
