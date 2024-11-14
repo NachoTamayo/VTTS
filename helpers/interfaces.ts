@@ -67,6 +67,7 @@ export interface Stage {
 export interface ServiceRequest {
   id: number;
   srNumber: string;
+  srType: number;
   srTypeRelation: SrType;
   description: string;
   externalLink: string;
@@ -225,4 +226,49 @@ export interface InfoAlertProps {
   onClose?: () => void;
   onOpenChange?: (isOpen: boolean) => void;
   isOpen?: boolean;
+  callback?: () => void;
+  multilang?: string;
+}
+
+export interface ConfirmAlertProps {
+  message?: string;
+  onOpen?: () => void;
+  onClose?: () => void;
+  onOpenChange?: (isOpen: boolean) => void;
+  isOpen?: boolean;
+  confirmAction?: () => void;
+}
+
+export interface RenderCellProps {
+  id: string;
+  data: any;
+  columnKey: string;
+  onClick?: (id: string, option: string) => void;
+}
+
+export interface SelectValue {
+  key: string;
+  value: string;
+}
+export interface Descriptor {
+  column: string;
+  direction: string;
+}
+
+export interface RowsProps {
+  id: string;
+  system?: string;
+  version?: string;
+  date?: string;
+  srType?: string;
+  stage?: string;
+  status?: string;
+  assigned?: string;
+  actions?: string;
+  srNumber?: string;
+  description?: string;
+  externalLink?: string;
+  trelloLink?: string;
+  dataTestPath?: string;
+  lastTester?: string;
 }
