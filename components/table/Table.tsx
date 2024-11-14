@@ -12,20 +12,7 @@ import {
 } from "@nextui-org/react";
 import React, { useEffect } from "react";
 import { useTranslations } from "next-intl";
-
-interface RowsProps {
-  id: string;
-  system: string;
-  version: string;
-  date: string;
-}
-
-interface RenderCellProps {
-  id: string;
-  data: any;
-  columnKey: string;
-  onClick?: (id: string, option: string) => void;
-}
+import { RenderCellProps, RowsProps } from "@/helpers/interfaces";
 
 interface Column {
   name: string;
@@ -45,6 +32,7 @@ interface TableWrapperProps {
   sortDescriptorProp: SortDescriptor;
   multiLanguage: string;
   RenderCell: React.FC<RenderCellProps>;
+  isHeaderSticky?: boolean;
 }
 
 export const TableWrapper: React.FC<TableWrapperProps> = ({
@@ -56,6 +44,7 @@ export const TableWrapper: React.FC<TableWrapperProps> = ({
   sortDescriptorProp,
   multiLanguage,
   RenderCell,
+  isHeaderSticky,
 }) => {
   const t = useTranslations(multiLanguage);
   const g = useTranslations("Global");
@@ -70,6 +59,7 @@ export const TableWrapper: React.FC<TableWrapperProps> = ({
 
   return (
     <Table
+      isHeaderSticky={isHeaderSticky}
       isStriped
       removeWrapper
       aria-label="Version"
@@ -94,10 +84,10 @@ export const TableWrapper: React.FC<TableWrapperProps> = ({
         })}
       </TableHeader>
       <TableBody items={rows} emptyContent={g("emptyTable")}>
-        {rows.map((row, index) => (
-          <TableRow key={index}>
-            {Object.keys(row).map((key, index) => (
-              <TableCell className={hideColumn && key == "id" ? "hideColumn" : ""} key={index}>
+        {rows.map((row: RowsProps, rowIndex: number) => (
+          <TableRow key={rowIndex}>
+            {Object.keys(row).map((key, cellIndex) => (
+              <TableCell className={hideColumn && key == "id" ? "hideColumn" : ""} key={cellIndex}>
                 <RenderCell id={row.id} data={getKeyValue(row, key)} columnKey={key} onClick={onClick} />
               </TableCell>
             ))}
