@@ -5,3 +5,31 @@ export function formatDate(isoDate: string): string {
   const year = date.getFullYear();
   return `${day}/${month}/${year}`;
 }
+
+export function isValidUrl(string: string): boolean {
+  try {
+    new URL(string);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+type Order = "asc" | "desc";
+
+export function sortByColumn(array: [], column: string, order: Order = "asc"): [] {
+  console.log(array);
+  return array.sort((a, b) => {
+    const valueA = a[column];
+    const valueB = b[column];
+
+    if (order === "asc") {
+      if (valueA < valueB) return -1;
+      if (valueA > valueB) return 1;
+    } else if (order === "desc") {
+      if (valueA > valueB) return -1;
+      if (valueA < valueB) return 1;
+    }
+    return 0;
+  });
+}
