@@ -45,12 +45,11 @@ export async function middleware(request: NextRequest) {
       return NextResponse.json({ success: false, error: "Invalid token" }, { status: 401 });
     }
   }
-
+  console.log("User:", user);
   // Verifica si la ruta es permitida y si el usuario no está autenticado
   if (allowedRoutes.includes(pathname) && !user) {
     return NextResponse.redirect(new URL("/en/login", request.url));
   }
-
   // Si next-intl manejó la respuesta, devuélvela, si no, continúa con la solicitud
   return intlResponse || NextResponse.next();
 }
