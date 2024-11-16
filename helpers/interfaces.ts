@@ -100,6 +100,9 @@ export interface SystemVersion {
 
 export interface RelatedSR {
   id: number;
+  srNumber1: number;
+  srNumber2: number;
+  linkedBy: number;
   srNumber1Relation: ServiceRequest;
   srNumber2Relation: ServiceRequest;
   linkedByRelation: VttsUser;

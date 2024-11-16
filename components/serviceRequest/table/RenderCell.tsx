@@ -1,5 +1,5 @@
 import React from "react";
-import { LinkIcon, TrelloIcon, TrashIcon, EditIcon } from "@/components/icons/Icons";
+import { LinkIcon, TrelloIcon, TrashIcon, EditIcon, ExternalLinkIcon } from "@/components/icons/Icons";
 
 interface Props {
   id: string;
@@ -30,7 +30,7 @@ export const RenderCell = ({ id, data, columnKey, onClick }: Props) => {
       ) : null;
     case "externalLink":
       return cellValue != null ? (
-        <LinkIcon className="cursor-pointer mx-auto" onClick={() => externalLink(cellValue)} />
+        <ExternalLinkIcon className="cursor-pointer mx-auto" onClick={() => externalLink(cellValue)} />
       ) : null;
     case "actions":
       return (

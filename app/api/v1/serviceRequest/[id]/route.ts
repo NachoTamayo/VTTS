@@ -44,6 +44,20 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   try {
+    // Delete tested data about this service request
+    //TODO
+
+    // Delete related service requests
+    await prisma.relatedSr.deleteMany({
+      where: {
+        srNumber1: parseInt(params.id),
+      },
+    });
+    await prisma.relatedSr.deleteMany({
+      where: {
+        srNumber2: parseInt(params.id),
+      },
+    });
     await prisma.serviceRequest.delete({
       where: {
         id: parseInt(params.id),

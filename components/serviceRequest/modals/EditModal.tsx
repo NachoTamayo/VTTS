@@ -1,3 +1,4 @@
+"use client";
 import {
   Modal,
   ModalContent,
@@ -14,18 +15,14 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
-
-interface SelectValue {
-  key: string;
-  value: string;
-}
+import { SelectValue } from "@/helpers/interfaces";
 
 interface EditModalProps {
   isOpen: boolean;
   onOpen: () => void;
   onOpenChange: (open: boolean) => void;
   onClose: () => void;
-  onSubmit: (title: string, tlink: string, elink: string, desc: string, type: string) => void;
+  onSubmit: (title: string, tlink: string, elink: string, desc: string, type: string, status: string) => void;
   arrTypes: SelectValue[];
   selectedId?: string;
 }
@@ -38,7 +35,12 @@ export const EditModal: React.FC<EditModalProps> = (props) => {
   const [elink, setElink] = useState("");
   const [desc, setDesc] = useState("");
   const [type, setType] = useState("");
-  let auxTypes = props.arrTypes;
+  const [status, setStatus] = useState("0");
+  let auxTypes = [...props.arrTypes];
+  const statusArray = [
+    { key: "0", value: "OPEN" },
+    { key: "1", value: "CLOSED" },
+  ];
   const handleSubmit = () => {
     if (!title || !desc || !type) {
       toast.error(t("messages.requiredFields"), {
@@ -46,19 +48,19 @@ export const EditModal: React.FC<EditModalProps> = (props) => {
       });
       return;
     }
-    props.onSubmit(title, tlink, elink, desc, type);
+    props.onSubmit(title, tlink, elink, desc, type, status);
   };
 
   const loadServiceRequest = async (id: string) => {
     const response = await fetch(`/api/v1/serviceRequest/${id}`);
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
       setTitle(data.srNumber);
       setTlink(data.trelloLink || "");
       setElink(data.externalLink || "");
       setDesc(data.description);
       setType(data.srType.toString());
+      setStatus(data.statusSr.toString() == "OPEN" ? "0" : "1");
     }
   };
 
@@ -69,6 +71,7 @@ export const EditModal: React.FC<EditModalProps> = (props) => {
       setElink("");
       setDesc("");
       setType("");
+      setStatus("0");
       auxTypes[0] = { key: "", value: "" };
       if (props.selectedId && props.selectedId != "0") {
         loadServiceRequest(props.selectedId);
@@ -108,7 +111,21 @@ export const EditModal: React.FC<EditModalProps> = (props) => {
                 radius="sm"
                 selectionMode="single"
                 selectedKeys={[type]}
-                onChange={(event) => setType(event.target.value)}>
+                onChange={(event) => {
+                  if (event.target.value != "") setType(event.target.value);
+                }}>
+                {(item: SelectValue) => <SelectItem key={item.key ?? ""}>{item.value}</SelectItem>}
+              </Select>
+              <Select
+                label={t("labels.status")}
+                labelPlacement="outside"
+                items={statusArray}
+                className="max-w-xs w-6/12"
+                size="md"
+                radius="sm"
+                selectionMode="single"
+                selectedKeys={[status]}
+                onChange={(event) => setStatus(event.target.value)}>
                 {(item: SelectValue) => <SelectItem key={item.key ?? ""}>{item.value}</SelectItem>}
               </Select>
               <Input

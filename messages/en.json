@@ -71,7 +71,8 @@
       "id": "ID",
       "modal": {
         "header": "New Service Request",
-        "editHeader": "Editar Service Request",
+        "editHeader": "Edit Service Request",
+        "associateHeader": "Associate Service Request",
         "srNumber": "SR Number",
         "titlePlaceholder": "Enter a SR Number",
         "description": "Description",
@@ -92,6 +93,10 @@
         "create": "Service Request created successfully",
         "update": "Service Request updated successfully",
         "delete": "Service Request deleted successfully"
+      },
+      "associate": {
+        "success": "Service Request associated successfully",
+        "error": "Error associating Service Request"
       },
       "deleteConfirmation": "You are about to delete this Service Request. Are you really sure?"
     }

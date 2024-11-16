@@ -49,12 +49,12 @@ export const SidebarWrapper = () => {
                 isActive={pathname === "/" + locale + t("links.serviceRequest.href")}
                 title={t("links.serviceRequest.label")}
                 icon={<BubbleChatEditIcon />}
-                href={t("links.serviceRequest.href")}
+                href="serviceRequest"
               />
               <SidebarItem
                 isActive={pathname === "/" + locale + t("links.version.href")}
                 title={t("links.version.label")}
-                href={t("links.version.href")}
+                href="version"
                 icon={<GitBranchIcon />}
               />
             </SidebarMenu>
@@ -75,7 +75,7 @@ export const SidebarWrapper = () => {
                 isActive={pathname === "/" + locale + t("links.testRelease.href")}
                 title={t("links.testRelease.label")}
                 icon={<TestIcon />}
-                href={t("links.testRelease.href")}
+                href="testRelease"
               />
             </SidebarMenu>
 

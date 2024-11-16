@@ -31,7 +31,7 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
   }
 
   // Si las credenciales son correctas, crear el token JWT
-  const payload = { username: user.userName, ASSIGNED: user.assigned };
+  const payload = { username: user.userName, ASSIGNED: user.assigned, id: user.id };
 
   const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: "96h" });
   // Configurar la cookie con el token
