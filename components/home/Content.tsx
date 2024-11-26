@@ -6,6 +6,7 @@ import { Link } from "@nextui-org/react";
 import NextLink from "next/link";
 import { useAuthStore } from "@/helpers/auth-store";
 import { useTranslations } from "next-intl";
+import { BatteryFullIcon } from "../icons/Icons";
 
 export const Content = () => {
   const t = useTranslations("HomePage");
@@ -16,6 +17,7 @@ export const Content = () => {
   return (
     <div className="h-full lg:px-6">
       <h1>{t("title")}</h1>
+      <BatteryFullIcon width={30} height={30} />
     </div>
   );
 };

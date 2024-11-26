@@ -1,5 +1,6 @@
 import React from "react";
 import { LinkIcon, TrelloIcon, TrashIcon, EditIcon, ExternalLinkIcon } from "@/components/icons/Icons";
+import { Chip } from "@nextui-org/react";
 
 interface Props {
   id: string;
@@ -23,7 +24,20 @@ export const RenderCell = ({ id, data, columnKey, onClick }: Props) => {
   };
 
   const cellValue = data;
+  console.log("columnKey", columnKey);
   switch (columnKey) {
+    case "status":
+      return (
+        <Chip
+          className="capitalize"
+          color={
+            cellValue.toLowerCase() === "open" ? "success" : cellValue.toLowerCase() === "closed" ? "danger" : "warning"
+          }
+          size="sm"
+          variant="flat">
+          {cellValue.toLowerCase()}
+        </Chip>
+      );
     case "trelloLink":
       return cellValue != null ? (
         <TrelloIcon className="cursor-pointer mx-auto" onClick={() => externalLink(cellValue)} />

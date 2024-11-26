@@ -16,7 +16,6 @@
 # sql
 /sql
 /prisma/migrations
-/db
 
 # production
 /build

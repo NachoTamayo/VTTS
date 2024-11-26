@@ -25,6 +25,7 @@
     "version": "Version",
     "date": "Delivery Date",
     "emptyTable": "No data to display",
+    "all": "All",
     "messages": {
       "requiredFields": "Please fill in all required fields",
       "delete": "Are you sure?",
@@ -102,6 +103,11 @@
     }
   },
   "Version": {
+    "labels": {
+      "previousVersion": "Mark from version",
+      "resultsSelected1": "There are selected out ",
+      "resultsSelected2": " of a total of "
+    },
     "table": {
       "header": {
         "version": "Version",
@@ -114,7 +120,23 @@
       },
       "actions": {
         "edit": "Edit",
-        "delete": "Delete"
+        "delete": "Delete",
+        "modify": "Modify"
+      }
+    },
+    "modal": {
+      "editHeader": "Edit Version"
+    },
+    "messages": {
+      "success": {
+        "create": "Version created successfully",
+        "update": "Version updated successfully",
+        "delete": "Version deleted successfully"
+      },
+      "failed": {
+        "create": "Error creating Version",
+        "update": "Error updating Version",
+        "delete": "Error deleting Version"
       }
     }
   },

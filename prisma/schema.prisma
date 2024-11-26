@@ -157,20 +157,18 @@ model TestStatus {
 
 model VersionForecast {
   id               Int       @id @default(autoincrement())
-  app              Int
   version          Int
   srNumber         Int
   dateModification DateTime?
-  assigned         Int
+  assigned         Int?
   status           Int
 
-  appRelation      VttsSystem     @relation(fields: [app], references: [id])
   versionRelation  SystemVersion  @relation(fields: [version], references: [id]) // Relación con SystemVersion
   srNumberRelation ServiceRequest @relation(fields: [srNumber], references: [id])
-  assignedRelation VttsUser       @relation(fields: [assigned], references: [id])
+  assignedRelation VttsUser?      @relation(fields: [assigned], references: [id])
   statusRelation   ForecastStatus @relation(fields: [status], references: [id])
 
-  @@unique([app, version, srNumber])
+  @@unique([version, srNumber])
 }
 
 model VttsSystem {
@@ -180,9 +178,8 @@ model VttsSystem {
   explorerVersion String?
   jreVersion      String?
 
-  releaseVersion  ReleaseVersion[]
-  systemVersion   SystemVersion[]
-  versionForecast VersionForecast[]
+  releaseVersion ReleaseVersion[]
+  systemVersion  SystemVersion[]
 }
 
 model VttsUser {

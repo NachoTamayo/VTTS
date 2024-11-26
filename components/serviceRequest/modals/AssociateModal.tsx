@@ -20,7 +20,6 @@ import { toast } from "sonner";
 import { Descriptor, ServiceRequest, RowsProps, RelatedSR } from "@/helpers/interfaces";
 import { TableWrapper } from "@/components/table/Table";
 import { RenderCell } from "@/components/serviceRequest/modals/table/RenderCell";
-import AnimateHeight from "react-animate-height";
 
 const columns = [
   {

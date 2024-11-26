@@ -108,6 +108,21 @@ export interface RelatedSR {
   linkedByRelation: VttsUser;
 }
 
+export interface Version {
+  id: number;
+  app: number;
+  version: string;
+  deliveryDate: string;
+  srNumber: number;
+  assigned: number;
+  status: number;
+  appRelation: VttsSystem;
+  versionRelation: SystemVersion;
+  srNumberRelation: ServiceRequest;
+  assignedRelation: VttsUser;
+  statusRelation: Status;
+}
+
 export interface ReleaseVersion {
   id: number;
   appRelation: VttsSystem;
@@ -247,6 +262,7 @@ export interface RenderCellProps {
   data: any;
   columnKey: string;
   onClick?: (id: string, option: string) => void;
+  isOpen?: boolean;
 }
 
 export interface SelectValue {
@@ -274,4 +290,5 @@ export interface RowsProps {
   trelloLink?: string;
   dataTestPath?: string;
   lastTester?: string;
+  checked?: boolean;
 }

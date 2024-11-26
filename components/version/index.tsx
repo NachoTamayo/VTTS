@@ -2,10 +2,10 @@
 import { useEffect, useState } from "react";
 import { SystemVersion } from "@/helpers/interfaces";
 import { TableWrapper } from "@/components/table/Table";
-import { Spinner } from "@nextui-org/react";
-import { useTranslations } from "next-intl";
-import { SortDescriptor } from "@nextui-org/react";
+import { SortDescriptor, useDisclosure } from "@nextui-org/react";
 import { RenderCell } from "./table/RenderCell";
+import { ModifyModal } from "@/components/version/modals/ModifyModal";
+import { EditModal } from "./modals/EditModal";
 
 interface Version {
   id: string;
@@ -51,6 +51,21 @@ export const Version = () => {
   const [rows, setRows] = useState<Version[]>([]);
   const [query, setQuery] = useState("/api/v1/systemVersion?orderBy=version&orderDirection=desc");
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({ column: "3", direction: "descending" });
+  const [selectedId, setSelectedId] = useState<string>("");
+  const {
+    isOpen: isOpenList,
+    onOpen: onOpenList,
+    onOpenChange: onOpenChangeList,
+    onClose: onCloseList,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenEdit,
+    onOpen: onOpenEdit,
+    onOpenChange: onOpenChangeEdit,
+    onClose: onCloseEdit,
+  } = useDisclosure();
+
   const fetchVersion = async () => {
     try {
       const response = await fetch(query, {
@@ -83,6 +98,15 @@ export const Version = () => {
 
   const handleClick = (id: string, option: string) => {
     console.log("id", id, "option", option);
+    setSelectedId(id);
+    switch (option) {
+      case "list":
+        onOpenList();
+        break;
+      case "edit":
+        onOpenEdit();
+        break;
+    }
   };
 
   useEffect(() => {
@@ -90,16 +114,28 @@ export const Version = () => {
   }, [query]);
 
   return (
-    <div className="w-10/12 mx-auto mt-4 flex flex-col">
-      <TableWrapper
-        rows={rows}
-        columns={columns}
-        onSortChange={handleSortChange}
-        onClick={handleClick}
-        sortDescriptorProp={sortDescriptor}
-        multiLanguage="Version"
-        RenderCell={RenderCell}
+    <>
+      <div className="w-10/12 mx-auto mt-4 flex flex-col">
+        <TableWrapper
+          rows={rows}
+          columns={columns}
+          onSortChange={handleSortChange}
+          onClick={handleClick}
+          sortDescriptorProp={sortDescriptor}
+          multiLanguage="Version"
+          RenderCell={RenderCell}
+        />
+      </div>
+      <ModifyModal
+        isOpen={isOpenList}
+        onOpenChange={onOpenChangeList}
+        onCloseModal={onCloseList}
+        onClose={onCloseList}
+        onOpen={onOpenList}
+        onSubmit={() => console.log("Submit")}
+        selectedId={selectedId}
       />
-    </div>
+      <EditModal isOpen={isOpenEdit} onOpenChange={onOpenChangeEdit} onCloseModal={onCloseEdit} />
+    </>
   );
 };

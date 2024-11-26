@@ -25,6 +25,7 @@
     "version": "Versión",
     "date": "Fecha de Entrega",
     "emptyTable": "No hay datos disponibles",
+    "all": "Todos",
     "messages": {
       "requiredFields": "Por favor, rellena todos los campos obligatorios",
       "delete": "¿Estás seguro?",
@@ -102,6 +103,11 @@
     }
   },
   "Version": {
+    "labels": {
+      "previousVersion": "Marcar de versión",
+      "resultsSelected1": "Seleccionadas ",
+      "resultsSelected2": " de un total de "
+    },
     "table": {
       "header": {
         "version": "Versión",
@@ -114,7 +120,23 @@
       },
       "actions": {
         "edit": "Editar",
-        "delete": "Eliminar"
+        "delete": "Eliminar",
+        "modify": "Modificar"
+      }
+    },
+    "modal": {
+      "editHeader": "Editar Versión"
+    },
+    "messages": {
+      "success": {
+        "create": "Versión creada con éxito",
+        "update": "Versión actualizada con éxito",
+        "delete": "Versión eliminada con éxito"
+      },
+      "failed": {
+        "create": "Error al crear la Versión",
+        "update": "Error al actualizar la Versión",
+        "delete": "Error al eliminar la Versión"
       }
     }
   },

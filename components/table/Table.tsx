@@ -28,11 +28,12 @@ interface TableWrapperProps {
   columns: Column[];
   isLoading?: boolean;
   onSortChange?: (sortDescriptor: SortDescriptor) => void;
-  onClick?: (id: string, option: string) => void;
+  onClick?: (id: string, option: string, selected?: boolean) => void;
   sortDescriptorProp: SortDescriptor;
   multiLanguage: string;
   RenderCell: React.FC<RenderCellProps>;
   isHeaderSticky?: boolean;
+  isOpen?: boolean;
 }
 
 export const TableWrapper: React.FC<TableWrapperProps> = ({
@@ -45,6 +46,7 @@ export const TableWrapper: React.FC<TableWrapperProps> = ({
   multiLanguage,
   RenderCell,
   isHeaderSticky,
+  isOpen,
 }) => {
   const t = useTranslations(multiLanguage);
   const g = useTranslations("Global");
@@ -88,7 +90,13 @@ export const TableWrapper: React.FC<TableWrapperProps> = ({
           <TableRow key={rowIndex}>
             {Object.keys(row).map((key, cellIndex) => (
               <TableCell className={hideColumn && key == "id" ? "hideColumn" : ""} key={cellIndex}>
-                <RenderCell id={row.id} data={getKeyValue(row, key)} columnKey={key} onClick={onClick} />
+                <RenderCell
+                  id={row.id}
+                  data={getKeyValue(row, key)}
+                  columnKey={key}
+                  onClick={onClick}
+                  isOpen={isOpen}
+                />
               </TableCell>
             ))}
           </TableRow>
