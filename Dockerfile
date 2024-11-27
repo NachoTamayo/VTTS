@@ -14,11 +14,12 @@ RUN npm install
 
 COPY . .
 
+# Build de Next para producción
+RUN npm run build
+
 # Verificar que todos los archivos se han copiado
 RUN ls -la
 RUN ls -la .next
-
-RUN npm run build
 
 # Etapa 2: Producción
 FROM node:18-alpine
